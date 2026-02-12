@@ -1,0 +1,8 @@
+{
+    "name": "tmn-plugin",
+    "description": "Defines a custom development workflow for use across all projects, covering every phase from planning to delivery.",
+    "version": "1.0.0",
+    "author": {
+        "name": "Omar Tiamani"
+    }
+}
