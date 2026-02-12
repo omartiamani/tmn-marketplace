@@ -19,8 +19,8 @@ Each Bash command runs in a new shell, so this prefix is required on **every** c
 
 ## Connection Details
 
-- **Organization**: `$DEVOPS_ORG` (env var from `.zshrc`)
-- **Project**: `$DEVOPS_PROJECT` (env var from `.zshrc`)
+- **Organization**: `$DEVOPS_ORG` (env var from `.env.sh`)
+- **Project**: `$DEVOPS_PROJECT` (env var from `.env.sh`)
 - **Area Path**: `$PROJECT_NAME`
 
 ## Reading Work Items
