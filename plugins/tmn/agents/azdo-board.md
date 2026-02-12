@@ -12,7 +12,7 @@ You are an Azure DevOps Board specialist. You fetch, create, update, and manage 
 **CRITICAL**: Every `az boards` command MUST be prefixed with:
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && <command>
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && <command>
 ```
 
 Each Bash command runs in a new shell, so this prefix is required on **every** command.
@@ -28,25 +28,25 @@ Each Bash command runs in a new shell, so this prefix is required on **every** c
 ### Fetch a Work Item by ID
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item show --id <ID> --org https://dev.azure.com/$DEVOPS_ORG -o json
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item show --id <ID> --org https://dev.azure.com/$DEVOPS_ORG -o json
 ```
 
 ### List child Work Items of a parent
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item relation list --id <PARENT_ID> --org https://dev.azure.com/$DEVOPS_ORG -o json
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item relation list --id <PARENT_ID> --org https://dev.azure.com/$DEVOPS_ORG -o json
 ```
 
 ### Query Work Items by state
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards query --wiql "SELECT [System.Id], [System.Title], [System.WorkItemType], [System.State] FROM WorkItems WHERE [System.State] = 'Active' AND [System.AreaPath] = '$PROJECT_NAME' ORDER BY [System.ChangedDate] DESC" --org https://dev.azure.com/$DEVOPS_ORG -o table
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards query --wiql "SELECT [System.Id], [System.Title], [System.WorkItemType], [System.State] FROM WorkItems WHERE [System.State] = 'Active' AND [System.AreaPath] = '$PROJECT_NAME' ORDER BY [System.ChangedDate] DESC" --org https://dev.azure.com/$DEVOPS_ORG -o table
 ```
 
 ### Get Last Created IDs
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.TeamProject] = '$DEVOPS_PROJECT' AND [System.WorkItemType] = 'Task' ORDER BY [System.Id] DESC" --org https://dev.azure.com/$DEVOPS_ORG -o table 2>/dev/null | head -10
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.TeamProject] = '$DEVOPS_PROJECT' AND [System.WorkItemType] = 'Task' ORDER BY [System.Id] DESC" --org https://dev.azure.com/$DEVOPS_ORG -o table 2>/dev/null | head -10
 ```
 
 ## Creating Work Items
@@ -56,7 +56,7 @@ Types: `Epic`, `Feature`, `User Story`, `Task`, `Bug`
 ### Single Work Item
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item create \
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item create \
   --type "<Type>" \
   --title "<Title>" \
   --area "$PROJECT_NAME" \
@@ -67,7 +67,7 @@ source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-ite
 ### With Description (HTML format)
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item create \
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item create \
   --type "Task" \
   --title "Task title" \
   --description "<p>Description</p><ul><li>Item 1</li></ul>" \
@@ -79,7 +79,7 @@ source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-ite
 ### Batch Creation Pattern
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && \
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && \
 az boards work-item create --type "Task" --title "Task 1" --area "$PROJECT_NAME" --org https://dev.azure.com/$DEVOPS_ORG --project $DEVOPS_PROJECT 2>/dev/null >/dev/null && echo "Created Task 1" && \
 az boards work-item create --type "Task" --title "Task 2" --area "$PROJECT_NAME" --org https://dev.azure.com/$DEVOPS_ORG --project $DEVOPS_PROJECT 2>/dev/null >/dev/null && echo "Created Task 2"
 ```
@@ -89,7 +89,7 @@ az boards work-item create --type "Task" --title "Task 2" --area "$PROJECT_NAME"
 ### Parent-Child Relation
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item relation add \
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item relation add \
   --id <child-id> \
   --relation-type "parent" \
   --target-id <parent-id> \
@@ -99,7 +99,7 @@ source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-ite
 ### Batch Linking
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && \
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && \
 for id in 86 87 88; do
   az boards work-item relation add --id $id --relation-type "parent" --target-id 71 --org https://dev.azure.com/$DEVOPS_ORG 2>/dev/null >/dev/null
 done && echo "Linked tasks to parent"
@@ -110,7 +110,7 @@ done && echo "Linked tasks to parent"
 ### Update State
 
 ```bash
-source ~/.zshrc && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item update --id <ID> --state <STATE> --org https://dev.azure.com/$DEVOPS_ORG -o json
+source .env.sh && export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT && az boards work-item update --id <ID> --state <STATE> --org https://dev.azure.com/$DEVOPS_ORG -o json
 ```
 
 ## Workflows

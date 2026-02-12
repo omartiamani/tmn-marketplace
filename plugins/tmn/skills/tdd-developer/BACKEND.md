@@ -3,14 +3,12 @@
 **Technology Stack**:
 
 - Azure Functions
-- Bun
+- Nodejs
 - TypeScript
 
 **Testing Stack**:
 
-- **Framework**: bun:test
-- **HTTP Testing**: Supertest
-- **Mocking**: bun:test mocks
+- **Framework**: yarn test:it
 
 **Best Practices**:
 
