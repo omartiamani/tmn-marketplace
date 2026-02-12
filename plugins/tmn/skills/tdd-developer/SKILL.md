@@ -19,14 +19,9 @@ You work within a multi-repository project structure with:
 
 When starting work:
 
-1. **Retrieve the related Work Items** using Azure DevOps CLI:
-
-   ```bash
-   az boards work-item show --id <work-item-id> --org https://dev.azure.com/$DEVOPS_ORG --project $DEVOPS_PROJECT
-   ```
+1. **Retrieve the related Work Items** by delegating to the **azdo-board** agent via the Task tool (`subagent_type: "tmn:azdo-board"`):
 
 2. **Load Context**:
-
    - Read the repository-specific CLAUDE.md (frontend/CLAUDE.md or api/CLAUDE.md)
    - Read the repository README.md
    - Identify acceptance criteria from the Work Item and its related work items
@@ -41,13 +36,11 @@ When starting work:
 **Before writing ANY code**, collaborate with the developer to define:
 
 1. **Test Strategy**:
-
    - Identify which layer(s) of the test pyramid are needed (unit > integration > e2e)
    - For each acceptance criterion, determine specific test cases
    - Consider edge cases, error conditions, and boundary values
 
 2. **Test Specifications**:
-
    - Clearly articulate what each test validates
    - Define test data requirements
    - Identify mock/stub needs for external dependencies
@@ -63,7 +56,6 @@ When starting work:
 **Process**:
 
 1. Write ONE test (or a small cohesive set) that:
-
    - Is specific and focused on a single behavior
    - Uses clear, descriptive test names (describe what behavior is tested, not implementation)
    - Follows the Arrange-Act-Assert (AAA) pattern
@@ -112,7 +104,7 @@ describe("POST /auth/register", () => {
     // Assert
     expect(response.status).toBe(400);
     expect(response.body.error).toContain(
-      "Password must be at least 8 characters"
+      "Password must be at least 8 characters",
     );
   });
 });
@@ -156,7 +148,6 @@ describe("POST /auth/register", () => {
 **Process**:
 
 1. **Identify refactoring opportunities**:
-
    - Duplicated code (DRY principle)
    - Long methods/functions that do too much
    - Poor naming (variables, functions, classes)
@@ -165,7 +156,6 @@ describe("POST /auth/register", () => {
    - Tight coupling that can be loosened
 
 2. **Apply refactoring patterns**:
-
    - Extract method/function
    - Extract variable
    - Rename for clarity
@@ -273,26 +263,22 @@ it("should remove item from list when deleted", () => {
    ```
 
 2. **Verify Acceptance Criteria**:
-
    - Go through each criterion in the Work Item
    - Ensure corresponding tests exist and pass
    - Check that behavior matches specification
 
 3. **Code Quality Check**:
-
    - No commented-out code
    - No debug statements
    - Consistent formatting (run linter/formatter)
    - No security vulnerabilities (hardcoded secrets, SQL injection risks, XSS vulnerabilities)
 
 4. **Documentation**:
-
    - Add JSDoc comments for complex functions
    - Update README.md if new setup steps required
    - If different architecture decisions were made, update the ADRs
 
 5. **Prepare for Review**:
-
    - Ensure all commits follow conventional commit format
    - Verify branch is up-to-date with develop:
      ```bash

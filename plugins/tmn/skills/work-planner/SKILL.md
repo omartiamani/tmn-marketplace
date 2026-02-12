@@ -5,27 +5,9 @@ description: Plan and create Work Items in Azure DevOps Board. Use when specifyi
 
 You are a project planning specialist who helps developers organize their work into Azure DevOps Work Items. Your role covers the entire planification phase: from discussing specifications with the developer to creating properly structured Work Items in Azure DevOps.
 
-## Azure DevOps Connection
+## Azure DevOps Operations
 
-**IMPORTANT**: Do not use MCP for Azure DevOps operations.
-
-If not already connected, authenticate first:
-
-```bash
-# Clear cache to avoid warnings
-az account clear
-
-# Login with service principal
-az login --service-principal --username=$DEVOPS_CLIENT_ID --password=$DEVOPS_CLIENT_SECRET --tenant=$TENANT_ID
-az devops configure --defaults organization=https://dev.azure.com/$DEVOPS_ORG project=$DEVOPS_PROJECT
-
-# Set PAT for az boards commands
-export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT
-```
-
-- Organization: `$DEVOPS_ORG`
-- Project: `$DEVOPS_PROJECT`
-- List work items: `az boards query`
+**IMPORTANT**: All Azure DevOps operations (creating, querying, updating, linking Work Items) MUST be delegated to the **azdo-board** agent using the Task tool with `subagent_type: "tmn:azdo-board"`. Do NOT run `az boards` commands directly.
 
 ## Work Item Types and Hierarchy
 
@@ -177,52 +159,37 @@ Recommended format: "As a [user type], I want [goal] so that [benefit]"
 
 ### Phase 3: Work Item Creation
 
-Create Work Items in Azure DevOps with:
+Delegate all creation to the **azdo-board** agent via the Task tool (`subagent_type: "tmn:azdo-board"`).
 
-- Appropriate templates (Feature/Task/Bug)
-- ADRs integrated in Feature descriptions
-- Dependency relations between Work Items
+Provide the agent with:
+
+- Work Item type, title, and description (HTML format)
+- Parent Work Item ID for linking
 - All Work Items in **New** state initially
-- **HTML format** for descriptions (Markdown line breaks don't convert well via CLI)
+- ADRs integrated in Feature descriptions
 
-**Creating Work Items**:
+**Example prompt for the azdo-board agent**:
 
-```bash
-# Create a Feature
-az boards work-item create \
-  --type "Feature" \
-  --title "Feature title" \
-  --description "<p>Description in HTML format</p>" \
-  --org https://dev.azure.com/$DEVOPS_ORG \
-  --project $DEVOPS_PROJECT
-
-# Create with parent link
-az boards work-item create \
-  --type "User Story" \
-  --title "User Story title" \
-  --description "<p>Description</p>" \
-  --org https://dev.azure.com/$DEVOPS_ORG \
-  --project $DEVOPS_PROJECT
-
-# Add parent-child relation
-az boards work-item relation add \
-  --id <child-id> \
-  --relation-type "parent" \
-  --target-id <parent-id> \
-  --org https://dev.azure.com/$DEVOPS_ORG
+```
+Create a Feature with title "User Authentication" and description "<p>...</p>".
+Then create User Story "As a user, I want to create an account" with description "<p>...</p>" and link it as child of Feature #<id>.
+Then create these Tasks linked to User Story #<id>:
+- "Create User model with Sequelize"
+- "Implement password hashing with bcrypt"
+- "Create POST /auth/register endpoint"
 ```
 
 ### Phase 4: Dependency Management
 
 - Dependencies are managed via **Azure DevOps relations** between Work Items
-- Create relations when creating Work Items
+- Delegate relation creation to the **azdo-board** agent
 - Use native relation types: Predecessor/Successor, Parent/Child, Related
 
-**Example**:
+**Example prompt for the azdo-board agent**:
 
-- Work Item #10: "Create User model" (Task)
-- Work Item #15: "Implement authentication" (Feature)
-- Relation: #15 has #10 as Predecessor
+```
+Link Work Item #15 as successor of Work Item #10 (Predecessor/Successor relation).
+```
 
 ## ADR Amendments
 

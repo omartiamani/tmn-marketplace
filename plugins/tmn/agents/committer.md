@@ -52,16 +52,12 @@ If found and changes are related to the same feature, reuse the IDs.
 
 **Option B: From Azure DevOps (if no context from commits)**
 
-```bash
-# Get active Work Items assigned or in progress
-export AZURE_DEVOPS_EXT_PAT=$DEVOPS_PAT
-az boards query --wiql "SELECT [System.Id], [System.Title], [System.WorkItemType] FROM WorkItems WHERE [System.State] = 'Active' AND [System.AreaPath] = '$PROJECT_NAME' ORDER BY [System.ChangedDate] DESC" --output table
+Delegate to the **azdo-board** agent via the Task tool (`subagent_type: "tmn:azdo-board"`):
+
+Then ask the agent for details on the relevant Work Item:
+
 ```
-
-Then fetch details of relevant Work Item:
-
-```bash
-az boards work-item show --id <work_item_id> --output json
+Fetch Work Item #<id> and return its full details including parent/child relations.
 ```
 
 ### Step 4: Determine Commit Type
