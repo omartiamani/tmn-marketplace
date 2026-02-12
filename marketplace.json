@@ -1,0 +1,13 @@
+{
+    "name": "tmn-marketplace",
+    "owner": {
+      "name": "Omar Tiamani"
+    },
+    "plugins": [
+      {
+        "name": "tmn-plugin",
+        "source": "./plugins/tmn-plugin",
+        "description": "Defines a custom development workflow for use across all projects, covering every phase from planning to delivery."
+      }
+    ]
+}
