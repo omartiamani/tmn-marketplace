@@ -47,7 +47,7 @@ Montre le titre et le corps complets, et **attends l'accord** avant d'ouvrir. Pu
 
 ## Règles
 
-- **La documentation du projet fait foi.** Une convention écrite dans un `CLAUDE.md`, un README ou la documentation de workflow l'emporte sur tout défaut de ce skill.
+- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Aucune fermeture par défaut.** Un mot-clé de fermeture ne s'ajoute que si la convention le prévoit pour ce type de ticket. Dans le doute, on n'en met pas : rouvrir un ticket fermé à tort coûte plus que fermer à la main.
 - **Aucune réécriture d'historique** sur une branche partagée : pas de force push, pas d'amend d'un commit déjà poussé.
 - **Une branche, une pull request.** Si la branche mélange plusieurs sujets, dis-le plutôt que de composer un titre qui les recouvre tous.

@@ -70,6 +70,7 @@ Termine en restituant l'arborescence créée avec les identifiants réels.
 
 ## Règles
 
+- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Rien d'écrit sans validation.** Les lots se valident avant publication, sans exception.
 - **Aucun ticket sans parent**, sauf au sommet de la hiérarchie. Le rattachement fait partie de la création, pas d'une passe ultérieure.
 - **Le ticket est auto-contenu.** Il porte le contexte, les règles et les critères qui le concernent, et reste implémentable sans ouvrir la spec — c'est un instantané, pas un renvoi.

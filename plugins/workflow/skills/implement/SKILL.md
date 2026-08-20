@@ -95,7 +95,7 @@ Le push et la pull request restent à la main de l'utilisateur, sauf demande exp
 
 ## Règles
 
-- **La documentation du projet fait foi.** Quand un `CLAUDE.md`, un README ou la documentation de workflow contredit un comportement par défaut de ce skill, c'est elle qui l'emporte — sans discussion, et sans la traiter comme une divergence.
+- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Une tâche à la fois.** Si le ticket s'avère trop gros pour une session, dis-le et propose de le scinder plutôt que de le dérouler à moitié.
 - **Aucun code de production sans test rouge d'abord.** Sans exception, correction de bug comprise — hors infrastructure, qui suit la boucle de la section 4 bis.
 - **Un test doit valoir son coût.** Pas de test sur du code trivial ou sur un simple passe-plat vers une bibliothèque.

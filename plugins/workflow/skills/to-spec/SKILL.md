@@ -58,6 +58,7 @@ Annonce le fichier écrit, et **liste séparément** :
 
 ## Règles
 
+- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Interdiction totale d'ajout.** Aucune règle métier, aucun cas limite, aucune contrainte qui n'ait été explicitement énoncé. Même si l'omission te paraît être un oubli évident, même si la spec en paraît incomplète : tu le signales dans ta réponse, **jamais dans le fichier**.
 - **Marque ce qui vient du code.** Tout ce que tu tires de ta lecture du code plutôt que de la discussion se termine par `[déduit du code — à confirmer]`. Un lecteur doit distinguer d'un coup d'œil ce qui a été décidé de ce qui a été observé.
 - **La section « Points ouverts » est obligatoire.** C'est la seule qui ne se supprime jamais, même sans matière : écris alors explicitement qu'aucun point n'est ouvert à cette date. Une absence de section laisserait croire à un oubli.

@@ -92,6 +92,7 @@ Ne corrige jamais une documentation de ta propre initiative, et ne modifie jamai
 
 ## Règles
 
+- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Rien d'inventé.** Un champ dont la valeur n'a été ni sondée ni confirmée reste marqué `À DÉTERMINER` dans le fichier plutôt que rempli au jugé.
 - **Orthographe exacte.** Les noms de statuts, types et champs sont recopiés tels que l'outil les renvoie, casse comprise. Une transition échoue sur une majuscule.
 - **Lecture seule.** L'init ne crée, ne modifie et ne ferme aucun work item.

@@ -70,6 +70,7 @@ Fais valider le contenu avant d'écrire un ADR : contrairement à un ajout de te
 
 ## Règles
 
+- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Le glossaire est un glossaire.** Aucune règle métier, aucun détail d'implémentation, aucune décision. Ces choses vont dans la spec, le ticket ou l'ADR.
 - **Sois tranché.** Quand plusieurs mots désignent la même chose, retiens-en un et note les autres comme à éviter. Un glossaire qui n'arbitre pas ne sert à rien.
 - **Ne définis jamais un terme à la place de l'utilisateur.** Tu proposes une définition, il la valide ou la corrige.
