@@ -1,13 +1,13 @@
 {
-    "name": "tmn-marketplace",
-    "owner": {
-      "name": "Omar Tiamani"
-    },
-    "plugins": [
-      {
-        "name": "tmn",
-        "source": "./plugins/tmn",
-        "description": "Defines a custom development workflow for use across all projects, covering every phase from planning to delivery."
-      }
-    ]
+  "name": "tmn",
+  "owner": {
+    "name": "Omar Tiamani"
+  },
+  "plugins": [
+    {
+      "name": "workflow",
+      "source": "./plugins/workflow",
+      "description": "A tool-agnostic development workflow: specification sessions, specs, domain glossary and ADRs, work item breakdown, and TDD implementation against any configured project tracker."
+    }
+  ]
 }

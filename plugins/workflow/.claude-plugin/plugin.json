@@ -1,0 +1,5 @@
+{
+    "name": "workflow",
+    "description": "A tool-agnostic development workflow: specification sessions, specs, domain glossary and ADRs, work item breakdown, and TDD implementation against any configured project tracker.",
+    "version": "1.0.0"
+}
