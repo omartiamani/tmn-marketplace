@@ -60,6 +60,7 @@ Si une commande échoue (non authentifié, extension absente, droits insuffisant
 Ce qui n'est pas sondable, demande-le. Une question à la fois, groupée par thème :
 
 - **Transitions** : quel statut au démarrage d'une tâche, lequel quand le code est prêt, lequel à la fin ? Qui fait la transition finale — toi ou l'utilisateur ?
+- **Langue** : dans quelle langue sont écrits les artefacts du dépôt — specs, tickets, commits, documentation ? Cherche d'abord la règle dans le `CLAUDE.md` ou le `README` avant de demander ; beaucoup de projets l'ont déjà tranchée.
 - **Documentation** : où vivent les specs, le `CONTEXT.md`, les ADR ?
 - **Git** : format des branches, convention de commit, stratégie merge/rebase, branche d'intégration.
 

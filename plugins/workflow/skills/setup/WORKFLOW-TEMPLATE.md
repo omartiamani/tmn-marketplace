@@ -58,6 +58,13 @@ Voir `CLAUDE.md` § « Workflow Git ». Ne pas dupliquer ici.
 
 - `<label>` — <à quoi il sert>
 
+## Langue
+
+- **Langue des artefacts écrits** (specs, glossaire, ADR, tickets, commits, documentation) : <valeur>
+- **Source de la règle** : <fichier et section, ou « demandé à l'utilisateur »>
+
+La langue de la conversation n'a aucune incidence sur celle-ci.
+
 ## Documentation
 
 - **Specs** : <chemin>

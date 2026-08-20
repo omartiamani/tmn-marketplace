@@ -53,6 +53,8 @@ L'infrastructure as code ne se fait pas en TDD : il n'y a pas de test unitaire �
 
 ## 5. Quand la réalité s'écarte du ticket
 
+Tout ce que tu écris — message de commit, description, documentation — l'est **dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+
 **La description du ticket est devenue fausse ou incomplète** — le comportement décrit ne correspond plus au besoin, un critère est ambigu, une contrainte a changé. Montre l'écart, propose le **texte exact** de la nouvelle description, et écris-la après accord.
 
 **La documentation existante est devenue fausse** — README, spec, diagramme, glossaire. Même procédure : l'écart, le texte proposé, l'accord, puis l'écriture. Ne laisse pas derrière toi une doc que ton propre travail vient de démentir.

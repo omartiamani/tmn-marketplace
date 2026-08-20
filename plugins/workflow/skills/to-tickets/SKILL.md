@@ -34,6 +34,8 @@ Déclare les **dépendances bloquantes** : pour chaque item, ce qui doit être t
 
 ## 4. Rédiger
 
+**Rédige dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+
 **Titre** : verbe à l'infinitif, court, dans le vocabulaire du glossaire — « Filtrer les baux par statut ». Il doit se lire dans une colonne de board.
 
 **Description** :

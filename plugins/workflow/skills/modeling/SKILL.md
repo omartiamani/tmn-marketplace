@@ -38,6 +38,8 @@ Deux régimes, à ne pas confondre :
 - **Ajout d'un terme nouveau** — annonce le terme et la définition que tu inscris, puis écris. Pas d'attente.
 - **Modification ou suppression d'une définition existante** — montre l'ancienne et la nouvelle, et **attends l'accord**. Quelqu'un a déjà écrit du code sur la foi de l'ancienne définition.
 
+**Rédige dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+
 Écris au fil de l'eau, dès qu'un terme est tranché. Ne mets pas en file d'attente : ce qui est reporté en fin de séance est perdu.
 
 ## Quand le code contredit le glossaire

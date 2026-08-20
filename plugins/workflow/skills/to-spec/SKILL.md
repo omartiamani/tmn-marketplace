@@ -44,6 +44,8 @@ Traite les notions ci-dessous **dans cet ordre**, et uniquement celles pour lesq
 
 **Ni user stories ni critères d'acceptance.** C'est le rôle de `workflow:to-tickets`, qui les produira à partir de cette spec. Ne duplique pas.
 
+**Rédige dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+
 Emploie le vocabulaire du glossaire (`CONTEXT.md`). Si un terme nouveau est apparu pendant la discussion, signale-le et propose `workflow:modeling` — ne l'inscris pas au glossaire depuis ici.
 
 ## 4. Restituer
