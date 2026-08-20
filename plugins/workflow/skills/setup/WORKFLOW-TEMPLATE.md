@@ -33,6 +33,16 @@ Voir `CLAUDE.md` § « Workflow Git ». Ne pas dupliquer ici.
 | 3      | User Story                    | Task, Bug  |
 | 4      | Task, Bug                     | —          |
 
+### Dépôt de destination
+
+Section à supprimer si le tracker est indépendant des dépôts (Azure DevOps,
+Jira) ou si le projet est mono-repo. Elle ne se renseigne que sur un tracker qui
+rattache chaque ticket à un dépôt, comme GitHub, et sur un projet multi-repo.
+
+| Type | Dépôt de destination |
+| ---- | -------------------- |
+| ...  | ...                  |
+
 ## Statuts et transitions
 
 | Type       | Statuts disponibles (orthographe exacte) | Au démarrage | Code prêt | Terminé |

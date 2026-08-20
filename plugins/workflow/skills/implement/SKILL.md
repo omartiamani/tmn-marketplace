@@ -17,7 +17,8 @@ Récupère le work item par son identifiant et lis-le **en entier**, commentaire
 
 - vérifie ses **dépendances bloquantes** — si un bloqueur n'est pas terminé, signale-le et demande avant de continuer ;
 - lis la **spec** dont il est issu et le **glossaire**, pour employer les bons termes ;
-- lis le **code** concerné, et repère les tests existants qui couvrent la zone.
+- lis le **code** concerné, et repère les tests existants qui couvrent la zone ;
+- lis le **`CLAUDE.md` du dépôt** que tu vas modifier, et son README. Le README dit quelles commandes existent, le `CLAUDE.md` dit comment les lancer et ce qu'il ne faut surtout pas faire — gestionnaire de paquets imposé, commande interdite, valeur à ne jamais inscrire en dur. Sur un projet regroupant plusieurs dépôts, celui du dépôt cible n'est pas chargé automatiquement : va le lire.
 
 ## 2. Présenter le plan
 
@@ -27,7 +28,9 @@ Avant d'écrire quoi que ce soit, expose : ta compréhension du ticket, les crit
 
 ## 3. Démarrer
 
-Passe le ticket au statut « en cours » défini par `workflow.md`, et crée la branche selon la convention du projet. Ces deux gestes ne demandent pas d'accord.
+Passe le ticket au statut « en cours » défini par `workflow.md`, et **crée la branche** selon la convention du projet. Ces deux gestes ne demandent pas d'accord.
+
+Ne te dispense de la branche que si la documentation du dépôt dit qu'il travaille directement sur sa branche principale — c'est le cas courant d'un dépôt de documentation ou de scripts, ni construit ni déployé. Suis-la sans la discuter : ce n'est pas un écart à signaler.
 
 ## 4. Red, green, refactor
 
@@ -45,7 +48,7 @@ Teste le **comportement observable**, pas les détails d'implémentation : un te
 
 **N'écris pas un test pour avoir écrit un test.** Un test se justifie par le comportement qu'il protège. Une fonction qui ne fait qu'encapsuler un appel de bibliothèque, un accesseur, une fonction d'une ligne sans branche : les tester ne protège de rien et transforme chaque refactor en corvée. Teste ce qui porte une règle métier, un cas limite, une décision. En cas de doute, demande-toi ce qu'un test attraperait qu'une relecture n'attraperait pas — si la réponse est « rien », ne l'écris pas.
 
-Les commandes de test et de build se trouvent dans le README du repository. **Si elles n'y sont pas, propose de les y ajouter** — un développeur qui arrive sur le projet doit les y trouver, ce n'est pas une information réservée à l'outillage.
+Les commandes de test et de build se trouvent dans le README du repository, et la façon de les lancer dans son `CLAUDE.md` — les deux se lisent, jamais l'un sans l'autre. **Si les commandes ne sont pas dans le README, propose de les y ajouter** — un développeur qui arrive sur le projet doit les y trouver, ce n'est pas une information réservée à l'outillage.
 
 ## 4 bis. Les tâches d'infrastructure
 
@@ -92,6 +95,7 @@ Le push et la pull request restent à la main de l'utilisateur, sauf demande exp
 
 ## Règles
 
+- **La documentation du projet fait foi.** Quand un `CLAUDE.md`, un README ou la documentation de workflow contredit un comportement par défaut de ce skill, c'est elle qui l'emporte — sans discussion, et sans la traiter comme une divergence.
 - **Une tâche à la fois.** Si le ticket s'avère trop gros pour une session, dis-le et propose de le scinder plutôt que de le dérouler à moitié.
 - **Aucun code de production sans test rouge d'abord.** Sans exception, correction de bug comprise — hors infrastructure, qui suit la boucle de la section 4 bis.
 - **Un test doit valoir son coût.** Pas de test sur du code trivial ou sur un simple passe-plat vers une bibliothèque.

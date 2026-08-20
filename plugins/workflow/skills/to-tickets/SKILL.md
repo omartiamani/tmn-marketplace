@@ -15,6 +15,8 @@ Lis `.claude/workflow.md` : outil, hiérarchie des types, statuts, mécanisme de
 
 Rassemble la matière : la spec du sujet, la discussion en cours, le glossaire, et le code pour ce qui existe déjà.
 
+Si `workflow.md` déclare un **dépôt de destination par type de ticket** — cas d'un tracker qui rattache les tickets à un dépôt, comme GitHub, sur un projet multi-repo — c'est lui qui décide, jamais le répertoire courant. En l'absence de cette règle, la question ne se pose pas : le tracker est indépendant des dépôts, ou il n'y en a qu'un.
+
 ## 2. Chercher l'existant
 
 Avant de découper, cherche les work items déjà ouverts sur le sujet. Rattache-toi à un parent existant plutôt que d'en créer un nouveau, et **signale tout doublon ou contradiction** au lieu de créer par-dessus. Un backlog vivant se dégrade vite quand deux tickets décrivent le même travail.
