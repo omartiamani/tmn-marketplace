@@ -15,6 +15,8 @@ Lis `.claude/workflow.md` : outil, hiérarchie des types, statuts, mécanisme de
 
 Rassemble la matière : la spec du sujet, la discussion en cours, le glossaire, et le code pour ce qui existe déjà.
 
+**Puis lève les zones d'ombre, avant de rédiger quoi que ce soit.** Liste ce qui n'est pas tranché — règle métier absente, cas limite non traité, choix technique structurant — et pose ces points à l'utilisateur, un par un. Si le sujet est trop large pour quelques questions, propose `workflow:specify`. Un ticket rédigé par-dessus une zone d'ombre la fige : elle ressortira à l'implémentation, quand elle coûtera plus cher.
+
 Si `workflow.md` déclare un **dépôt de destination par type de ticket** — cas d'un tracker qui rattache les tickets à un dépôt, comme GitHub, sur un projet multi-repo — c'est lui qui décide, jamais le répertoire courant. En l'absence de cette règle, la question ne se pose pas : le tracker est indépendant des dépôts, ou il n'y en a qu'un.
 
 ## 2. Chercher l'existant
@@ -50,11 +52,15 @@ Déclare les **dépendances bloquantes** : pour chaque item, ce qui doit être t
 
 Ne reprends de la spec que ce qui concerne **ce ticket** : auto-contenu ne veut pas dire recopier la spec entière. Et n'invente aucun critère d'acceptance qui n'ait été discuté — si un critère te paraît manquer, dis-le dans le lot proposé, pas dans le ticket.
 
+**Un ticket consigne des décisions prises, jamais un arbitrage ouvert.** Si un choix se présente pendant la rédaction, pose-le et attends la réponse ; n'écris ensuite que la décision retenue et son motif. Écrire « deux options, à trancher dans le ticket » reporte la charge sur le prochain lecteur au lieu de la lever. Et un choix qui n'engage rien ne se consigne pas du tout : consigner une décision non structurante encombre le ticket sans rien protéger.
+
 Le ticket est daté et figé. Si la spec évolue ensuite, il ne suit pas automatiquement : l'écart se constate et se traite au moment de l'implémentation.
 
 ## 5. Proposer par lots
 
 Un niveau à la fois, du haut vers le bas : les Epics et Features d'abord, puis les User Stories du périmètre validé, puis les tâches. Chaque niveau est figé avant de détailler le suivant.
+
+**Un ticket seul est un lot de un** : il se propose et se valide comme les autres. Le fait qu'il n'y en ait qu'un ne dispense de rien.
 
 Pour chaque lot, présente une liste numérotée avec le titre, le parent, les bloqueurs et ce que l'item livre. Demande explicitement : la granularité est-elle bonne, les dépendances sont-elles justes, faut-il fusionner ou scinder ? Itère jusqu'à validation.
 
@@ -75,4 +81,3 @@ Termine en restituant l'arborescence créée avec les identifiants réels.
 - **Aucun ticket sans parent**, sauf au sommet de la hiérarchie. Le rattachement fait partie de la création, pas d'une passe ultérieure.
 - **Le ticket est auto-contenu.** Il porte le contexte, les règles et les critères qui le concernent, et reste implémentable sans ouvrir la spec — c'est un instantané, pas un renvoi.
 - **N'invente ni règle ni critère.** Ce qui n'a pas été discuté se signale dans le lot, jamais dans le ticket.
-- **Ne modifie ni ne ferme un item existant** que tu n'as pas créé dans cette passe.
