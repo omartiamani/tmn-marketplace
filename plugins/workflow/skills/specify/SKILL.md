@@ -17,7 +17,7 @@ Avant la première question, prends connaissance de l'existant. Des questions po
 - **Le glossaire** (`CONTEXT.md`) : emploie le vocabulaire déjà établi, et challenge tout terme de l'utilisateur qui entre en conflit avec lui.
 - **Les specs et ADR existants** : ne rouvre pas une décision déjà tracée ; si la demande la contredit, signale-le tout de suite.
 
-Les emplacements de ces documents sont dans `.claude/workflow.md`. S'il est absent, signale-le et propose de lancer `workflow:setup` ; si l'utilisateur préfère enchaîner, cherche les documents toi-même et poursuis.
+Les emplacements de ces documents sont dans `WORKFLOW.md`, importé par le `CLAUDE.md` — normalement déjà dans ton contexte. S'il est absent, signale-le et propose de lancer `workflow:setup` ; si l'utilisateur préfère enchaîner, cherche les documents toi-même et poursuis.
 
 Annonce ensuite en deux ou trois phrases ce que tu as compris du besoin et ce que tu as trouvé dans l'existant, **puis commence à questionner**.
 

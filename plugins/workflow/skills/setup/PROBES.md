@@ -2,14 +2,14 @@
 
 Ce fichier est un **point de départ**, pas une référence exhaustive ni garantie : les CLI et les API évoluent, et chaque organisation expose des champs et des endpoints qui lui sont propres.
 
-Règle : **n'inscris dans `.claude/workflow.md` qu'une commande que tu as réellement exécutée avec succès.** Si une commande échoue ou n'existe pas dans la version installée, cherche l'équivalent, puis à défaut bascule en interview sur ce point.
+Règle : **n'inscris dans la section « Workflow tooling » du `CLAUDE.md` qu'une commande que tu as réellement exécutée avec succès.** Si une commande échoue ou n'existe pas dans la version installée, cherche l'équivalent, puis à défaut bascule en interview sur ce point.
 
-Deux cas à consigner systématiquement dans la section « Commandes de référence » de `workflow.md`, pour qu'aucune session ultérieure ne refasse la découverte :
+Deux cas à consigner systématiquement dans les « Commandes de référence » de cette section, pour qu'aucune session ultérieure ne refasse la découverte :
 
 - **une commande d'ici qui ne fonctionne pas** — note-la comme inopérante, avec l'erreur obtenue et la variante qui a marché à sa place ;
 - **une commande absente d'ici mais nécessaire** — note-la telle que tu l'as validée (requête WIQL, endpoint REST, appel MCP, champ personnalisé…).
 
-Ne modifie pas ce fichier pour y consigner ces découvertes : elles sont propres au projet et vont dans `workflow.md`.
+Ne modifie pas ce fichier pour y consigner ces découvertes : elles sont propres au projet et vont dans son `CLAUDE.md`.
 
 ## Azure DevOps Boards
 

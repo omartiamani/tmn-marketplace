@@ -13,7 +13,7 @@ Le projet a besoin d'un vocabulaire commun et d'une trace de ses décisions stru
 
 ## Emplacement
 
-`.claude/workflow.md` dit où vivent le glossaire et les ADR. S'il ne le dit pas, propose un `CONTEXT.md` unique dans le repository de documentation — le vocabulaire métier est transverse, un glossaire par repo laisse le même terme diverger d'un repo à l'autre — et propose d'inscrire l'emplacement dans `workflow.md`.
+`WORKFLOW.md` dit où vivent le glossaire et les ADR. S'il ne le dit pas, propose un `CONTEXT.md` unique dans le repository de documentation — le vocabulaire métier est transverse, un glossaire par repo laisse le même terme diverger d'un repo à l'autre — et propose d'inscrire l'emplacement dans `WORKFLOW.md`.
 
 Crée les fichiers paresseusement : le `CONTEXT.md` à la première définition arrêtée, le répertoire d'ADR au premier ADR.
 
@@ -38,7 +38,7 @@ Deux régimes, à ne pas confondre :
 - **Ajout d'un terme nouveau** — annonce le terme et la définition que tu inscris, puis écris. Pas d'attente.
 - **Modification ou suppression d'une définition existante** — montre l'ancienne et la nouvelle, et **attends l'accord**. Quelqu'un a déjà écrit du code sur la foi de l'ancienne définition.
 
-**Rédige dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+**Rédige dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
 
 Écris au fil de l'eau, dès qu'un terme est tranché. Ne mets pas en file d'attente : ce qui est reporté en fin de séance est perdu.
 
@@ -53,6 +53,8 @@ Un ADR se justifie quand **les trois** conditions sont réunies :
 1. la décision est **difficile à inverser** — le coût de changer d'avis plus tard est réel ;
 2. **plusieurs options crédibles** ont été pesées ;
 3. le **pourquoi** sera oublié dans six mois.
+
+Si `WORKFLOW.md` fixe son propre critère, c'est lui qui s'applique.
 
 C'est rare par construction. Une décision qui ne remplit pas les trois n'est pas un ADR : elle va dans la spec ou dans le ticket. Ne transforme pas le répertoire d'ADR en journal de bord.
 
@@ -70,7 +72,7 @@ Fais valider le contenu avant d'écrire un ADR : contrairement à un ajout de te
 
 ## Règles
 
-- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
+- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Le glossaire est un glossaire.** Aucune règle métier, aucun détail d'implémentation, aucune décision. Ces choses vont dans la spec, le ticket ou l'ADR.
 - **Sois tranché.** Quand plusieurs mots désignent la même chose, retiens-en un et note les autres comme à éviter. Un glossaire qui n'arbitre pas ne sert à rien.
 - **Ne définis jamais un terme à la place de l'utilisateur.** Tu proposes une définition, il la valide ou la corrige.

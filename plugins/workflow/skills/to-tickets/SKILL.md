@@ -11,13 +11,13 @@ Un ticket est lu des semaines plus tard, par quelqu'un — ou une session — qu
 
 ## 1. Se situer
 
-Lis `.claude/workflow.md` : outil, hiérarchie des types, statuts, mécanisme de lien parent/enfant, champs obligatoires, commandes de référence. **Sans lui, ne crée rien** — propose `workflow:setup`. Créer des work items avec une nomenclature devinée produit un backlog qu'il faudra reprendre à la main.
+Prends dans `WORKFLOW.md` l'outil, la hiérarchie des types, les statuts, le mécanisme de lien parent/enfant et les champs obligatoires ; dans la section « Workflow tooling » du `CLAUDE.md`, les identifiants et les commandes de référence. Les deux sont normalement déjà dans ton contexte, le `CLAUDE.md` important `WORKFLOW.md`. **Sans `WORKFLOW.md`, ne crée rien** — propose `workflow:setup`. Créer des work items avec une nomenclature devinée produit un backlog qu'il faudra reprendre à la main.
 
 Rassemble la matière : la spec du sujet, la discussion en cours, le glossaire, et le code pour ce qui existe déjà.
 
 **Puis lève les zones d'ombre, avant de rédiger quoi que ce soit.** Liste ce qui n'est pas tranché — règle métier absente, cas limite non traité, choix technique structurant — et pose ces points à l'utilisateur, un par un. Si le sujet est trop large pour quelques questions, propose `workflow:specify`. Un ticket rédigé par-dessus une zone d'ombre la fige : elle ressortira à l'implémentation, quand elle coûtera plus cher.
 
-Si `workflow.md` déclare un **dépôt de destination par type de ticket** — cas d'un tracker qui rattache les tickets à un dépôt, comme GitHub, sur un projet multi-repo — c'est lui qui décide, jamais le répertoire courant. En l'absence de cette règle, la question ne se pose pas : le tracker est indépendant des dépôts, ou il n'y en a qu'un.
+Si `WORKFLOW.md` déclare un **dépôt de destination par type de ticket** — cas d'un tracker qui rattache les tickets à un dépôt, comme GitHub, sur un projet multi-repo — c'est lui qui décide, jamais le répertoire courant. En l'absence de cette règle, la question ne se pose pas : le tracker est indépendant des dépôts, ou il n'y en a qu'un.
 
 ## 2. Chercher l'existant
 
@@ -38,7 +38,7 @@ Déclare les **dépendances bloquantes** : pour chaque item, ce qui doit être t
 
 ## 4. Rédiger
 
-**Rédige dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+**Rédige dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
 
 **Titre** : verbe à l'infinitif, court, dans le vocabulaire du glossaire — « Filtrer les baux par statut ». Il doit se lire dans une colonne de board.
 
@@ -68,7 +68,7 @@ Pour chaque lot, présente une liste numérotée avec le titre, le parent, les b
 
 Uniquement après validation, et dans l'ordre de la hiérarchie : les parents d'abord, pour que les enfants puissent référencer des identifiants réels.
 
-Pour chaque item : créer, **rattacher au parent**, renseigner les champs obligatoires, appliquer le statut initial et les dépendances bloquantes — le tout selon `workflow.md`.
+Pour chaque item : créer, **rattacher au parent**, renseigner les champs obligatoires, appliquer le statut initial et les dépendances bloquantes — le tout selon `WORKFLOW.md`, avec les commandes du `CLAUDE.md`.
 
 **Si une création échoue, arrête-toi immédiatement.** Rends compte : ce qui a été créé avec les identifiants réels, ce qui reste à créer, et l'erreur exacte. Ne poursuis pas le lot — un parent manquant produit des enfants orphelins. Ne supprime rien pour « repartir propre ».
 
@@ -76,7 +76,7 @@ Termine en restituant l'arborescence créée avec les identifiants réels.
 
 ## Règles
 
-- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
+- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Rien d'écrit sans validation.** Les lots se valident avant publication, sans exception.
 - **Aucun ticket sans parent**, sauf au sommet de la hiérarchie. Le rattachement fait partie de la création, pas d'une passe ultérieure.
 - **Le ticket est auto-contenu.** Il porte le contexte, les règles et les critères qui le concernent, et reste implémentable sans ouvrir la spec — c'est un instantané, pas un renvoi.

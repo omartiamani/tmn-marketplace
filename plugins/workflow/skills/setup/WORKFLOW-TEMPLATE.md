@@ -1,28 +1,33 @@
-# Gabarit de `.claude/workflow.md`
+# Gabarit de `WORKFLOW.md`
 
 Recopie cette structure. Supprime les sections sans objet. Toute valeur non confirmée reste `À DÉTERMINER`.
 
-Si une section est déjà documentée ailleurs (`CLAUDE.md`, `AGENTS.md`, `README.md`, `docs/`), remplace son contenu par un simple renvoi plutôt que par une copie :
+**Rédige le fichier dans la langue déclarée pour les artefacts du projet, titres compris** : les titres ci-dessous indiquent le contenu attendu, pas leur formulation.
+
+Ce fichier est lu par des humains. Pas d'identifiant technique ni de commande : ils vont dans la section « Workflow tooling » du `CLAUDE.md` (voir [CLAUDE-TEMPLATE.md](./CLAUDE-TEMPLATE.md)). Pas de chemin absolu, pas de compte personnel, pas de liste de points ouverts.
+
+Si une section est déjà documentée dans un fichier lu par tous (`README.md`, `CONTRIBUTING.md`, `docs/`), remplace son contenu par un simple renvoi plutôt que par une copie :
 
 ```markdown
 ## Conventions Git
 
-Voir `CLAUDE.md` § « Workflow Git ». Ne pas dupliquer ici.
+Voir `CONTRIBUTING.md` § « Branches ». Ne pas dupliquer ici.
 ```
 
 ---
 
 ````markdown
-# Configuration du workflow
+# Workflow
 
-> Généré par le skill setup le <AAAA-MM-JJ>. Éditable à la main.
+> Règles du projet, valables pour toute personne qui y développe.
+> Générées par `workflow:setup`, éditables à la main.
 
 ## Gestionnaire de projet
 
-- **Outil** : Azure DevOps Boards | GitHub Issues/Projects | Jira | Fichiers locaux
-- **Accès** : CLI `az boards` | CLI `gh` | MCP <nom du serveur> | répertoire `.claude/tickets/`
+- **Outil** : Azure DevOps Boards | GitHub Projects | Jira | Fichiers locaux
 - **Organisation / Projet** : <valeurs exactes>
 - **Board / Area path / Itération par défaut** : <valeurs exactes>
+- **Accès** : <URL du board>
 
 ## Hiérarchie des work items
 
@@ -45,18 +50,18 @@ rattache chaque ticket à un dépôt, comme GitHub, et sur un projet multi-repo.
 
 ## Statuts et transitions
 
-| Type       | Statuts disponibles (orthographe exacte) | Au démarrage | Code prêt | Terminé |
-| ---------- | ---------------------------------------- | ------------ | --------- | ------- |
-| User Story | New, Active, Resolved, Closed            | Active       | Resolved  | Closed  |
-| Task       | ...                                      | ...          | ...       | ...     |
+| Type       | Statuts disponibles (orthographe exacte) | À la création | Au démarrage | Code prêt | Terminé |
+| ---------- | ---------------------------------------- | ------------- | ------------ | --------- | ------- |
+| User Story | New, Active, Resolved, Closed            | New           | Active       | Resolved  | Closed  |
+| Task       | ...                                      | ...           | ...          | ...       | ...     |
 
-- **Transition finale** : automatique | sur confirmation de l'utilisateur
+- **Sens des statuts** : <quand un ticket entre dans chacun — par exemple ce qui le rend « prêt »>
+- **Automatisations de l'outil** : <ce qui change de statut tout seul — fermeture, merge…>
 - **Qui ferme le parent** : jamais automatiquement | ...
 
 ## Liens parent / enfant
 
 - **Mécanisme** : Parent link | sub-issue | epic link | champ `<nom>`
-- **Commande / procédure** : <commande exacte de rattachement>
 
 ## Champs obligatoires à la création
 
@@ -70,8 +75,7 @@ rattache chaque ticket à un dépôt, comme GitHub, et sur un projet multi-repo.
 
 ## Langue
 
-- **Langue des artefacts écrits** (specs, glossaire, ADR, tickets, commits, documentation) : <valeur>
-- **Source de la règle** : <fichier et section, ou « demandé à l'utilisateur »>
+- **Langue des artefacts écrits** (specs, glossaire, ADR, tickets, commits, branches, pull requests, documentation, commentaires de code) : <valeur>
 
 La langue de la conversation n'a aucune incidence sur celle-ci.
 
@@ -79,45 +83,25 @@ La langue de la conversation n'a aucune incidence sur celle-ci.
 
 - **Specs** : <chemin>
 - **Glossaire (CONTEXT.md)** : <chemin>
-- **ADR** : <chemin>
+- **ADR** : <chemin> — et le critère qui justifie un ADR, s'il a été fixé
 
-## Repositories
+## Dépôts
 
-| Repo | Chemin | Rôle |
-| ---- | ------ | ---- |
-| ...  | ...    | ...  |
+Section à supprimer sur un mono-repo.
+
+| Dépôt | Rôle |
+| ----- | ---- |
+| ...   | ...  |
+
+Clonez tous les dépôts côte à côte, dans un même dossier : le `CLAUDE.md` de chacun
+importe celui de `<dépôt de pilotage>` par un chemin relatif.
 
 ## Conventions Git
 
+- **Modèle de branches** : <GitHub Flow | Git Flow | trunk-based…>
 - **Branche d'intégration** : <nom>
 - **Nommage des branches** : <format>
 - **Commits** : <convention>
-- **Stratégie** : feature→intégration = <merge|rebase|squash>, mise à jour = <...>
-
-## Commandes de référence
-
-Commandes réellement exécutées avec succès, à réutiliser telles quelles. Complète cette section à chaque fois qu'une nouvelle commande ou un nouvel appel API est validé en cours de projet.
-
-```bash
-# Lire un work item
-<commande>
-# Créer un work item
-<commande>
-# Changer le statut
-<commande>
-# Lier un enfant à son parent
-<commande>
-```
+- **Pull requests** : <format du titre, contenu du corps, mots-clés de fermeture>
+- **Stratégie** : intégration = <merge | rebase | squash>, mise à jour = <...>
 ````
-
-### Commandes inopérantes
-
-Variantes essayées qui ne fonctionnent pas ici — à ne pas retenter sauf en dernier recours.
-
-| Commande | Erreur | Variante retenue |
-| -------- | ------ | ---------------- |
-| ...      | ...    | ...              |
-
-```
-
-```

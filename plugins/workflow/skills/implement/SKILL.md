@@ -11,7 +11,7 @@ Le ticket fait loi. Il a été rédigé comme un instantané de ce qui était va
 
 ## 1. Prendre connaissance
 
-Lis `.claude/workflow.md` — statuts, transitions, conventions de branche et de commit, emplacements documentaires. Sans lui, ne démarre pas : propose `workflow:setup`.
+Prends dans `WORKFLOW.md` les statuts, les transitions, les conventions de branche et de commit et les emplacements documentaires ; dans la section « Workflow tooling » du `CLAUDE.md`, les commandes pour agir sur le tracker. Les deux sont normalement déjà dans ton contexte. Sans `WORKFLOW.md`, ne démarre pas : propose `workflow:setup`.
 
 Récupère le work item par son identifiant et lis-le **en entier**, commentaires compris. Puis :
 
@@ -28,7 +28,7 @@ Avant d'écrire quoi que ce soit, expose : ta compréhension du ticket, les crit
 
 ## 3. Démarrer
 
-Passe le ticket au statut « en cours » défini par `workflow.md`, et **crée la branche** selon la convention du projet. Ces deux gestes ne demandent pas d'accord.
+Passe le ticket au statut « en cours » défini par `WORKFLOW.md`, et **crée la branche** selon la convention du projet. Ces deux gestes ne demandent pas d'accord.
 
 Ne te dispense de la branche que si la documentation du dépôt dit qu'il travaille directement sur sa branche principale — c'est le cas courant d'un dépôt de documentation ou de scripts, ni construit ni déployé. Suis-la sans la discuter : ce n'est pas un écart à signaler.
 
@@ -56,7 +56,7 @@ L'infrastructure as code ne se fait pas en TDD : il n'y a pas de test unitaire �
 
 ## 5. Quand la réalité s'écarte du ticket
 
-Tout ce que tu écris — message de commit, description, documentation — l'est **dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+Tout ce que tu écris — message de commit, description, documentation — l'est **dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
 
 **La description du ticket est devenue fausse ou incomplète** — le comportement décrit ne correspond plus au besoin, un critère est ambigu, une contrainte a changé. Montre l'écart, propose le **texte exact** de la nouvelle description, et écris-la après accord.
 
@@ -91,13 +91,13 @@ Si l'un de ces contrôles échoue, dis-le tel quel avec la sortie obtenue. Une t
 Puis, dans cet ordre, en demandant à chaque fois :
 
 1. **Commiter** — message selon la convention du projet, référençant le work item.
-2. **Passer le ticket au statut suivant** — celui défini par `workflow.md`.
+2. **Passer le ticket au statut suivant** — celui défini par `WORKFLOW.md`.
 
 Le push et la pull request restent à la main de l'utilisateur, sauf demande explicite.
 
 ## Règles
 
-- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
+- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Une tâche à la fois.** Si le ticket s'avère trop gros pour une session, dis-le et propose de le scinder plutôt que de le dérouler à moitié.
 - **Aucun code de production sans test rouge d'abord.** Sans exception, correction de bug comprise — hors infrastructure, qui suit la boucle de la section 4 bis.
 - **Un test doit valoir son coût.** Pas de test sur du code trivial ou sur un simple passe-plat vers une bibliothèque.

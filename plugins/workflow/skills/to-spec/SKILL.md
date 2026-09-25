@@ -19,7 +19,7 @@ La valeur de ce document tient entièrement à une chose : un lecteur doit pouvo
 
 ## 2. Situer le fichier
 
-L'emplacement des specs est dans `.claude/workflow.md`. S'il n'y figure pas, propose `docs/specs/` du repository concerné — ou du repository de documentation quand le sujet est transverse — et propose de l'inscrire dans `workflow.md` pour les fois suivantes.
+L'emplacement des specs est dans `WORKFLOW.md`. S'il n'y figure pas, propose `docs/specs/` du repository concerné — ou du repository de documentation quand le sujet est transverse — et propose de l'inscrire dans `WORKFLOW.md` pour les fois suivantes.
 
 Un fichier par sujet : `<emplacement>/<sujet-en-kebab-case>.md`.
 
@@ -44,7 +44,7 @@ Traite les notions ci-dessous **dans cet ordre**, et uniquement celles pour lesq
 
 **Ni user stories ni critères d'acceptance.** C'est le rôle de `workflow:to-tickets`, qui les produira à partir de cette spec. Ne duplique pas.
 
-**Rédige dans la langue déclarée dans `.claude/workflow.md`**, quelle que soit la langue de la conversation.
+**Rédige dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
 
 Emploie le vocabulaire du glossaire (`CONTEXT.md`). Si un terme nouveau est apparu pendant la discussion, signale-le et propose `workflow:modeling` — ne l'inscris pas au glossaire depuis ici.
 
@@ -58,7 +58,7 @@ Annonce le fichier écrit, et **liste séparément** :
 
 ## Règles
 
-- **Le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
+- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Interdiction totale d'ajout.** Aucune règle métier, aucun cas limite, aucune contrainte qui n'ait été explicitement énoncé. Même si l'omission te paraît être un oubli évident, même si la spec en paraît incomplète : tu le signales dans ta réponse, **jamais dans le fichier**.
 - **Marque ce qui vient du code.** Tout ce que tu tires de ta lecture du code plutôt que de la discussion se termine par `[déduit du code — à confirmer]`. Un lecteur doit distinguer d'un coup d'œil ce qui a été décidé de ce qui a été observé.
 - **La section « Points ouverts » est obligatoire.** C'est la seule qui ne se supprime jamais, même sans matière : écris alors explicitement qu'aucun point n'est ouvert à cette date. Une absence de section laisserait croire à un oubli.
