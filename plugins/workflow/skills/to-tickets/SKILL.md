@@ -70,6 +70,8 @@ Uniquement après validation, et dans l'ordre de la hiérarchie : les parents d'
 
 Pour chaque item : créer, **rattacher au parent**, renseigner les champs obligatoires, appliquer le statut initial et les dépendances bloquantes — le tout selon `WORKFLOW.md`, avec les commandes du `CLAUDE.md`.
 
+**Puis vérifie, avant de créer le suivant.** Relis l'item tel que l'outil le restitue : son type, son parent, ses champs obligatoires, son statut, ses dépendances, et sa présence sur le board — lue depuis le board lui-même, pas depuis l'item. Une commande qui réussit ne prouve pas que le résultat est là : une étape peut échouer sans erreur. Un écart compte comme une création qui échoue.
+
 **Si une création échoue, arrête-toi immédiatement.** Rends compte : ce qui a été créé avec les identifiants réels, ce qui reste à créer, et l'erreur exacte. Ne poursuis pas le lot — un parent manquant produit des enfants orphelins. Ne supprime rien pour « repartir propre ».
 
 Termine en restituant l'arborescence créée avec les identifiants réels.
@@ -79,5 +81,6 @@ Termine en restituant l'arborescence créée avec les identifiants réels.
 - **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
 - **Rien d'écrit sans validation.** Les lots se valident avant publication, sans exception.
 - **Aucun ticket sans parent**, sauf au sommet de la hiérarchie. Le rattachement fait partie de la création, pas d'une passe ultérieure.
+- **Un ticket n'est créé qu'une fois vérifié.** Relu dans l'outil, pas déduit du succès des commandes.
 - **Le ticket est auto-contenu.** Il porte le contexte, les règles et les critères qui le concernent, et reste implémentable sans ouvrir la spec — c'est un instantané, pas un renvoi.
 - **N'invente ni règle ni critère.** Ce qui n'a pas été discuté se signale dans le lot, jamais dans le ticket.
