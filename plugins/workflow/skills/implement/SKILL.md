@@ -64,7 +64,7 @@ Tout ce que tu écris — message de commit, description, documentation — l'es
 
 **Le travail déborde du ticket.** Reste strictement dans le périmètre. Note ce que tu as découvert, et signale-le dans ton compte rendu en proposant d'en faire un ticket. N'élargis pas, même pour un ajout qui paraît minime : c'est ainsi qu'une tâche d'une session en devient trois.
 
-Quand l'utilisateur accepte d'en faire un ticket, **ne le rédige pas à la main** : passe par `workflow:to-tickets`. C'est lui qui porte les règles de rédaction, de questionnement et de validation ; les contourner produit un ticket qui n'a été relu par personne.
+Quand l'utilisateur accepte d'en faire un ticket, **ne le rédige pas à la main** : passe par `workflow:to-tickets`. C'est lui qui porte les règles de rédaction, de questionnement et de validation ; les contourner produit un ticket qui n'a été relu par personne. S'il veut seulement le noter pour plus tard, passe par `workflow:capture`.
 
 ## 6. Terminer
 
