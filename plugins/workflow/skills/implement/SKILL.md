@@ -93,7 +93,7 @@ Puis, dans cet ordre, en demandant à chaque fois :
 1. **Commiter** — message selon la convention du projet, référençant le work item.
 2. **Passer le ticket au statut suivant** — celui défini par `WORKFLOW.md`.
 
-Le push et la pull request restent à la main de l'utilisateur, sauf demande explicite.
+Le push reste à la main de l'utilisateur, sauf demande explicite. La pull request s'ouvre ou se met à jour avec `/workflow:to-pr` : signale-le une fois le ticket terminé.
 
 ## Règles
 
