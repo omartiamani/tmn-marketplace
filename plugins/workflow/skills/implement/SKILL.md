@@ -91,7 +91,7 @@ Si l'un de ces contrôles échoue, dis-le tel quel avec la sortie obtenue. Une t
 Puis, dans cet ordre, en demandant à chaque fois :
 
 1. **Commiter** — message selon la convention du projet, référençant le work item.
-2. **Passer le ticket au statut suivant** — celui défini par `WORKFLOW.md`.
+2. **Passer le ticket au statut suivant** — celui défini par `WORKFLOW.md`. Quand l'outil le donne tout seul en liant le ticket à la pull request, n'y touche pas : c'est la référence que `/workflow:to-pr` ajoute qui le fait passer, une fois le ticket dans la pull request.
 
 Le push reste à la main de l'utilisateur, sauf demande explicite. La pull request s'ouvre ou se met à jour avec `/workflow:to-pr` : signale-le une fois le ticket terminé.
 

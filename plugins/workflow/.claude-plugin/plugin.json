@@ -1,5 +1,8 @@
 {
     "name": "workflow",
     "description": "A tool-agnostic development workflow: specification sessions, specs, domain glossary and ADRs, work item breakdown, and TDD implementation against any configured project tracker.",
-    "version": "2.2.0"
+    "version": "2.2.1",
+    "author": {
+        "name": "Omar Tiamani"
+    }
 }
