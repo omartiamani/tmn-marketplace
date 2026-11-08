@@ -73,7 +73,7 @@ Les pistes techniques d'un ticket ne sont pas des exigences : s'en écarter n'es
 - **Règles du projet** — une règle écrite dans le `CLAUDE.md`, le README ou les règles du dépôt, enfreinte. Cite-la, avec son fichier.
 - **Tests** — un critère d'acceptance qui porte une règle métier ou un cas limite, sans test qui échouerait s'il régressait.
 - **Restes** — trace de débogage, secret, valeur en dur que le projet interdit.
-- **Documentation** — un README, une spec, un glossaire ou un diagramme que le changement rend faux.
+- **Documentation** — un README, une spec, un glossaire ou un diagramme que le changement rend faux, ou un passage qu'il ajoute en recopiant une documentation existante au lieu d'y renvoyer. Cite les deux passages.
 - **Bugs** — seulement si la revue de code n'a pas pu tourner : un scénario concret qui produit un résultat faux, un plantage ou une faille.
 
 ## 4. Rapporter

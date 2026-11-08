@@ -62,6 +62,8 @@ Tout ce que tu écris — message de commit, description, documentation — l'es
 
 **La documentation existante est devenue fausse** — README, spec, diagramme, glossaire. Même procédure : l'écart, le texte proposé, l'accord, puis l'écriture. Ne laisse pas derrière toi une doc que ton propre travail vient de démentir.
 
+**Une documentation se référence, elle ne se recopie pas.** Ce qu'un document décrit déjà — la doc transverse, le README d'un autre dépôt, une spec — ne s'écrit pas une seconde fois : là où le lecteur en a besoin, un lien vers la section qui le porte suffit. Une copie diverge au premier changement, et le lecteur ne sait plus laquelle croire. Avant de remplacer un doublon par un lien, déplace vers la source ce qu'il est seul à dire.
+
 **Le travail déborde du ticket.** Reste strictement dans le périmètre. Note ce que tu as découvert, et signale-le dans ton compte rendu en proposant d'en faire un ticket. N'élargis pas, même pour un ajout qui paraît minime : c'est ainsi qu'une tâche d'une session en devient trois.
 
 Quand l'utilisateur accepte d'en faire un ticket, **ne le rédige pas à la main** : passe par `workflow:to-tickets`. C'est lui qui porte les règles de rédaction, de questionnement et de validation ; les contourner produit un ticket qui n'a été relu par personne. S'il veut seulement le noter pour plus tard, passe par `workflow:capture`.
