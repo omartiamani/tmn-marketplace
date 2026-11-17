@@ -1,108 +1,108 @@
 ---
 name: implement
-description: Implémente une tâche identifiée par son numéro en TDD strict — red, green, refactor — en gérant sa branche, son statut dans le gestionnaire de projet et la mise à jour de la documentation devenue fausse. À invoquer quand l'utilisateur demande d'implémenter, de développer ou de corriger un work item désigné par son identifiant.
+description: Implements a task identified by its number in strict TDD — red, green, refactor — managing its branch, its status in the project tracker and the update of documentation that has become wrong. Invoke when the user asks to implement, develop or fix a work item designated by its identifier.
 ---
 
 # implement
 
-Implémente **une** tâche, désignée par son identifiant, en test-driven development.
+Implement **one** task, designated by its identifier, with test-driven development.
 
-Le ticket fait loi. Il a été rédigé comme un instantané de ce qui était valable à sa création : c'est lui qui définit le périmètre, pas ce que le code te suggère en chemin.
+The ticket is the law. It was written as a snapshot of what held true when it was created: it is what defines the scope, not what the code suggests to you along the way.
 
-## 1. Prendre connaissance
+## 1. Read up
 
-Prends dans `WORKFLOW.md` les statuts, les transitions, les conventions de branche et de commit et les emplacements documentaires ; dans la section « Workflow tooling » du `CLAUDE.md`, les commandes pour agir sur le tracker. Les deux sont normalement déjà dans ton contexte. Sans `WORKFLOW.md`, ne démarre pas : propose `workflow:setup`.
+Take from `WORKFLOW.md` the statuses, the transitions, the branch and commit conventions and the documentation locations; from the "Workflow tooling" section of the `CLAUDE.md`, the commands to act on the tracker. Both are normally already in your context. Without `WORKFLOW.md`, do not start: suggest `workflow:setup`.
 
-Récupère le work item par son identifiant et lis-le **en entier**, commentaires compris. Puis :
+Retrieve the work item by its identifier and read it **in full**, comments included. Then:
 
-- vérifie ses **dépendances bloquantes** — si un bloqueur n'est pas terminé, signale-le et demande avant de continuer ;
-- lis la **spec** dont il est issu et le **glossaire**, pour employer les bons termes ;
-- lis le **code** concerné, et repère les tests existants qui couvrent la zone ;
-- lis le **`CLAUDE.md` du dépôt** que tu vas modifier, et son README. Le README dit quelles commandes existent, le `CLAUDE.md` dit comment les lancer et ce qu'il ne faut surtout pas faire — gestionnaire de paquets imposé, commande interdite, valeur à ne jamais inscrire en dur. Sur un projet regroupant plusieurs dépôts, celui du dépôt cible n'est pas chargé automatiquement : va le lire.
+- check its **blocking dependencies** — if a blocker is not finished, point it out and ask before continuing;
+- read the **spec** it comes from and the **glossary**, to use the right terms;
+- read the relevant **code**, and spot the existing tests that cover the area;
+- read the **`CLAUDE.md` of the repository** you are going to modify, and its README. The README says which commands exist, the `CLAUDE.md` says how to run them and what must absolutely not be done — mandatory package manager, forbidden command, value never to hard-code. On a project grouping several repositories, the one in the repository being modified is not loaded automatically: go and read it.
 
-## 2. Présenter le plan
+## 2. Present the plan
 
-Avant d'écrire quoi que ce soit, expose : ta compréhension du ticket, les critères d'acceptance tels que tu les as compris, les fichiers et modules que tu comptes toucher, et la suite de tests que tu vas écrire — dans quel ordre.
+Before writing anything, lay out: your understanding of the ticket, the acceptance criteria as you understood them, the files and modules you intend to touch, and the sequence of tests you are going to write — in which order.
 
-**Attends le feu vert.** C'est le seul arrêt imposé du cycle ; il vaut mieux corriger un malentendu ici qu'après trois cycles rouges.
+**Wait for the go-ahead.** It is the only mandatory stop in the cycle; better to correct a misunderstanding here than after three red cycles.
 
-## 3. Démarrer
+## 3. Start
 
-Passe le ticket au statut « en cours » défini par `WORKFLOW.md`, et **crée la branche** selon la convention du projet. Ces deux gestes ne demandent pas d'accord.
+Move the ticket to the "in progress" status defined by `WORKFLOW.md`, and **create the branch** following the project's convention. These two actions do not require approval.
 
-Ne te dispense de la branche que si la documentation du dépôt dit qu'il travaille directement sur sa branche principale — c'est le cas courant d'un dépôt de documentation ou de scripts, ni construit ni déployé. Suis-la sans la discuter : ce n'est pas un écart à signaler.
+Skip the branch only if the repository's documentation says it works directly on its main branch — the common case of a documentation or scripts repository, neither built nor deployed. Follow it without debate: it is not a deviation to report.
 
 ## 4. Red, green, refactor
 
-Un comportement à la fois, strictement :
+One behavior at a time, strictly:
 
-**Red.** Écris un test qui décrit le comportement attendu, et **exécute-le pour montrer qu'il échoue**. Un test qui passe du premier coup ne prouve rien — soit il ne teste pas ce que tu crois, soit le comportement existe déjà. Dans les deux cas, arrête-toi et comprends pourquoi avant de continuer.
+**Red.** Write a test that describes the expected behavior, and **run it to show that it fails**. A test that passes on the first try proves nothing — either it does not test what you think, or the behavior already exists. In both cases, stop and understand why before continuing.
 
-**Green.** Écris le code **minimal** qui fait passer le test. Pas la généralisation que tu anticipes, pas le cas suivant : juste celui-ci.
+**Green.** Write the **minimal** code that makes the test pass. Not the generalization you anticipate, not the next case: just this one.
 
-**Refactor.** Une fois au vert, améliore la structure — du code comme des tests — en gardant la suite verte. Puis passe au comportement suivant.
+**Refactor.** Once green, improve the structure — of the code as well as the tests — while keeping the suite green. Then move on to the next behavior.
 
-Ne saute jamais l'étape rouge, y compris pour une correction de bug : le test qui reproduit le bug doit d'abord échouer, sinon rien ne prouve qu'il l'attrape.
+Never skip the red step, including for a bug fix: the test that reproduces the bug must fail first, otherwise nothing proves it catches it.
 
-Teste le **comportement observable**, pas les détails d'implémentation : un test qui casse à chaque refactor sans qu'aucun comportement ne change est un test à réécrire.
+Test **observable behavior**, not implementation details: a test that breaks on every refactor without any behavior changing is a test to rewrite.
 
-**N'écris pas un test pour avoir écrit un test.** Un test se justifie par le comportement qu'il protège. Une fonction qui ne fait qu'encapsuler un appel de bibliothèque, un accesseur, une fonction d'une ligne sans branche : les tester ne protège de rien et transforme chaque refactor en corvée. Teste ce qui porte une règle métier, un cas limite, une décision. En cas de doute, demande-toi ce qu'un test attraperait qu'une relecture n'attraperait pas — si la réponse est « rien », ne l'écris pas.
+**Do not write a test just to have written a test.** A test is justified by the behavior it protects. A function that merely wraps a library call, an accessor, a one-line function without a branch: testing them protects against nothing and turns every refactor into a chore. Test what carries a business rule, an edge case, a decision. When in doubt, ask yourself what a test would catch that a review would not — if the answer is "nothing", do not write it.
 
-Les commandes de test et de build se trouvent dans le README du repository, et la façon de les lancer dans son `CLAUDE.md` — les deux se lisent, jamais l'un sans l'autre. **Si les commandes ne sont pas dans le README, propose de les y ajouter** — un développeur qui arrive sur le projet doit les y trouver, ce n'est pas une information réservée à l'outillage.
+The test and build commands are in the repository's README, and how to run them in its `CLAUDE.md` — both are read, never one without the other. **If the commands are not in the README, suggest adding them there** — a developer arriving on the project must find them there; it is not information reserved for tooling.
 
-## 4 bis. Les tâches d'infrastructure
+## 4b. Infrastructure tasks
 
-L'infrastructure as code ne se fait pas en TDD : il n'y a pas de test unitaire à faire échouer avant de déclarer une ressource. Suis la boucle de [INFRA.md](./INFRA.md) — plan, validation, déploiement, vérification chez le fournisseur.
+Infrastructure as code is not done with TDD: there is no unit test to make fail before declaring a resource. Follow the loop in [INFRA.md](./INFRA.md) — plan, approval, deployment, verification with the provider.
 
-## 5. Quand la réalité s'écarte du ticket
+## 5. When reality diverges from the ticket
 
-Tout ce que tu écris — message de commit, description, documentation — l'est **dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
+Everything you write — commit message, description, documentation — is written **in the language declared in `WORKFLOW.md`**, whatever the language of the conversation.
 
-**La description du ticket est devenue fausse ou incomplète** — le comportement décrit ne correspond plus au besoin, un critère est ambigu, une contrainte a changé. Montre l'écart, propose le **texte exact** de la nouvelle description, et écris-la après accord.
+**The ticket's description has become wrong or incomplete** — the behavior described no longer matches the need, a criterion is ambiguous, a constraint has changed. Show the gap, propose the **exact text** of the new description, and write it after approval.
 
-**La documentation existante est devenue fausse** — README, spec, diagramme, glossaire. Même procédure : l'écart, le texte proposé, l'accord, puis l'écriture. Ne laisse pas derrière toi une doc que ton propre travail vient de démentir.
+**Existing documentation has become wrong** — README, spec, diagram, glossary. Same procedure: the gap, the proposed text, the approval, then the writing. Do not leave behind documentation that your own work has just contradicted.
 
-**Une documentation se référence, elle ne se recopie pas.** Ce qu'un document décrit déjà — la doc transverse, le README d'un autre dépôt, une spec — ne s'écrit pas une seconde fois : là où le lecteur en a besoin, un lien vers la section qui le porte suffit. Une copie diverge au premier changement, et le lecteur ne sait plus laquelle croire. Avant de remplacer un doublon par un lien, déplace vers la source ce qu'il est seul à dire.
+**Documentation is referenced, not copied.** What a document already describes — the cross-cutting docs, another repository's README, a spec — is not written a second time: where the reader needs it, a link to the section that holds it is enough. A copy diverges at the first change, and the reader no longer knows which one to believe. Before replacing a duplicate with a link, move to the source what only the duplicate says.
 
-**Le travail déborde du ticket.** Reste strictement dans le périmètre. Note ce que tu as découvert, et signale-le dans ton compte rendu en proposant d'en faire un ticket. N'élargis pas, même pour un ajout qui paraît minime : c'est ainsi qu'une tâche d'une session en devient trois.
+**The work overflows the ticket.** Stay strictly within scope. Note what you discovered, and point it out in your report, proposing to make it a ticket. Do not widen the scope, even for an addition that seems minor: that is how a one-session task becomes three.
 
-Quand l'utilisateur accepte d'en faire un ticket, **ne le rédige pas à la main** : passe par `workflow:to-tickets`. C'est lui qui porte les règles de rédaction, de questionnement et de validation ; les contourner produit un ticket qui n'a été relu par personne. S'il veut seulement le noter pour plus tard, passe par `workflow:capture`.
+When the user agrees to make it a ticket, **do not write it by hand**: go through `workflow:to-tickets`. It is the one that carries the rules for writing, questioning and approval; bypassing them produces a ticket that no one has reviewed. If they only want to note it for later, go through `workflow:capture`.
 
-## 6. Terminer
+## 6. Finish
 
-Avant d'annoncer quoi que ce soit, vérifie — et montre les résultats :
+Before announcing anything, verify — and show the results:
 
-- la **suite de tests complète** du repository est au vert, pas seulement tes tests ;
-- le **lint et le build** passent ;
-- **chaque critère d'acceptance** est repris un par un, avec ce qui le prouve ;
-- le comportement est **constaté dans l'application réelle**.
+- the repository's **full test suite** is green, not only your tests;
+- the **lint and the build** pass;
+- **each acceptance criterion** is gone over one by one, with what proves it;
+- the behavior is **observed in the real application**.
 
-Ce dernier point n'est pas une formalité : les tests prouvent que le code fait ce que tu as écrit, pas que la fonctionnalité marche. Vérifie selon ce que la tâche touche.
+This last point is not a formality: the tests prove that the code does what you wrote, not that the feature works. Verify according to what the task touches.
 
-- **Front et back** — démarre les serveurs locaux comme l'indique le README, ouvre le parcours concerné et constate le comportement de bout en bout, y compris le cas d'erreur. Si l'application a une page de connexion, **demande à l'utilisateur de s'authentifier lui-même** : tu ne saisis jamais ses identifiants.
-- **API seule** — fais de vrais appels **authentifiés**, et examine les réponses réelles : code de statut, corps, en-têtes. Vérifie aussi le refus attendu — appel non authentifié, droit insuffisant, entrée invalide.
-- **Interface seule** — parcours l'écran dans le navigateur, y compris les états vide, de chargement et d'erreur.
-- **Infrastructure** — voir [INFRA.md](./INFRA.md).
+- **Front end and back end** — start the local servers as the README says, open the relevant flow and observe the behavior end to end, including the error case. If the application has a login page, **ask the user to authenticate themselves**: you never enter their credentials.
+- **API only** — make real **authenticated** calls, and examine the actual responses: status code, body, headers. Also verify the expected refusal — unauthenticated call, insufficient permission, invalid input.
+- **UI only** — go through the screen in the browser, including the empty, loading and error states.
+- **Infrastructure** — see [INFRA.md](./INFRA.md).
 
-**Les appels réels se font en environnement local ou de développement, jamais ailleurs.** Vérifie sur quel environnement tu pointes avant le premier appel ; dans le doute, demande. Aucune vérification ne justifie de toucher à un environnement de recette ou de production.
+**Real calls are made in the local or development environment, never anywhere else.** Check which environment you are pointing at before the first call; when in doubt, ask. No verification justifies touching a staging or production environment.
 
-**Quand un appel de vérification mute des données** — création, modification, suppression — annonce-le avant, et **demande une fois les vérifications terminées s'il faut revenir en arrière**. Même en développement, des données laissées derrière faussent le travail suivant. Ne supprime jamais de ta propre initiative.
+**When a verification call mutates data** — creation, modification, deletion — announce it beforehand, and **ask once the verifications are done whether to roll back**. Even in development, data left behind skews the next piece of work. Never delete on your own initiative.
 
-Si l'un de ces contrôles échoue, dis-le tel quel avec la sortie obtenue. Une tâche n'est pas terminée parce que le code est écrit, ni parce que les tests sont verts.
+If one of these checks fails, say so as is, with the output obtained. A task is not finished because the code is written, nor because the tests are green.
 
-Puis, dans cet ordre, en demandant à chaque fois :
+Then, in this order, asking each time:
 
-1. **Commiter** — message selon la convention du projet, référençant le work item.
-2. **Passer le ticket au statut suivant** — celui défini par `WORKFLOW.md`. Quand l'outil le donne tout seul en liant le ticket à la pull request, n'y touche pas : c'est la référence que `/workflow:to-pr` ajoute qui le fait passer, une fois le ticket dans la pull request.
+1. **Commit** — message following the project's convention, referencing the work item.
+2. **Move the ticket to the next status** — the one defined by `WORKFLOW.md`. When the tool sets it on its own by linking the ticket to the pull request, do not touch it: it is the reference that `/workflow:to-pr` adds that moves it, once the ticket is in the pull request.
 
-Le push reste à la main de l'utilisateur, sauf demande explicite. La pull request s'ouvre ou se met à jour avec `/workflow:to-pr` : signale-le une fois le ticket terminé.
+Pushing stays in the user's hands, unless explicitly asked. The pull request is opened or updated with `/workflow:to-pr`: point it out once the ticket is finished.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Une tâche à la fois.** Si le ticket s'avère trop gros pour une session, dis-le et propose de le scinder plutôt que de le dérouler à moitié.
-- **Aucun code de production sans test rouge d'abord.** Sans exception, correction de bug comprise — hors infrastructure, qui suit la boucle de la section 4 bis.
-- **Un test doit valoir son coût.** Pas de test sur du code trivial ou sur un simple passe-plat vers une bibliothèque.
-- **Ne modifie pas les critères d'acceptance pour les faire passer.** Si un critère est intenable, c'est une discussion, pas une réécriture.
-- **Ne rends jamais un compte rendu optimiste.** Un test ignoré, une vérification sautée, un critère non couvert : ça se dit.
-- **Ne ferme pas le parent.** Seul le work item traité change de statut.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **One task at a time.** If the ticket turns out to be too big for one session, say so and suggest splitting it rather than carrying it out halfway.
+- **No production code without a red test first.** No exceptions, bug fixes included — except infrastructure, which follows the loop in section 4b.
+- **A test must be worth its cost.** No test on trivial code or on a simple pass-through to a library.
+- **Do not modify the acceptance criteria to make them pass.** If a criterion is untenable, that is a discussion, not a rewrite.
+- **Never give an optimistic report.** An ignored test, a skipped verification, an uncovered criterion: it gets said.
+- **Do not close the parent.** Only the work item handled changes status.

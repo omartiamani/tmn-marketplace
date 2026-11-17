@@ -1,123 +1,123 @@
 ---
 name: setup
-description: Détecte le gestionnaire de projet et les conventions de versioning, puis écrit les règles du projet dans un `WORKFLOW.md` versionné à la racine du dépôt, importé par le `CLAUDE.md` qui porte en plus les détails d'outillage. À invoquer pour initialiser ou reconfigurer le workflow, quand `WORKFLOW.md` est absent, ou quand il ne correspond plus à la réalité des outils.
+description: Detects the project tracker and the versioning conventions, then writes the project rules to a versioned `WORKFLOW.md` at the repository root, imported by the `CLAUDE.md`, which also holds the tooling details. Invoke to initialize or reconfigure the workflow, when `WORKFLOW.md` is missing, or when it no longer matches the reality of the tools.
 ---
 
 # setup
 
-Découvre une fois pour toutes comment le projet est piloté, et grave le résultat dans le dépôt. Deux objectifs : plus aucune session ne doit redécouvrir les statuts, les types de work items ou les conventions de branche ; et la configuration doit être **versionnée et rejouable** — la même pour toute personne qui développe sur le projet, et reproductible d'un projet à l'autre.
+Discover once and for all how the project is run, and set the result in stone in the repository. Two goals: no session should ever again have to rediscover the statuses, the work item types or the branch conventions; and the configuration must be **versioned and replayable** — the same for everyone who develops on the project, and reproducible from one project to another.
 
-## Emplacement
+## Location
 
-Deux fichiers à la racine du dépôt, commités comme le reste :
+Two files at the repository root, committed like everything else:
 
-- **`WORKFLOW.md`** — les règles du projet, valables pour quiconque y développe, humain comme IA : le tracker et le cycle de vie des tickets, la langue, les conventions Git, l'emplacement de la documentation, les dépôts.
-- **`CLAUDE.md`** — importe `WORKFLOW.md` par une ligne `@WORKFLOW.md`, et ajoute une section **« Workflow tooling »** réservée à l'outillage : accès à l'outil, identifiants, commandes validées, commandes inopérantes. Un humain passe par l'interface de l'outil ; ces détails ne servent qu'à Claude.
+- **`WORKFLOW.md`** — the project rules, valid for anyone who develops on it, human or AI: the tracker and the ticket lifecycle, the language, the Git conventions, the documentation location, the repositories.
+- **`CLAUDE.md`** — imports `WORKFLOW.md` with an `@WORKFLOW.md` line, and adds a **"Workflow tooling"** section reserved for tooling: access to the tool, identifiers, validated commands, non-working commands. A human goes through the tool's interface; these details only serve Claude.
 
-Claude Code charge le `CLAUDE.md` à chaque session, et avec lui ce qu'il importe : les autres skills du plugin trouvent la configuration déjà dans leur contexte.
+Claude Code loads the `CLAUDE.md` in every session, and with it whatever it imports: the plugin's other skills find the configuration already in their context.
 
-Jamais dans le répertoire du plugin : les skills sont partagés entre projets, la configuration est propre à chacun. **Jamais hors d'un dépôt** non plus : un fichier posé dans un dossier parent qui regroupe plusieurs dépôts n'est pas versionné, et ne se rejoue pas.
+Never in the plugin directory: the skills are shared between projects, the configuration is specific to each one. **Never outside a repository** either: a file placed in a parent folder grouping several repositories is not versioned, and cannot be replayed.
 
-### Projet multi-dépôts
+### Multi-repository project
 
-Une seule configuration pour tous les dépôts. Elle vit dans le **dépôt de pilotage** — celui qui porte la documentation transverse. S'il n'est pas évident, demande lequel ; n'en crée aucun.
+A single configuration for all the repositories. It lives in the **steering repository** — the one that holds the cross-cutting documentation. If it is not obvious, ask which one; create none.
 
-Claude Code ne charge que le `CLAUDE.md` du répertoire de travail et de ses parents. Ajoute donc au `CLAUDE.md` de **chaque autre dépôt** une ligne qui importe celui du dépôt de pilotage — `@../<dépôt-de-pilotage>/CLAUDE.md` —, sans quoi une session ouverte dans un dépôt de code ignorerait les règles. Cet import suppose que les dépôts sont clonés côte à côte : inscris-le dans `WORKFLOW.md`. À la première session, Claude Code peut demander d'autoriser cet import situé hors du dépôt : c'est attendu.
+Claude Code loads only the `CLAUDE.md` of the working directory and its parents. So add to the `CLAUDE.md` of **every other repository** a line that imports the steering repository's one — `@../<steering-repository>/CLAUDE.md` — without which a session opened in a code repository would ignore the rules. This import assumes the repositories are cloned side by side: record it in `WORKFLOW.md`. In the first session, Claude Code may ask to approve this import located outside the repository: that is expected.
 
-## Processus
+## Process
 
-### 1. Vérifier l'existant
+### 1. Check what exists
 
-Si `WORKFLOW.md` existe déjà : lis-le, avec la section « Workflow tooling » du `CLAUDE.md`, annonce ce qu'ils contiennent, et demande si l'utilisateur veut **compléter**, **re-sonder** (rafraîchir depuis l'outil) ou **abandonner**. Ne les écrase jamais sans accord.
+If `WORKFLOW.md` already exists: read it, along with the "Workflow tooling" section of the `CLAUDE.md`, announce what they contain, and ask whether the user wants to **complete**, **re-probe** (refresh from the tool) or **abort**. Never overwrite them without approval.
 
-Si tu trouves un **`.claude/workflow.md`** — l'emplacement des versions antérieures du plugin —, c'est une migration. Répartis son contenu entre `WORKFLOW.md` et la section « Workflow tooling », sans re-sonder ce qu'il établit déjà sauf demande, et écarte ce qui n'a pas sa place dans un fichier versionné (voir les règles). Une fois les nouveaux fichiers écrits, propose de supprimer l'ancien.
+If you find a **`.claude/workflow.md`** — the location used by earlier versions of the plugin — this is a migration. Split its content between `WORKFLOW.md` and the "Workflow tooling" section, without re-probing what it already establishes unless asked, and drop what has no place in a versioned file (see the rules). Once the new files are written, offer to delete the old one.
 
-### 2. Repérer la documentation existante
+### 2. Find the existing documentation
 
-Avant toute question, cherche ce que le projet documente déjà : `CLAUDE.md` (racine, sous-répertoires, et global de l'utilisateur), `AGENTS.md`, `README.md`, `CONTRIBUTING.md`, `docs/`. Beaucoup de règles de gestion de projet et de conventions Git y sont souvent déjà écrites.
+Before any question, look for what the project already documents: `CLAUDE.md` (root, subdirectories, and the user's global one), `AGENTS.md`, `README.md`, `CONTRIBUTING.md`, `docs/`. Many project management rules and Git conventions are often already written there.
 
-**Ne duplique jamais ces informations.** Quand une règle est déjà documentée dans un fichier lu par tous — `README.md`, `CONTRIBUTING.md`, `docs/` —, `WORKFLOW.md` se contente de **pointer vers le fichier** — chemin et section — au lieu de recopier son contenu. La documentation existante reste la source de vérité ; une copie divergerait au premier changement.
+**Never duplicate this information.** When a rule is already documented in a file read by everyone — `README.md`, `CONTRIBUTING.md`, `docs/` — `WORKFLOW.md` merely **points to the file** — path and section — instead of copying its content. The existing documentation remains the source of truth; a copy would diverge at the first change.
 
-**Exception : les règles de projet écrites dans un `CLAUDE.md` ou un `AGENTS.md`.** Seule l'IA les lit. Quand elles relèvent de `WORKFLOW.md` — conventions Git, langue, cycle de vie des tickets —, propose de les y **déplacer**, pour qu'elles s'appliquent à tous ; le `CLAUDE.md` n'en garde que ce qui concerne l'outillage.
+**Exception: project rules written in a `CLAUDE.md` or an `AGENTS.md`.** Only the AI reads them. When they belong in `WORKFLOW.md` — Git conventions, language, ticket lifecycle — suggest **moving** them there, so that they apply to everyone; the `CLAUDE.md` keeps only what concerns tooling.
 
-Ne recopie une information que si elle n'existe nulle part, ou si elle est contredite par ce que tu as sondé — dans ce cas signale la contradiction à l'utilisateur et demande quelle version fait foi.
+Copy a piece of information only if it exists nowhere, or if it is contradicted by what you probed — in that case point out the contradiction to the user and ask which version is authoritative.
 
-### 3. Détecter le gestionnaire de projet
+### 3. Detect the project tracker
 
-Cherche des indices avant de demander :
+Look for clues before asking:
 
-- remote git (`git -C <repo> remote -v`) → `dev.azure.com`/`visualstudio.com` = Azure DevOps, `github.com` = GitHub
-- CLI disponibles : `az` + extension `azure-devops`, `gh`
-- serveurs MCP connectés exposant des outils Jira/Azure/GitHub
-- répertoire `.claude/tickets/` existant = mode fichiers locaux
+- git remote (`git -C <repo> remote -v`) → `dev.azure.com`/`visualstudio.com` = Azure DevOps, `github.com` = GitHub
+- available CLIs: `az` + `azure-devops` extension, `gh`
+- connected MCP servers exposing Jira/Azure/GitHub tools
+- existing `.claude/tickets/` directory = local files mode
 
-Annonce l'outil détecté et fais-le **confirmer**. Si rien n'est détecté ou si plusieurs candidats coexistent, demande — ne devine pas.
+Announce the detected tool and have it **confirmed**. If nothing is detected or if several candidates coexist, ask — do not guess.
 
-### 4. Sonder l'outil
+### 4. Probe the tool
 
-Exécute les commandes de découverte de [PROBES.md](./PROBES.md) pour l'outil retenu. Le sondage est en **lecture seule** : aucune commande de création ou de modification pendant l'init.
+Run the discovery commands from [PROBES.md](./PROBES.md) for the chosen tool. Probing is **read-only**: no create or modify command during the init.
 
-Ce qu'il faut ramener :
+What to bring back:
 
-- l'identité du projet (organisation, projet, repo, board, area path, itération courante)
-- la **hiérarchie réelle** des types (ex. Epic → Feature → User Story → Task/Bug) telle que l'outil la nomme
-- les **statuts exacts** de chaque type, avec leur orthographe exacte (`New`, `Active`, `Resolved`, `Closed`…)
-- les **automatisations** qui changent un statut toutes seules — fermeture d'un ticket, merge d'une pull request
-- le mécanisme de **lien parent/enfant** (Parent link, sub-issue, epic link, champ personnalisé)
-- les **champs obligatoires** à la création
-- les labels / tags disponibles s'ils servent au tri
-- les **identifiants** dont les commandes auront besoin — projet, champ de statut, options
+- the project's identity (organization, project, repo, board, area path, current iteration)
+- the **actual hierarchy** of types (e.g. Epic → Feature → User Story → Task/Bug) as the tool names it
+- the **exact statuses** of each type, with their exact spelling (`New`, `Active`, `Resolved`, `Closed`…)
+- the **automations** that change a status on their own — closing a ticket, merging a pull request
+- the **parent/child link** mechanism (Parent link, sub-issue, epic link, custom field)
+- the **required fields** at creation
+- the available labels / tags if they are used for sorting
+- the **identifiers** the commands will need — project, status field, options
 
-Si une commande échoue (non authentifié, extension absente, droits insuffisants), dis-le explicitement, indique la commande à lancer pour corriger, et poursuis en interview sur cette partie plutôt que d'inventer.
+If a command fails (not authenticated, missing extension, insufficient permissions), say so explicitly, give the command to run to fix it, and continue with an interview on that part rather than inventing.
 
-`PROBES.md` n'est qu'un point de départ. Consigne dans la section « Workflow tooling » du `CLAUDE.md` toute commande de ce fichier qui s'est révélée inopérante (avec l'erreur et la variante retenue), ainsi que toute commande ou appel API absent de la liste mais nécessaire au projet.
+`PROBES.md` is only a starting point. Record in the "Workflow tooling" section of the `CLAUDE.md` any command from that file that turned out not to work (with the error and the variant used instead), as well as any command or API call missing from the list but needed by the project.
 
-### 5. Compléter par interview
+### 5. Complete with an interview
 
-Ce qui n'est pas sondable, demande-le. Une question à la fois, groupée par thème :
+What cannot be probed, ask about. One question at a time, grouped by theme:
 
-- **Transitions** : quel statut à la création d'un ticket, au démarrage d'une tâche, quand le code est prêt, à la fin ? Que signifie chaque statut — quand un ticket y entre-t-il ? Qui fait la transition finale — toi ou l'utilisateur ?
-- **Langue** : dans quelle langue sont écrits les artefacts du dépôt — specs, tickets, commits, documentation ? Cherche d'abord la règle dans le `CLAUDE.md` ou le `README` avant de demander ; beaucoup de projets l'ont déjà tranchée.
-- **Dépôt de pilotage** — uniquement sur un projet multi-dépôts : lequel porte la configuration et la documentation transverse ?
-- **Dépôt de destination** — uniquement si le tracker rattache les tickets à un dépôt, comme GitHub, **et** que le projet en compte plusieurs : quel type de ticket est créé dans quel dépôt ? Sur un tracker indépendant des dépôts ou sur un mono-repo, n'en parle pas.
-- **Documentation** : où vivent les specs, le `CONTEXT.md`, les ADR ?
-- **Git** : modèle de branches, format des branches, convention de commit, stratégie merge/rebase, branche d'intégration.
+- **Transitions**: which status when a ticket is created, when a task starts, when the code is ready, at the end? What does each status mean — when does a ticket enter it? Who makes the final transition — you or the user?
+- **Language**: in which language are the repository's artifacts written — specs, tickets, commits, documentation? First look for the rule in the `CLAUDE.md` or the `README` before asking; many projects have already settled it.
+- **Steering repository** — only on a multi-repository project: which one holds the configuration and the cross-cutting documentation?
+- **Target repository** — only if the tracker attaches tickets to a repository, like GitHub, **and** the project has several: which ticket type is created in which repository? On a repository-independent tracker or on a mono-repo, do not bring it up.
+- **Documentation**: where do the specs, the `CONTEXT.md` and the ADRs live?
+- **Git**: branching model, branch format, commit convention, merge/rebase strategy, integration branch.
 
-Ne propose jamais une valeur comme acquise. Si tu as une hypothèse (issue du `CLAUDE.md` du projet, par exemple), présente-la comme une hypothèse à confirmer.
+Never present a value as given. If you have an assumption (drawn from the project's `CLAUDE.md`, for example), present it as an assumption to be confirmed.
 
-### 6. Restituer avant d'écrire
+### 6. Play it back before writing
 
-Présente une synthèse compacte de ce qui va être écrit : le contenu de `WORKFLOW.md`, celui de la section « Workflow tooling » et, sur un projet multi-dépôts, les imports ajoutés dans chaque dépôt. L'utilisateur valide ou corrige. **Puis seulement** écris, en suivant [WORKFLOW-TEMPLATE.md](./WORKFLOW-TEMPLATE.md) et [CLAUDE-TEMPLATE.md](./CLAUDE-TEMPLATE.md).
+Present a compact summary of what is going to be written: the content of `WORKFLOW.md`, that of the "Workflow tooling" section and, on a multi-repository project, the imports added in each repository. The user approves or corrects. **Only then** write, following [WORKFLOW-TEMPLATE.md](./WORKFLOW-TEMPLATE.md) and [CLAUDE-TEMPLATE.md](./CLAUDE-TEMPLATE.md).
 
-Un `CLAUDE.md` existant ne se réécrit pas : ajoute l'import en tête et la section « Workflow tooling » à la fin, et ne touche au reste que pour les déplacements validés à l'étape 2.
+An existing `CLAUDE.md` is not rewritten: add the import at the top and the "Workflow tooling" section at the end, and touch the rest only for the moves approved in step 2.
 
-### 7. Confirmer
+### 7. Confirm
 
-Liste les fichiers écrits ou modifiés, dépôt par dépôt, et rappelle qu'ils sont éditables à la main — les skills du plugin `workflow` les reliront tels quels. **Propose le commit sans le faire** : la configuration n'est partagée qu'une fois versionnée, mais c'est à l'utilisateur d'en décider.
+List the files written or modified, repository by repository, and remind the user that they can be edited by hand — the skills of the `workflow` plugin will read them back as they are. **Propose the commit without making it**: the configuration is only shared once versioned, but it is up to the user to decide.
 
-## Divergences entre le workflow documenté et la réalité des outils
+## Divergences between the documented workflow and the reality of the tools
 
-Cette règle vaut pendant l'init **et à tout moment ensuite** : dès qu'un écart est constaté entre ce que décrivent `WORKFLOW.md`, le `CLAUDE.md` ou la documentation du projet et ce que renvoie réellement l'outil, signale-le immédiatement au lieu de t'adapter en silence.
+This rule applies during the init **and at any time afterwards**: as soon as a gap is found between what `WORKFLOW.md`, the `CLAUDE.md` or the project's documentation describe and what the tool actually returns, point it out immediately instead of adapting silently.
 
-Exemples d'écart : un statut documenté qui n'existe plus, un type de work item renommé, un area path ou un projet déplacé, un champ devenu obligatoire, une convention de branche que le dépôt ne respecte plus.
+Examples of gaps: a documented status that no longer exists, a renamed work item type, a moved area path or project, a field that has become required, a branch convention the repository no longer follows.
 
-Procédure :
+Procedure:
 
-1. **Annonce l'écart** en montrant les deux versions : ce qui est documenté (avec le fichier et la section) et ce qui est constaté (avec la commande et sa sortie).
-2. **Propose une mise à jour précise** — le fichier à modifier, la ligne actuelle, la ligne proposée. Si l'écart concerne une doc référencée (`README.md`, `CONTRIBUTING.md`…), la mise à jour porte sur ce fichier-là, pas sur une copie dans `WORKFLOW.md`.
-3. **Attends la validation de l'utilisateur.** Il peut trancher dans l'autre sens : c'est l'outil qui est mal configuré, et la documentation qui fait foi.
-4. **N'applique la modification qu'après accord.** Sans réponse, poursuis la tâche en cours en utilisant la valeur constatée et rappelle que l'écart reste non tranché.
+1. **Announce the gap** by showing both versions: what is documented (with the file and the section) and what is observed (with the command and its output).
+2. **Propose a precise update** — the file to modify, the current line, the proposed line. If the gap concerns referenced documentation (`README.md`, `CONTRIBUTING.md`…), the update applies to that file, not to a copy in `WORKFLOW.md`.
+3. **Wait for the user's approval.** They may decide the other way: it is the tool that is misconfigured, and the documentation that is authoritative.
+4. **Apply the change only after approval.** Without an answer, continue the current task using the observed value and point out that the gap remains unresolved.
 
-Ne corrige jamais une documentation de ta propre initiative, et ne modifie jamais la configuration de l'outil pour la faire coller à la documentation.
+Never correct documentation on your own initiative, and never modify the tool's configuration to make it match the documentation.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Rien d'inventé.** Un champ dont la valeur n'a été ni sondée ni confirmée reste marqué `À DÉTERMINER` dans le fichier plutôt que rempli au jugé.
-- **Orthographe exacte.** Les noms de statuts, types et champs sont recopiés tels que l'outil les renvoie, casse comprise. Une transition échoue sur une majuscule.
-- **Lecture seule.** L'init ne crée, ne modifie et ne ferme aucun work item.
-- **Zéro duplication.** Toute règle déjà écrite dans un `README.md`, un `CONTRIBUTING.md` ou une doc du projet est référencée par son chemin, pas recopiée. Celles d'un `CLAUDE.md` ou d'un `AGENTS.md` se déplacent dans `WORKFLOW.md`, après accord.
-- **Versionné et rejouable.** Rien de ce qui décrit le projet ne s'écrit hors d'un dépôt. Aucune donnée propre à un poste dans les fichiers : ni chemin absolu, ni compte personnel, ni état local (stash, branche en cours).
-- **Seulement l'établi.** Les fichiers décrivent ce qui est établi. Un point encore à trancher se signale dans la conversation ou devient un ticket — jamais une liste de points ouverts dans un fichier versionné.
-- **Écarts signalés, jamais absorbés.** Une divergence entre doc et outil se signale et se fait trancher par l'utilisateur.
-- **Concision.** Le `CLAUDE.md` et ce qu'il importe sont chargés à chaque session : va à l'essentiel, pas de prose explicative.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **Nothing invented.** A field whose value has been neither probed nor confirmed stays marked `TO BE DETERMINED` in the file rather than filled in by guesswork.
+- **Exact spelling.** Status, type and field names are copied as the tool returns them, case included. A transition fails on a capital letter.
+- **Read-only.** The init creates, modifies and closes no work item.
+- **Zero duplication.** Any rule already written in a `README.md`, a `CONTRIBUTING.md` or a project doc is referenced by its path, not copied. Those in a `CLAUDE.md` or an `AGENTS.md` are moved into `WORKFLOW.md`, after approval.
+- **Versioned and replayable.** Nothing that describes the project is written outside a repository. No machine-specific data in the files: no absolute path, no personal account, no local state (stash, current branch).
+- **Only what is established.** The files describe what is established. A point still to be decided is raised in the conversation or becomes a ticket — never a list of open points in a versioned file.
+- **Gaps reported, never absorbed.** A divergence between documentation and tool is reported and decided by the user.
+- **Conciseness.** The `CLAUDE.md` and what it imports are loaded in every session: get to the point, no explanatory prose.

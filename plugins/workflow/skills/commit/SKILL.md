@@ -1,57 +1,57 @@
 ---
 name: commit
-description: Commite puis pousse le travail en cours, dépôt par dépôt — limité à ce que la conversation a produit, un commit par sujet, messages selon la convention du projet — sans redemander d'accord, et ne s'arrête que sur un doute réel : fichier d'origine incertaine, secret dans le diff, branche contraire à la convention, hook ou push en échec. À invoquer sur la commande /workflow:commit.
+description: "Commits then pushes the current work, repository by repository — limited to what the conversation produced, one commit per subject, messages following the project's convention — without asking for approval again, and stops only on a real doubt: file of uncertain origin, secret in the diff, branch contrary to the convention, failing hook or push. Invoke on the /workflow:commit command."
 disable-model-invocation: true
 ---
 
 # commit
 
-Commite et pousse le travail en cours.
+Commit and push the current work.
 
-**La commande vaut ordre.** Elle est l'accord explicite de commiter et de pousser : tu n'en redemandes pas. Tu ne t'arrêtes que sur l'un des doutes de la section 3.
+**The command is an order.** It is the explicit approval to commit and to push: you do not ask for it again. You stop only on one of the doubts in section 3.
 
-## 1. Se situer
+## 1. Get your bearings
 
-Prends dans `WORKFLOW.md` le format des messages de commit, leur langue, le modèle de branches et la stratégie de mise à jour d'une branche ; dans le `CLAUDE.md`, les règles d'usage de git et les lignes d'attribution à ajouter. Les deux sont normalement déjà dans ton contexte. **Sans `WORKFLOW.md`, ne commite rien** — propose `workflow:setup`.
+Take from `WORKFLOW.md` the format of commit messages, their language, the branching model and the strategy for updating a branch; from the `CLAUDE.md`, the rules for using git and the attribution lines to add. Both are normally already in your context. **Without `WORKFLOW.md`, commit nothing** — suggest `workflow:setup`.
 
-Identifie **les dépôts que le travail en cours a touchés**. Sur un projet qui regroupe plusieurs dépôts, ce n'est pas seulement le répertoire courant. Lis le `CLAUDE.md` de chacun : il peut porter des règles propres, comme un travail direct sur la branche principale.
+Identify **the repositories the current work has touched**. On a project that groups several repositories, it is not only the current directory. Read the `CLAUDE.md` of each one: it may carry its own rules, such as working directly on the main branch.
 
-## 2. Délimiter
+## 2. Scope
 
-Pour chaque dépôt, regarde l'état complet de l'arbre de travail et de l'index, puis le diff de chaque fichier modifié ou nouveau.
+For each repository, look at the complete state of the working tree and of the index, then at the diff of each modified or new file.
 
-- **Ne commite que ce que le travail en cours a produit.** Un fichier que la conversation n'a pas touché reste hors du commit, et le compte rendu le signale. Regarde aussi l'index : une modification indexée avant toi entre dans le commit malgré un ajout ciblé — retire-la de l'index sans la perdre.
-- **Un commit par sujet.** Quand le travail mêle plusieurs sujets ou plusieurs tickets, fais plusieurs commits, chacun avec ses fichiers.
-- **Le message suit exactement le format de `WORKFLOW.md`**, dans sa langue, avec la référence de ticket qu'il exige. Règle-toi aussi sur les derniers commits du dépôt : portée, ton, longueur. Le sujet dit ce que fait le commit ; le corps, quand il sert, dit pourquoi. Ajoute les lignes d'attribution prévues.
+- **Commit only what the current work produced.** A file the conversation did not touch stays out of the commit, and the report points it out. Look at the index too: a change staged before you enters the commit despite a targeted add — unstage it without losing it.
+- **One commit per subject.** When the work mixes several subjects or several tickets, make several commits, each with its own files.
+- **The message follows the format of `WORKFLOW.md` exactly**, in its language, with the ticket reference it requires. Also take your cue from the repository's latest commits: scope, tone, length. The subject says what the commit does; the body, when useful, says why. Add the expected attribution lines.
 
-## 3. S'arrêter sur un doute
+## 3. Stop on a doubt
 
-Dans les cas suivants, ne commite rien dans le dépôt concerné : expose le cas et attends la réponse. Les autres dépôts se traitent normalement.
+In the following cases, commit nothing in the repository concerned: lay out the case and wait for the answer. The other repositories are handled normally.
 
-- **Un fichier relève peut-être du travail en cours, peut-être pas.** Mieux vaut une question qu'un commit qui embarque le travail de quelqu'un d'autre.
-- **Le diff contient ce qui ressemble à un secret** : clé, mot de passe, jeton, chaîne de connexion, fichier d'environnement.
-- **La branche courante contredit la convention** : un commit sur la branche d'intégration ou de production d'un dépôt qui travaille par branches de fonctionnalité. Un dépôt dont la documentation dit qu'il travaille directement sur sa branche principale n'est pas un écart. Quand l'historique montre cette pratique sans que la documentation la dise, demande, et propose de l'écrire dans le `CLAUDE.md` du dépôt pour que la question ne revienne pas.
-- **Un hook échoue.** Corrige si la cause relève du travail en cours, sinon rends compte. Jamais `--no-verify`.
-- **Le push est refusé**, ou la mise à jour de la branche produit un conflit.
+- **A file may or may not belong to the current work.** Better a question than a commit that carries off someone else's work.
+- **The diff contains what looks like a secret**: key, password, token, connection string, environment file.
+- **The current branch contradicts the convention**: a commit on the integration or production branch of a repository that works with feature branches. A repository whose documentation says it works directly on its main branch is not a deviation. When the history shows this practice without the documentation saying so, ask, and suggest writing it in the repository's `CLAUDE.md` so that the question does not come up again.
+- **A hook fails.** Fix it if the cause lies in the current work, otherwise report. Never `--no-verify`.
+- **The push is rejected**, or updating the branch produces a conflict.
 
-## 4. Commiter et pousser
+## 4. Commit and push
 
-Commite, puis pousse la branche courante vers son dépôt distant, avec suivi si c'est son premier push.
+Commit, then push the current branch to its remote, with tracking if it is its first push.
 
-**Si le distant a avancé**, mets la branche à jour selon la stratégie de `WORKFLOW.md` — rebase si rien n'est précisé — puis pousse. Seuls tes commits encore locaux sont rejoués ; rien de ce qui est déjà poussé n'est réécrit.
+**If the remote has moved ahead**, update the branch according to the strategy in `WORKFLOW.md` — rebase if nothing is specified — then push. Only your still-local commits are replayed; nothing already pushed is rewritten.
 
-**Vérifie** ensuite que la branche locale est alignée sur le distant. Un push qui semble réussi ne prouve pas que les commits y sont.
+**Then verify** that the local branch is aligned with the remote. A push that seems successful does not prove the commits are there.
 
-## 5. Rendre compte
+## 5. Report
 
-Par dépôt : la branche, chaque commit (hash court et message), le distant vers lequel il est poussé, et les fichiers laissés hors commit avec leur raison.
+Per repository: the branch, each commit (short hash and message), the remote it is pushed to, and the files left out of the commit with their reason.
 
-Si la branche suit le cycle d'une pull request, signale `/workflow:to-pr`. Ne touche ni au tracker ni à la pull request.
+If the branch follows a pull request's cycle, point to `/workflow:to-pr`. Touch neither the tracker nor the pull request.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Pas de confirmation de routine.** La commande est l'accord ; seuls les doutes de la section 3 justifient une question.
-- **Rien hors du travail en cours.** Ce que tu n'as pas produit ne part pas avec ton commit.
-- **Aucune réécriture d'historique partagé** : pas de force push, pas d'amend d'un commit déjà poussé.
-- **Ni tracker ni pull request.** Les statuts relèvent de `workflow:implement`, la pull request de `workflow:to-pr`.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **No routine confirmation.** The command is the approval; only the doubts in section 3 justify a question.
+- **Nothing outside the current work.** What you did not produce does not go out with your commit.
+- **No rewriting of shared history**: no force push, no amend of an already pushed commit.
+- **Neither tracker nor pull request.** Statuses belong to `workflow:implement`, the pull request to `workflow:to-pr`.

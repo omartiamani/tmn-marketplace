@@ -1,11 +1,11 @@
-# Tâches d'infrastructure
+# Infrastructure tasks
 
-L'infrastructure as code ne se prête pas au cycle rouge-vert : il n'y a pas de test unitaire à faire échouer avant de déclarer une ressource. La boucle de vérification est différente, mais elle est tout aussi contraignante.
+Infrastructure as code does not lend itself to the red-green cycle: there is no unit test to make fail before declaring a resource. The verification loop is different, but it is just as demanding.
 
-1. **Écris la déclaration**, puis lance la validation et le **plan**. Lis-le en entier : ce qui est créé, modifié, et surtout **détruit**. Un plan qui contient une destruction non prévue au ticket s'arrête là et se signale.
-2. **Fais valider le plan** avant tout déploiement. Un déploiement d'infrastructure n'est pas une opération réversible d'un coup d'annulation.
-3. **Déploie sur l'environnement de développement uniquement**, sauf instruction explicite portant sur un autre environnement. Vérifie sur quel abonnement et quel environnement tu pointes avant d'appliquer.
-4. **Après déploiement, vérifie que la ressource existe réellement** et qu'elle est configurée comme attendu — interroge le fournisseur, pas le fichier d'état : c'est le monde réel qui fait foi, pas la déclaration.
-5. **Vérifie ce qui consomme la ressource** quand il y en a : une connexion établie, un secret lisible, un droit effectif.
+1. **Write the declaration**, then run the validation and the **plan**. Read it in full: what is created, modified, and above all **destroyed**. A plan that contains a destruction not provided for in the ticket stops there and is reported.
+2. **Have the plan approved** before any deployment. An infrastructure deployment is not an operation you can reverse with a simple undo.
+3. **Deploy to the development environment only**, unless explicitly instructed about another environment. Check which subscription and which environment you are pointing at before applying.
+4. **After deployment, verify that the resource actually exists** and that it is configured as expected — query the provider, not the state file: the real world is authoritative, not the declaration.
+5. **Verify what consumes the resource** when there is something: an established connection, a readable secret, an effective permission.
 
-Rends compte du plan appliqué et de ce que la vérification a constaté, ressource par ressource.
+Report the plan applied and what the verification found, resource by resource.

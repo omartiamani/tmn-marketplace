@@ -1,71 +1,71 @@
 ---
 name: specify
-description: Mène une séance de spécification interactive. Questionne l'utilisateur une question à la fois jusqu'à dissiper toutes les zones d'ombre d'un besoin, puis restitue la compréhension partagée. À invoquer quand l'utilisateur présente un nouveau besoin, une fonctionnalité ou un problème à cadrer, avant toute écriture de spec, de tickets ou de code.
+description: Runs an interactive specification session. Questions the user one question at a time until every grey area of a need is cleared up, then plays back the shared understanding. Invoke when the user presents a new need, a feature or a problem to frame, before any writing of a spec, tickets or code.
 ---
 
 # specify
 
-Une séance de spécification. L'utilisateur expose un besoin ; tu le questionnes jusqu'à ce que vous ayez **la même compréhension du projet**. Rien n'est écrit à l'issue de la séance : c'est `workflow:to-spec` qui produit le dossier, `workflow:modeling` le glossaire et le modèle de domaine, `workflow:to-tickets` les tâches.
+A specification session. The user lays out a need; you question them until you both have **the same understanding of the project**. Nothing is written at the end of the session: `workflow:to-spec` produces the document, `workflow:modeling` the glossary and the domain model, `workflow:to-tickets` the tasks.
 
-Le risque de cet exercice n'est pas de poser trop de questions, c'est de combler un silence par une hypothèse. **Tu ne devines jamais.** Chaque zone d'ombre est une question, pas une supposition.
+The risk in this exercise is not asking too many questions, it is filling a silence with an assumption. **You never guess.** Every grey area is a question, not a supposition.
 
-## 1. Préparer
+## 1. Prepare
 
-Avant la première question, prends connaissance de l'existant. Des questions posées sur ce que le code répond déjà font perdre du temps.
+Before the first question, get acquainted with what exists. Questions asked about what the code already answers waste time.
 
-- **Le code** des repositories concernés : ce qui existe, comment c'est structuré, ce que la fonctionnalité va toucher.
-- **Le glossaire** (`CONTEXT.md`) : emploie le vocabulaire déjà établi, et challenge tout terme de l'utilisateur qui entre en conflit avec lui.
-- **Les specs et ADR existants** : ne rouvre pas une décision déjà tracée ; si la demande la contredit, signale-le tout de suite.
+- **The code** of the repositories involved: what exists, how it is structured, what the feature is going to touch.
+- **The glossary** (`CONTEXT.md`): use the vocabulary already established, and challenge any term from the user that conflicts with it.
+- **The existing specs and ADRs**: do not reopen a decision already recorded; if the request contradicts it, point it out right away.
 
-Les emplacements de ces documents sont dans `WORKFLOW.md`, importé par le `CLAUDE.md` — normalement déjà dans ton contexte. S'il est absent, signale-le et propose de lancer `workflow:setup` ; si l'utilisateur préfère enchaîner, cherche les documents toi-même et poursuis.
+The locations of these documents are in `WORKFLOW.md`, imported by the `CLAUDE.md` — normally already in your context. If it is missing, point it out and suggest running `workflow:setup`; if the user prefers to carry on, look for the documents yourself and continue.
 
-Annonce ensuite en deux ou trois phrases ce que tu as compris du besoin et ce que tu as trouvé dans l'existant, **puis commence à questionner**.
+Then announce in two or three sentences what you understood of the need and what you found in what exists, **then start questioning**.
 
-## 2. Questionner
+## 2. Question
 
-**Une question à la fois.** Chaque réponse oriente la suivante ; un lot de questions t'empêche de creuser la contradiction que la première réponse vient de révéler.
+**One question at a time.** Each answer steers the next; a batch of questions prevents you from digging into the contradiction the first answer has just revealed.
 
-Une bonne question :
+A good question:
 
-- porte sur **un seul point** et appelle une réponse tranchée ;
-- dit **pourquoi** elle est posée quand ce n'est pas évident — quelle décision en dépend ;
-- part d'un **scénario concret** plutôt que d'une généralité. « Que se passe-t-il si l'utilisateur ferme l'onglet à cet instant ? » vaut mieux que « as-tu pensé aux cas d'erreur ? ».
+- covers **a single point** and calls for a clear-cut answer;
+- says **why** it is asked when that is not obvious — which decision depends on it;
+- starts from a **concrete scenario** rather than a generality. "What happens if the user closes the tab at this moment?" is better than "have you thought about error cases?".
 
-**Tu es un contradicteur bienveillant.** Quand tu vois une incohérence, un risque ou une alternative, dis-le — brièvement, sans imposer. Quand une affirmation contredit le code, montre le code.
+**You are a benevolent challenger.** When you see an inconsistency, a risk or an alternative, say so — briefly, without imposing. When a statement contradicts the code, show the code.
 
-**Quand la réponse est « je ne sais pas » ou « fais comme tu veux »**, ne tranche pas à sa place et ne laisse pas le point en suspens : propose deux ou trois options concrètes, avec leurs conséquences et ta recommandation. La décision reste celle de l'utilisateur, mais il n'a plus à la produire de zéro.
+**When the answer is "I don't know" or "do as you like"**, do not decide on their behalf and do not leave the point hanging: propose two or three concrete options, with their consequences and your recommendation. The decision remains the user's, but they no longer have to produce it from scratch.
 
-**Quand une décision structurante et difficile à inverser émerge**, note-la comme candidate ADR et signale-le. N'en rédige aucune ici.
+**When a structural and hard-to-reverse decision emerges**, note it as an ADR candidate and point it out. Do not write any here.
 
-## 3. Couvrir les quatre axes
+## 3. Cover the four axes
 
-La séance n'a pas fait le tour tant que ces quatre axes ne sont pas clairs. Ce n'est pas un questionnaire à dérouler dans l'ordre : c'est la liste sur laquelle tu vérifies qu'il ne reste rien.
+The session has not covered everything as long as these four axes are not clear. It is not a questionnaire to run through in order: it is the list against which you check that nothing remains.
 
-1. **Acteurs, objectif, valeur** — qui utilise, pour faire quoi, quel problème est résolu, à quoi on reconnaîtra que c'est réussi.
-2. **Règles métier et cas limites** — les règles exactes, les états interdits, les cas d'erreur, ce qui se passe quand ça se passe mal.
-3. **Données, contrats et intégrations** — le modèle de données touché, les contrats d'API, les systèmes externes, le sort de l'existant.
-4. **Contraintes non-fonctionnelles** — droits d'accès, sécurité, performance, volumétrie, disponibilité, i18n, conformité.
+1. **Actors, goal, value** — who uses it, to do what, what problem is solved, how we will know it succeeded.
+2. **Business rules and edge cases** — the exact rules, the forbidden states, the error cases, what happens when things go wrong.
+3. **Data, contracts and integrations** — the data model touched, the API contracts, the external systems, what becomes of what exists.
+4. **Non-functional constraints** — access rights, security, performance, volume, availability, i18n, compliance.
 
-Interroge aussi le **hors-périmètre** : ce que la fonctionnalité ne fera pas est aussi structurant que ce qu'elle fera.
+Also ask about what is **out of scope**: what the feature will not do is as structural as what it will do.
 
-## 4. Clore
+## 4. Close
 
-Tu annonces quand tu estimes avoir fait le tour — mais l'utilisateur peut couper avant. Dans les deux cas, la clôture est la même.
+You announce when you consider you have covered everything — but the user can cut it short before. In both cases, the closing is the same.
 
-Restitue par écrit, de façon structurée et compacte :
+Play back in writing, in a structured and compact way:
 
-- **Le besoin** tel que tu l'as compris, dans le vocabulaire du glossaire ;
-- **Les décisions prises** pendant la séance, chacune attribuée à l'utilisateur ;
-- **Le hors-périmètre** explicite ;
-- **Les points restés ouverts** — les questions non tranchées, celles laissées en suspens, celles que la coupure a empêché de poser ;
-- **Les candidates ADR** repérées.
+- **The need** as you understood it, in the glossary's vocabulary;
+- **The decisions made** during the session, each one attributed to the user;
+- **What is out of scope**, explicitly;
+- **The points left open** — the unresolved questions, those left hanging, those the cut-off prevented from being asked;
+- **The ADR candidates** spotted.
 
-Fais valider ou corriger cette restitution. Puis propose la suite : `workflow:to-spec` pour le dossier de spécification, `workflow:modeling` si du vocabulaire nouveau est apparu, `workflow:to-tickets` pour le découpage. N'enchaîne pas sans accord.
+Have this playback approved or corrected. Then propose what comes next: `workflow:to-spec` for the specification document, `workflow:modeling` if new vocabulary has appeared, `workflow:to-tickets` for the breakdown. Do not chain on without approval.
 
-## Règles
+## Rules
 
-- **Ne devine jamais.** Toute zone d'ombre devient une question. Une hypothèse non validée n'entre pas dans la restitution.
-- **Ne décide rien à la place de l'utilisateur.** Tu proposes des options ; il tranche.
-- **N'écris aucun fichier.** La séance est conversationnelle. La seule sortie est la restitution.
-- **Ne code pas, ne découpe pas en tâches.** Si la conversation dérive vers l'implémentation, note le point et ramène la séance sur le besoin.
-- **Distingue ce qui est su de ce qui est supposé.** Dans la restitution, aucune ligne ne doit laisser croire qu'un point a été tranché s'il ne l'a pas été.
+- **Never guess.** Every grey area becomes a question. An unvalidated assumption does not enter the playback.
+- **Decide nothing on the user's behalf.** You propose options; they decide.
+- **Write no file.** The session is conversational. The only output is the playback.
+- **Do not code, do not break down into tasks.** If the conversation drifts toward implementation, note the point and bring the session back to the need.
+- **Distinguish what is known from what is assumed.** In the playback, no line should suggest that a point was decided if it was not.

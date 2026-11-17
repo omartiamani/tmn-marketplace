@@ -1,73 +1,73 @@
 ---
 name: autopilot
-description: "Variante autonome de workflow:implement — implémente une tâche et toutes ses tâches enfants d'une traite, sans aucune question ni validation : chaque lot confié à l'agent implementer (plan, TDD, vérification dans l'application, commits), puis push, pull request mise à jour, contrôlée par workflow:check-pr et passée en revue. Ne jamais déclencher de soi-même : uniquement sur la commande /workflow:autopilot ou sur une demande explicite de travailler en autonomie."
+description: "Autonomous variant of workflow:implement — implements a task and all its child tasks in one go, without any question or approval: each batch handed to the implementer agent (plan, TDD, verification in the application, commits), then push, pull request updated, checked by workflow:check-pr and marked ready for review. Never trigger on your own: only on the /workflow:autopilot command or on an explicit request to work autonomously."
 disable-model-invocation: true
 ---
 
 # autopilot
 
-La variante autonome de `workflow:implement`. Elle va d'une traite du ticket à la pull request : l'utilisateur ne juge le travail qu'en relisant la pull request.
+The autonomous variant of `workflow:implement`. It goes in one go from the ticket to the pull request: the user judges the work only by reviewing the pull request.
 
-**Tu orchestres, les tâches s'implémentent ailleurs.** Chaque lot de tâches va à l'agent [`workflow:implementer`](../../agents/implementer.md), qui applique `workflow:implement` en autonomie jusqu'aux commits. Toi, tu tiens la pull request selon [workflow:to-pr](../to-pr/SKILL.md) et tu la contrôles avec [workflow:check-pr](../check-pr/SKILL.md), avec les seules différences décrites ici. Partout où l'un d'eux attend un accord ou pose une question, c'est la règle de ce skill qui s'applique, et tu continues. Ton contexte doit tenir toute une fonctionnalité : il ne garde que l'arborescence, les comptes rendus des lots et la pull request, jamais le code.
+**You orchestrate; the tasks are implemented elsewhere.** Each batch of tasks goes to the [`workflow:implementer`](../../agents/implementer.md) agent, which applies `workflow:implement` autonomously up to the commits. You maintain the pull request following [workflow:to-pr](../to-pr/SKILL.md) and check it with [workflow:check-pr](../check-pr/SKILL.md), with only the differences described here. Wherever one of them expects approval or asks a question, this skill's rule applies, and you carry on. Your context must hold an entire feature: it keeps only the tree, the batch reports and the pull request, never the code.
 
-L'autonomie porte sur les validations, pas sur la rigueur : ce sont les allers-retours qui sautent.
+Autonomy applies to approvals, not to rigor: it is the back-and-forth that goes away.
 
-## Le déroulé
+## The run
 
-1. **Le périmètre** : l'arborescence complète sous l'identifiant fourni, l'ordre de ses dépendances bloquantes, les dépôts concernés, la branche de travail — et son découpage en lots.
-2. **Chaque lot, confié à l'agent `workflow:implementer`**, dans l'ordre des dépendances. À son retour : le jugement de son compte rendu, puis le push de la branche, la mise à jour de la pull request selon `workflow:to-pr` pour chaque tâche terminée, et leur statut suivant. Un lot est terminé et vérifié avant que le suivant commence.
-3. **Une fois le périmètre terminé** : `workflow:check-pr` sur chaque pull request, les corrections qu'il appelle, puis le passage en revue de celles qui sont prêtes.
-4. **Le compte rendu final.**
+1. **The scope**: the complete tree under the given identifier, the order of its blocking dependencies, the repositories involved, the working branch — and its split into batches.
+2. **Each batch, handed to the `workflow:implementer` agent**, in dependency order. When it returns: judging its report, then pushing the branch, updating the pull request following `workflow:to-pr` for each finished task, and their next status. A batch is finished and verified before the next one starts.
+3. **Once the scope is finished**: `workflow:check-pr` on each pull request, the fixes it calls for, then marking those that are ready as ready for review.
+4. **The final report.**
 
-## Les lots
+## The batches
 
-**Découpe d'abord le périmètre en lots.** Un lot regroupe les tâches qui se font mieux d'une traite qu'en se passant le relais : dépendantes les unes des autres, elles touchent le même code, et sont assez petites pour tenir ensemble dans un seul contexte. Séparées, la seconde devrait redécouvrir ce que la première vient d'écrire. Une tâche qui ne partage rien avec les autres forme un lot à elle seule, comme celle qui occuperait seule un contexte. Décide sur les tickets — dépendances, pistes techniques, modules nommés — sans lire le code toi-même, et montre le découpage avant de lancer le premier lot.
+**First split the scope into batches.** A batch groups the tasks that are better done in one go than by handing off to each other: dependent on one another, they touch the same code, and are small enough to fit together in a single context. Separated, the second would have to rediscover what the first has just written. A task that shares nothing with the others forms a batch on its own, as does one that would fill a context by itself. Decide from the tickets — dependencies, technical hints, named modules — without reading the code yourself, and show the split before launching the first batch.
 
-Les lots se succèdent, jamais en parallèle, même indépendants : ils partageraient la branche, l'arbre de travail, les serveurs et le simulateur de vérification.
+Batches follow one another, never in parallel, even when independent: they would share the branch, the working tree, the servers and the verification simulator.
 
-Donne à l'agent ce que sa définition attend : les identifiants des tâches du lot dans l'ordre, les dépôts et la branche de travail, et des lots précédents seulement ce qui l'engage. Il te rend un compte rendu tâche par tâche : montre au fil de l'eau les plans et les verdicts qu'il rapporte.
+Give the agent what its definition expects: the identifiers of the tasks in the batch in order, the repositories and the working branch, and from previous batches only what binds it. It returns a report task by task: show the plans and verdicts it reports as you go.
 
-**Juge chaque compte rendu avant de toucher à la pull request**, sans relire le code :
+**Judge each report before touching the pull request**, without rereading the code:
 
-- chaque critère d'acceptance du ticket — relu dans le ticket, pas dans le compte rendu — y figure, avec ce qui le prouve ;
-- les commits annoncés existent sur la branche ;
-- une tâche dite terminée n'a ni test, lint ou build rouge, ni vérification sautée sans raison.
+- each acceptance criterion of the ticket — read again in the ticket, not in the report — appears in it, with what proves it;
+- the announced commits exist on the branch;
+- a task reported as finished has no red test, lint or build, and no verification skipped without a reason.
 
-Un écart renvoie la tâche à l'agent, avec l'écart à combler. Elle n'entre dans la pull request qu'une fois cohérente ; si l'écart persiste, il va dans les notes au relecteur et la tâche reste hors de la pull request.
+A gap sends the task back to the agent, with the gap to close. It enters the pull request only once consistent; if the gap persists, it goes into the reviewer notes and the task stays out of the pull request.
 
-## Ce qui change
+## What changes
 
-**Ce qui s'est décidé sans l'utilisateur se montre là où il relit.** Pour une décision que `workflow:to-pr` lui laisserait, retiens l'hypothèse la plus raisonnable. Les décisions, les écarts avec les tickets et les vérifications sautées — les tiens comme ceux que rapporte l'agent — vont à deux endroits : dans les notes au relecteur de la pull request, et dans le compte rendu final.
+**What was decided without the user is shown where they review.** For a decision that `workflow:to-pr` would leave to them, choose the most reasonable assumption. The decisions, the gaps with the tickets and the skipped verifications — yours as well as those the agent reports — go to two places: in the pull request's reviewer notes, and in the final report.
 
-**Git.** Pousse la branche de travail au retour de chaque lot, sans demander. Un dépôt qui travaille directement sur sa branche principale reçoit ses commits sans push : signale-les.
+**Git.** Push the working branch when each batch returns, without asking. A repository that works directly on its main branch receives its commits without a push: point them out.
 
-**La pull request.** Ouvre-la ou mets-la à jour selon `workflow:to-pr` au retour de chaque lot. **Marque-la prête pour la revue sans demander** dès que `workflow:to-pr` le permet — tous les enfants de son parent y sont — et que `check-pr` ne laisse aucun problème non corrigé. Sinon, elle reste en brouillon, et le compte rendu dit ce qui manque.
+**The pull request.** Open it or update it following `workflow:to-pr` when each batch returns. **Mark it ready for review without asking** as soon as `workflow:to-pr` allows it — all the children of its parent are in it — and `check-pr` leaves no unfixed problem. Otherwise, it stays a draft, and the report says what is missing.
 
-**Le contrôle.** Une fois le périmètre terminé, lance `workflow:check-pr`, même si la pull request n'a pas encore tous les enfants de son parent : c'est le regard neuf qui passe avant celui de l'utilisateur. Applique ses corrections sans accord :
+**The check.** Once the scope is finished, run `workflow:check-pr`, even if the pull request does not yet have all the children of its parent: it is the fresh eye that comes before the user's. Apply its fixes without approval:
 
-- le code, par l'agent `workflow:implementer`, les problèmes à corriger tenant lieu de tickets, puis push ;
-- la description, en recomposant le corps selon `workflow:to-pr`.
+- the code, through the `workflow:implementer` agent, the problems to fix standing in for tickets, then push;
+- the description, by recomposing the body following `workflow:to-pr`.
 
-Un ticket qui s'écarte du code ne se corrige pas : l'écart va dans les notes au relecteur. Après chaque correction, rejoue les contrôles touchés. Un problème qui survit à sa correction ne se reprend pas en boucle : il va dans les notes au relecteur. La complétude ne compte qu'au passage en revue : un enfant hors périmètre qui manque à la pull request n'est pas un problème à corriger.
+A ticket that diverges from the code is not fixed: the gap goes into the reviewer notes. After each fix, rerun the affected checks. A problem that survives its fix is not retried in a loop: it goes into the reviewer notes. Completeness only matters when marking ready for review: an out-of-scope child missing from the pull request is not a problem to fix.
 
-**Statuts.** Passe chaque tâche terminée au statut suivant, comme `workflow:implement` — souvent par la seule référence que `workflow:to-pr` ajoute. **Ne pousse aucune transition finale** : la clôture appartient à la revue humaine.
+**Statuses.** Move each finished task to the next status, as `workflow:implement` does — often simply through the reference that `workflow:to-pr` adds. **Do not push any final transition**: closing belongs to the human review.
 
-## Quand s'arrêter quand même
+## When to stop anyway
 
-L'autonomie ne va pas jusqu'à livrer du rouge. Arrête-toi et rends compte si :
+Autonomy does not go as far as delivering red. Stop and report if:
 
-- l'agent `workflow:implementer` ne peut pas se lancer — une session ouverte avant l'installation du plugin ne le voit pas ;
-- un lot revient arrêté ;
-- un contrôle préalable de `workflow:to-pr` échoue et ne se règle pas dans les limites ci-dessous — une branche déjà poussée qu'il faudrait rebaser, par exemple ;
-- un principe du workflow et une règle du projet ne peuvent pas tenir ensemble ;
-- une limite absolue est atteinte.
+- the `workflow:implementer` agent cannot be launched — a session opened before the plugin was installed does not see it;
+- a batch comes back stopped;
+- a preliminary check of `workflow:to-pr` fails and cannot be resolved within the limits below — an already pushed branch that would need rebasing, for example;
+- a principle of the workflow and a project rule cannot both hold;
+- a hard limit is reached.
 
-Ce qui est déjà terminé et vert reste commité, poussé et dans la pull request ; rien de rouge ne se pousse. Un arrêt honnête à mi-parcours vaut mieux qu'un compte rendu qui déclare terminé ce qui ne l'est pas.
+What is already finished and green stays committed, pushed and in the pull request; nothing red gets pushed. An honest stop halfway is better than a report that declares finished what is not.
 
-## Limites absolues
+## Hard limits
 
-Les [limites absolues de l'agent](../../agents/implementer.md#limites-absolues) valent pour toi aussi, et aucune autonomie ne les lève. Pour toi, celle sur les work items laisse aussi passer le statut suivant, jamais la transition finale. S'y ajoute : **ni fusion, ni push sur la branche d'intégration.**
+The [agent's hard limits](../../agents/implementer.md#hard-limits) apply to you too, and no autonomy lifts them. For you, the one on work items also lets the next status through, never the final transition. Added to them: **no merge, and no push to the integration branch.**
 
-## Compte rendu final
+## Final report
 
-En une seule fois, à la fin : le lien de chaque pull request, prête pour la revue ou en brouillon et pourquoi, les tâches traitées et leur état, ce que `check-pr` a remonté et ce qui en a été corrigé, les décisions prises en autonomie, les fichiers de documentation modifiés, les vérifications sautées et pourquoi, les données laissées en place, le débordement rencontré, et les commits non poussés.
+All at once, at the end: the link to each pull request, ready for review or draft and why, the tasks handled and their state, what `check-pr` raised and what was fixed, the decisions made autonomously, the documentation files modified, the verifications skipped and why, the data left in place, the scope overflow encountered, and the unpushed commits.

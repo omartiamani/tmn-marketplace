@@ -1,48 +1,48 @@
 ---
 name: capture
-description: Note au backlog, sans interrompre le travail en cours, l'idée, la fonctionnalité ou le bug dont il vient d'être question — titre, type et parent déduits de la conversation, sans aucune question —, puis vérifie le ticket créé. À invoquer sur la commande /workflow:capture, ou quand l'utilisateur demande de noter quelque chose au backlog pour plus tard.
+description: Adds to the backlog, without interrupting the current work, the idea, feature or bug that was just discussed — title, type and parent inferred from the conversation, without any question — then verifies the created ticket. Invoke on the /workflow:capture command, or when the user asks to note something in the backlog for later.
 ---
 
 # capture
 
-Note une idée au backlog avant qu'elle se perde, sans détourner le travail en cours. La spécification viendra plus tard, avec `workflow:specify` puis `workflow:to-tickets`.
+Note an idea in the backlog before it gets lost, without derailing the current work. The specification will come later, with `workflow:specify` then `workflow:to-tickets`.
 
-**La capture est rapide et muette.** Elle tombe au milieu d'autre chose : ni question, ni validation, ni proposition. Tu décides seul de tout ce qui manque, tu crées, tu vérifies, tu rends compte en une ligne, puis tu reprends là où tu en étais.
+**Capture is quick and silent.** It lands in the middle of something else: no question, no approval, no proposal. You decide alone everything that is missing, you create, you verify, you report in one line, then you pick up where you left off.
 
-## 1. Se situer
+## 1. Get your bearings
 
-Prends dans `WORKFLOW.md` l'outil, les types, le statut initial, le dépôt de destination de chaque type, les champs obligatoires et la langue ; dans la section « Workflow tooling » du `CLAUDE.md`, les identifiants et les commandes de création. **Sans `WORKFLOW.md`, ne crée rien** — dis-le, propose `workflow:setup`, et reprends le travail en cours.
+Take from `WORKFLOW.md` the tool, the types, the initial status, the target repository of each type, the required fields and the language; from the "Workflow tooling" section of the `CLAUDE.md`, the identifiers and the creation commands. **Without `WORKFLOW.md`, create nothing** — say so, suggest `workflow:setup`, and resume the current work.
 
-## 2. Déduire
+## 2. Infer
 
-**Ce qu'il faut capturer se déduit de la conversation** : l'idée, le défaut ou le besoin dont il vient d'être question. Un texte passé avec la commande sert d'indication, pas de titre. Plusieurs éléments à noter donnent plusieurs tickets.
+**What to capture is inferred from the conversation**: the idea, the defect or the need that was just discussed. Text passed with the command serves as a hint, not as a title. Several things to note make several tickets.
 
-- **Titre** — court, dans le vocabulaire du glossaire et dans la langue déclarée dans `WORKFLOW.md`.
-- **Type** — un défaut constaté est un bug ; le reste prend le type des besoins à spécifier, selon la hiérarchie de `WORKFLOW.md`.
-- **Parent** — celui qui s'impose, comme le ticket de la fonctionnalité où le bug se produit. Au moindre doute, aucun : le rattachement se fera à la spécification.
-- **Description** — ce que la conversation a établi : ce qui a été constaté, où, et pourquoi c'est à faire. Rien de plus.
-- **Dépôt** — celui que `WORKFLOW.md` désigne pour ce type.
+- **Title** — short, in the glossary's vocabulary and in the language declared in `WORKFLOW.md`.
+- **Type** — an observed defect is a bug; everything else takes the type of needs to be specified, according to the hierarchy in `WORKFLOW.md`.
+- **Parent** — the one that is obvious, such as the ticket of the feature where the bug occurs. At the slightest doubt, none: it will be attached during specification.
+- **Description** — what the conversation established: what was observed, where, and why it needs doing. Nothing more.
+- **Repository** — the one `WORKFLOW.md` designates for this type.
 
-Quand un point hésite, prends la lecture la plus probable et continue : le compte rendu la montre, l'utilisateur corrigera s'il le faut.
+When a point is uncertain, take the most likely reading and carry on: the report shows it, and the user will correct it if needed.
 
-## 3. Écarter les doublons
+## 3. Rule out duplicates
 
-Cherche dans les tickets ouverts le même sujet. Un doublon évident ne se recrée pas : donne son lien à la place. Une simple ressemblance ne bloque rien : crée, et cite le ticket proche dans le compte rendu.
+Search the open tickets for the same subject. An obvious duplicate is not created again: give its link instead. A mere resemblance blocks nothing: create, and cite the similar ticket in the report.
 
-## 4. Créer et vérifier
+## 4. Create and verify
 
-Crée le ticket avec les commandes du `CLAUDE.md` : type, parent, champs obligatoires, ajout au board, statut initial — selon `WORKFLOW.md`.
+Create the ticket with the commands from the `CLAUDE.md`: type, parent, required fields, addition to the board, initial status — according to `WORKFLOW.md`.
 
-**Puis vérifie, avant de créer le suivant.** Relis le ticket tel que l'outil le restitue : son type, son parent, son statut, et sa présence sur le board, lue depuis le board lui-même. Un écart arrête la capture : rends compte de ce qui est créé et de l'écart.
+**Then verify, before creating the next one.** Read the ticket back as the tool returns it: its type, its parent, its status, and its presence on the board, read from the board itself. A gap stops the capture: report what was created and the gap.
 
-## 5. Rendre compte, puis reprendre
+## 5. Report, then resume
 
-Une ligne par ticket : son identifiant et son lien, son titre, son type, son parent ou son absence. Puis reprends le travail en cours, sans transition.
+One line per ticket: its identifier and link, its title, its type, its parent or the absence of one. Then resume the current work, without transition.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Aucune question.** Tout ce qui manque se déduit ; le compte rendu dit ce qui a été déduit.
-- **Rien d'inventé.** Le ticket ne porte que ce que la conversation a établi : ni critère, ni piste, ni règle.
-- **Statut initial seulement.** Un ticket capturé ne passe jamais en prêt, même s'il paraît clair.
-- **Relu, pas supposé.** Un ticket n'est créé qu'une fois relu dans l'outil.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **No questions.** Everything missing is inferred; the report says what was inferred.
+- **Nothing invented.** The ticket carries only what the conversation established: no criterion, no technical hint, no rule.
+- **Initial status only.** A captured ticket never moves to ready, even if it seems clear.
+- **Read back, not assumed.** A ticket is created only once read back in the tool.

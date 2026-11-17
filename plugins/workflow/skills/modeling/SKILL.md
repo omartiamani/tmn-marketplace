@@ -1,79 +1,79 @@
 ---
 name: modeling
-description: Maintient le modèle de domaine du projet — le glossaire CONTEXT.md et les ADR. À invoquer quand un terme métier nouveau ou flou apparaît, quand un mot est employé dans un sens qui contredit le glossaire, quand deux mots désignent visiblement la même chose, quand une décision structurante et difficile à inverser est prise, ou sur demande de glossaire ou d'ADR.
+description: Maintains the project's domain model — the CONTEXT.md glossary and the ADRs. Invoke when a new or fuzzy business term appears, when a word is used in a sense that contradicts the glossary, when two words clearly designate the same thing, when a structural and hard-to-reverse decision is made, or when a glossary or ADR is requested.
 ---
 
 # modeling
 
-Le projet a besoin d'un vocabulaire commun et d'une trace de ses décisions structurantes. Ce skill porte les deux : le glossaire `CONTEXT.md` et les ADR.
+The project needs a shared vocabulary and a record of its structural decisions. This skill carries both: the `CONTEXT.md` glossary and the ADRs.
 
-**Pourquoi c'est important.** Face à un terme ambigu, une IA ne bute pas : elle tranche silencieusement, souvent dans le sens générique plutôt que celui du métier — et le code produit compile, se lit bien, et modélise le mauvais concept. Un terme arrêté fixe ce sens une fois pour toutes : plus besoin de le redéfinir à chaque session, ni de saturer le contexte en re-explications. Il devient le nom réel de la chose dans le code, les tickets et les tests.
+**Why it matters.** Faced with an ambiguous term, an AI does not stumble: it decides silently, often in the generic sense rather than the business one — and the code produced compiles, reads well, and models the wrong concept. A settled term fixes that meaning once and for all: no more need to redefine it in every session, nor to saturate the context with re-explanations. It becomes the real name of the thing in the code, the tickets and the tests.
 
-`CONTEXT.md` est **un glossaire, rien d'autre**. Pas une spec, pas un bloc-notes, pas un dépôt de décisions d'implémentation. Dès qu'on y écrit comment quelque chose fonctionne, il cesse d'être consultable d'un coup d'œil et personne ne le lit plus.
+`CONTEXT.md` is **a glossary, nothing else**. Not a spec, not a notepad, not a store of implementation decisions. As soon as you write in it how something works, it stops being readable at a glance and no one reads it anymore.
 
-## Emplacement
+## Location
 
-`WORKFLOW.md` dit où vivent le glossaire et les ADR. S'il ne le dit pas, propose un `CONTEXT.md` unique dans le repository de documentation — le vocabulaire métier est transverse, un glossaire par repo laisse le même terme diverger d'un repo à l'autre — et propose d'inscrire l'emplacement dans `WORKFLOW.md`.
+`WORKFLOW.md` says where the glossary and the ADRs live. If it does not, suggest a single `CONTEXT.md` in the documentation repository — the business vocabulary is cross-cutting, and one glossary per repo lets the same term diverge from one repo to another — and suggest recording the location in `WORKFLOW.md`.
 
-Crée les fichiers paresseusement : le `CONTEXT.md` à la première définition arrêtée, le répertoire d'ADR au premier ADR.
+Create the files lazily: `CONTEXT.md` at the first settled definition, the ADR directory at the first ADR.
 
-## Pendant la discussion
+## During the discussion
 
-Trois situations te font intervenir sans qu'on te le demande.
+Three situations make you step in without being asked.
 
-**Un terme entre en conflit avec le glossaire.** Signale-le sur-le-champ : « le glossaire définit _Bail_ comme X, tu sembles désigner Y — lequel est-ce ? » Un désaccord de vocabulaire non tranché produit du code qui ment.
+**A term conflicts with the glossary.** Point it out on the spot: "the glossary defines _Lease_ as X, you seem to mean Y — which one is it?" An unresolved vocabulary disagreement produces code that lies.
 
-**Un terme métier est nouveau ou flou.** Quand un concept du domaine apparaît sans définition arrêtée, ou que deux mots désignent visiblement la même chose, propose un terme canonique et fais-le trancher. Éprouve la frontière avec un scénario concret plutôt qu'avec une définition abstraite : c'est le cas limite qui révèle si deux concepts n'en font qu'un.
+**A business term is new or fuzzy.** When a domain concept appears without a settled definition, or two words clearly designate the same thing, propose a canonical term and have it decided. Test the boundary with a concrete scenario rather than with an abstract definition: it is the edge case that reveals whether two concepts are really one.
 
-**Une décision structurante est prise.** Repère-la et propose un ADR — voir le seuil plus bas.
+**A structural decision is made.** Spot it and propose an ADR — see the threshold below.
 
-## Écrire le glossaire
+## Writing the glossary
 
-Le fichier contient **les termes du domaine, leurs définitions, et les relations entre eux** : un Bail porte des Lots, un Lot appartient à un Immeuble. Une définition tient en une ou deux phrases et dit ce que la chose **est**, pas ce qu'elle fait.
+The file contains **the domain terms, their definitions, and the relationships between them**: a Lease covers Units, a Unit belongs to a Building. A definition fits in one or two sentences and says what the thing **is**, not what it does.
 
-N'inscris que ce qui est **spécifique au domaine du projet**. Les notions techniques générales — cache, retry, DTO, idempotence — n'y ont pas leur place, même très employées. Avant d'ajouter un terme : est-ce un concept propre à ce métier, ou un concept d'informatique générale ?
+Record only what is **specific to the project's domain**. General technical notions — cache, retry, DTO, idempotence — have no place there, even when heavily used. Before adding a term: is it a concept specific to this business, or a general computing concept?
 
-Deux régimes, à ne pas confondre :
+Two regimes, not to be confused:
 
-- **Ajout d'un terme nouveau** — annonce le terme et la définition que tu inscris, puis écris. Pas d'attente.
-- **Modification ou suppression d'une définition existante** — montre l'ancienne et la nouvelle, et **attends l'accord**. Quelqu'un a déjà écrit du code sur la foi de l'ancienne définition.
+- **Adding a new term** — announce the term and the definition you are recording, then write. No waiting.
+- **Modifying or deleting an existing definition** — show the old one and the new one, and **wait for approval**. Someone has already written code based on the old definition.
 
-**Rédige dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
+**Write in the language declared in `WORKFLOW.md`**, whatever the language of the conversation.
 
-Écris au fil de l'eau, dès qu'un terme est tranché. Ne mets pas en file d'attente : ce qui est reporté en fin de séance est perdu.
+Write as you go, as soon as a term is decided. Do not queue: what is postponed to the end of the session is lost.
 
-## Quand le code contredit le glossaire
+## When the code contradicts the glossary
 
-Montre les deux — la définition et ce que fait réellement le code — et demande lequel fait foi. Selon la réponse : tu corriges la définition, ou tu ouvres une tâche de renommage. **Tu ne renommes rien toi-même**.
+Show both — the definition and what the code actually does — and ask which one is authoritative. Depending on the answer: you correct the definition, or you open a renaming task. **You rename nothing yourself**.
 
-## Écrire un ADR
+## Writing an ADR
 
-Un ADR se justifie quand **les trois** conditions sont réunies :
+An ADR is justified when **all three** conditions are met:
 
-1. la décision est **difficile à inverser** — le coût de changer d'avis plus tard est réel ;
-2. **plusieurs options crédibles** ont été pesées ;
-3. le **pourquoi** sera oublié dans six mois.
+1. the decision is **hard to reverse** — the cost of changing your mind later is real;
+2. **several credible options** were weighed;
+3. the **why** will be forgotten in six months.
 
-Si `WORKFLOW.md` fixe son propre critère, c'est lui qui s'applique.
+If `WORKFLOW.md` sets its own criterion, that one applies.
 
-C'est rare par construction. Une décision qui ne remplit pas les trois n'est pas un ADR : elle va dans la spec ou dans le ticket. Ne transforme pas le répertoire d'ADR en journal de bord.
+This is rare by design. A decision that does not meet all three is not an ADR: it goes into the spec or the ticket. Do not turn the ADR directory into a logbook.
 
-Un ADR porte un numéro séquentiel, un titre qui énonce la décision (`0003-cosmos-db-comme-magasin-de-baux.md`), et contient :
+An ADR has a sequential number, a title that states the decision (`0003-cosmos-db-as-lease-store.md`), and contains:
 
-- **Statut** — proposé, accepté, ou remplacé par l'ADR n° X ;
-- **Contexte** — la situation et les contraintes qui rendent la décision nécessaire ;
-- **Décision** — ce qui est décidé, formulé à la voix active ;
-- **Alternatives écartées** — celles qui ont été réellement pesées, et pourquoi elles ne l'emportent pas ;
-- **Conséquences** — ce que la décision rend possible, et ce qu'elle coûte.
+- **Status** — proposed, accepted, or superseded by ADR no. X;
+- **Context** — the situation and the constraints that make the decision necessary;
+- **Decision** — what is decided, phrased in the active voice;
+- **Rejected alternatives** — those that were actually weighed, and why they do not prevail;
+- **Consequences** — what the decision makes possible, and what it costs.
 
-**Un ADR accepté ne se réécrit pas.** Quand la décision change, écris un nouvel ADR et marque l'ancien comme remplacé. L'historique des décisions a autant de valeur que la décision courante.
+**An accepted ADR is not rewritten.** When the decision changes, write a new ADR and mark the old one as superseded. The history of decisions is as valuable as the current decision.
 
-Fais valider le contenu avant d'écrire un ADR : contrairement à un ajout de terme, c'est un document qui engage.
+Have the content approved before writing an ADR: unlike adding a term, it is a binding document.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Le glossaire est un glossaire.** Aucune règle métier, aucun détail d'implémentation, aucune décision. Ces choses vont dans la spec, le ticket ou l'ADR.
-- **Sois tranché.** Quand plusieurs mots désignent la même chose, retiens-en un et note les autres comme à éviter. Un glossaire qui n'arbitre pas ne sert à rien.
-- **Ne définis jamais un terme à la place de l'utilisateur.** Tu proposes une définition, il la valide ou la corrige.
-- **Reste bref.** Ce fichier est lu en entier par chaque session qui touche au domaine : chaque phrase superflue se paie à chaque fois.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **The glossary is a glossary.** No business rule, no implementation detail, no decision. Those go into the spec, the ticket or the ADR.
+- **Be decisive.** When several words designate the same thing, keep one and note the others as to be avoided. A glossary that does not arbitrate is useless.
+- **Never define a term on the user's behalf.** You propose a definition; they approve or correct it.
+- **Stay brief.** This file is read in full by every session that touches the domain: every superfluous sentence is paid for every time.

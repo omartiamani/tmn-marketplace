@@ -1,86 +1,86 @@
 ---
 name: to-tickets
-description: Découpe un besoin ou une spec en work items (Epics, Features, User Stories, Tasks, Bugs), les propose par lots pour validation, puis les crée dans le gestionnaire de projet configuré en rattachant chaque enfant à son parent. À invoquer quand l'utilisateur demande de découper, planifier, créer des tickets ou alimenter le backlog.
+description: Breaks a need or a spec down into work items (Epics, Features, User Stories, Tasks, Bugs), proposes them in batches for approval, then creates them in the configured project tracker, attaching each child to its parent. Invoke when the user asks to break down, plan, create tickets or feed the backlog.
 ---
 
 # to-tickets
 
-Transforme une spec ou une discussion en work items. **Rien n'est écrit sur l'outil avant validation** : tu proposes, l'utilisateur valide, tu publies.
+Turn a spec or a discussion into work items. **Nothing is written to the tool before approval**: you propose, the user approves, you publish.
 
-Un ticket est lu des semaines plus tard, par quelqu'un — ou une session — qui n'a pas assisté à la discussion. Il doit donc être **auto-contenu** : tout ce qu'il faut pour comprendre et implémenter y figure, sans avoir à ouvrir la spec. C'est un instantané de ce qui était valable au moment de sa création, et c'est précisément ce qui fait sa valeur quand la spec, elle, aura bougé.
+A ticket is read weeks later, by someone — or a session — who did not attend the discussion. It must therefore be **self-contained**: everything needed to understand and implement it is in it, without having to open the spec. It is a snapshot of what held true at the time of its creation, and that is precisely what makes it valuable when the spec, for its part, has moved on.
 
-## 1. Se situer
+## 1. Get your bearings
 
-Prends dans `WORKFLOW.md` l'outil, la hiérarchie des types, les statuts, le mécanisme de lien parent/enfant et les champs obligatoires ; dans la section « Workflow tooling » du `CLAUDE.md`, les identifiants et les commandes de référence. Les deux sont normalement déjà dans ton contexte, le `CLAUDE.md` important `WORKFLOW.md`. **Sans `WORKFLOW.md`, ne crée rien** — propose `workflow:setup`. Créer des work items avec une nomenclature devinée produit un backlog qu'il faudra reprendre à la main.
+Take from `WORKFLOW.md` the tool, the type hierarchy, the statuses, the parent/child link mechanism and the required fields; from the "Workflow tooling" section of the `CLAUDE.md`, the identifiers and the reference commands. Both are normally already in your context, the `CLAUDE.md` importing `WORKFLOW.md`. **Without `WORKFLOW.md`, create nothing** — suggest `workflow:setup`. Creating work items with a guessed nomenclature produces a backlog that will have to be reworked by hand.
 
-Rassemble la matière : la spec du sujet, la discussion en cours, le glossaire, et le code pour ce qui existe déjà.
+Gather the material: the subject's spec, the current discussion, the glossary, and the code for what already exists.
 
-**Puis lève les zones d'ombre, avant de rédiger quoi que ce soit.** Liste ce qui n'est pas tranché — règle métier absente, cas limite non traité, choix technique structurant — et pose ces points à l'utilisateur, un par un. Si le sujet est trop large pour quelques questions, propose `workflow:specify`. Un ticket rédigé par-dessus une zone d'ombre la fige : elle ressortira à l'implémentation, quand elle coûtera plus cher.
+**Then clear up the grey areas, before writing anything.** List what is not decided — missing business rule, unhandled edge case, structural technical choice — and put these points to the user, one by one. If the subject is too broad for a few questions, suggest `workflow:specify`. A ticket written over a grey area freezes it: it will resurface during implementation, when it will cost more.
 
-Si `WORKFLOW.md` déclare un **dépôt de destination par type de ticket** — cas d'un tracker qui rattache les tickets à un dépôt, comme GitHub, sur un projet multi-repo — c'est lui qui décide, jamais le répertoire courant. En l'absence de cette règle, la question ne se pose pas : le tracker est indépendant des dépôts, ou il n'y en a qu'un.
+If `WORKFLOW.md` declares a **target repository per ticket type** — the case of a tracker that attaches tickets to a repository, like GitHub, on a multi-repo project — it decides, never the current directory. In the absence of this rule, the question does not arise: the tracker is independent of the repositories, or there is only one.
 
-## 2. Chercher l'existant
+## 2. Look for what exists
 
-Avant de découper, cherche les work items déjà ouverts sur le sujet. Rattache-toi à un parent existant plutôt que d'en créer un nouveau, et **signale tout doublon ou contradiction** au lieu de créer par-dessus. Un backlog vivant se dégrade vite quand deux tickets décrivent le même travail.
+Before breaking down, look for the work items already open on the subject. Attach to an existing parent rather than creating a new one, and **point out any duplicate or contradiction** instead of creating on top of it. A living backlog degrades quickly when two tickets describe the same work.
 
-## 3. Découper en tranches verticales
+## 3. Break down into vertical slices
 
-Chaque User Story traverse **toutes les couches** — schéma, API, interface, tests — et livre un comportement démontrable de bout en bout. Une US n'est pas « faire l'API des baux » suivie de « faire l'écran des baux » : séparées, aucune des deux ne prouve quoi que ce soit.
+Each User Story cuts through **all the layers** — schema, API, interface, tests — and delivers a behavior that can be demonstrated end to end. A US is not "build the leases API" followed by "build the leases screen": separated, neither of the two proves anything.
 
-Une bonne tranche est **vérifiable seule**, et tient dans une seule session de travail. Si elle n'y tient pas, elle est trop grosse.
+A good slice is **verifiable on its own**, and fits in a single working session. If it does not fit, it is too big.
 
-Deux exceptions à la verticalité :
+Two exceptions to verticality:
 
-- **Le prérequis technique** qui ne livre rien d'observable mais conditionne la suite — une migration, un socle. Il devient une US à part, placée en tête, et déclarée bloquante pour celles qui en dépendent.
-- **Le refactor large** dont le rayon d'impact traverse tout le code — un renommage, un changement de type partagé. Il ne rentre dans aucune tranche verticale. Séquence-le : d'abord ajouter la nouvelle forme à côté de l'ancienne, puis migrer les appelants par lots, enfin supprimer l'ancienne — chaque étape étant sa propre tâche, bloquée par la précédente.
+- **The technical prerequisite** that delivers nothing observable but conditions what follows — a migration, a foundation. It becomes a separate US, placed first, and declared blocking for those that depend on it.
+- **The large refactor** whose blast radius cuts across the whole code — a rename, a change of shared type. It fits in no vertical slice. Sequence it: first add the new form alongside the old one, then migrate the callers in batches, finally remove the old one — each step being its own task, blocked by the previous one.
 
-Déclare les **dépendances bloquantes** : pour chaque item, ce qui doit être terminé avant qu'il puisse commencer. Une tâche sans bloqueur est démarrable tout de suite.
+Declare the **blocking dependencies**: for each item, what must be finished before it can start. A task without a blocker can be started right away.
 
-## 4. Rédiger
+## 4. Write
 
-**Rédige dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
+**Write in the language declared in `WORKFLOW.md`**, whatever the language of the conversation.
 
-**Titre** : verbe à l'infinitif, court, dans le vocabulaire du glossaire — « Filtrer les baux par statut ». Il doit se lire dans une colonne de board.
+**Title**: verb in the infinitive, short, in the glossary's vocabulary — "Filter leases by status". It must be readable in a board column.
 
-**Description** :
+**Description**:
 
-- **Contexte** — le pourquoi, l'état actuel de ce qui est touché, et les règles métier et cas limites qui s'appliquent à ce ticket précis. Reprends-les depuis la spec : le ticket doit se suffire à lui-même.
-- **Objectif** — ce que le ticket rend possible.
-- **Critères d'acceptance** — ce qui doit être vrai à la fin, formulé de façon vérifiable. Un critère qu'on ne peut pas tester n'est pas un critère.
-- **Pistes techniques** — modules concernés, approche envisagée, points d'attention repérés pendant la discussion. Ce qui a été discuté uniquement.
-- **Dépendances** — les items bloquants.
+- **Context** — the why, the current state of what is touched, and the business rules and edge cases that apply to this specific ticket. Take them from the spec: the ticket must stand on its own.
+- **Goal** — what the ticket makes possible.
+- **Acceptance criteria** — what must be true at the end, phrased in a verifiable way. A criterion that cannot be tested is not a criterion.
+- **Technical hints** — modules involved, approach considered, points of attention spotted during the discussion. Only what was discussed.
+- **Dependencies** — the blocking items.
 
-Ne reprends de la spec que ce qui concerne **ce ticket** : auto-contenu ne veut pas dire recopier la spec entière. Et n'invente aucun critère d'acceptance qui n'ait été discuté — si un critère te paraît manquer, dis-le dans le lot proposé, pas dans le ticket.
+Take from the spec only what concerns **this ticket**: self-contained does not mean copying the entire spec. And invent no acceptance criterion that was not discussed — if a criterion seems missing to you, say so in the proposed batch, not in the ticket.
 
-**Un ticket consigne des décisions prises, jamais un arbitrage ouvert.** Si un choix se présente pendant la rédaction, pose-le et attends la réponse ; n'écris ensuite que la décision retenue et son motif. Écrire « deux options, à trancher dans le ticket » reporte la charge sur le prochain lecteur au lieu de la lever. Et un choix qui n'engage rien ne se consigne pas du tout : consigner une décision non structurante encombre le ticket sans rien protéger.
+**A ticket records decisions made, never an open trade-off.** If a choice comes up while writing, ask it and wait for the answer; then write only the decision taken and its reason. Writing "two options, to be decided in the ticket" shifts the burden onto the next reader instead of lifting it. And a choice that commits to nothing is not recorded at all: recording a non-structural decision clutters the ticket without protecting anything.
 
-Le ticket est daté et figé. Si la spec évolue ensuite, il ne suit pas automatiquement : l'écart se constate et se traite au moment de l'implémentation.
+The ticket is dated and frozen. If the spec evolves afterwards, it does not follow automatically: the gap is noted and dealt with at implementation time.
 
-## 5. Proposer par lots
+## 5. Propose in batches
 
-Un niveau à la fois, du haut vers le bas : les Epics et Features d'abord, puis les User Stories du périmètre validé, puis les tâches. Chaque niveau est figé avant de détailler le suivant.
+One level at a time, from top to bottom: the Epics and Features first, then the User Stories of the approved scope, then the tasks. Each level is frozen before detailing the next one.
 
-**Un ticket seul est un lot de un** : il se propose et se valide comme les autres. Le fait qu'il n'y en ait qu'un ne dispense de rien.
+**A single ticket is a batch of one**: it is proposed and approved like the others. The fact that there is only one exempts it from nothing.
 
-Pour chaque lot, présente une liste numérotée avec le titre, le parent, les bloqueurs et ce que l'item livre. Demande explicitement : la granularité est-elle bonne, les dépendances sont-elles justes, faut-il fusionner ou scinder ? Itère jusqu'à validation.
+For each batch, present a numbered list with the title, the parent, the blockers and what the item delivers. Ask explicitly: is the granularity right, are the dependencies correct, should anything be merged or split? Iterate until approved.
 
-## 6. Publier
+## 6. Publish
 
-Uniquement après validation, et dans l'ordre de la hiérarchie : les parents d'abord, pour que les enfants puissent référencer des identifiants réels.
+Only after approval, and in hierarchy order: the parents first, so that the children can reference real identifiers.
 
-Pour chaque item : créer, **rattacher au parent**, renseigner les champs obligatoires, appliquer le statut initial et les dépendances bloquantes — le tout selon `WORKFLOW.md`, avec les commandes du `CLAUDE.md`.
+For each item: create, **attach to the parent**, fill in the required fields, apply the initial status and the blocking dependencies — all according to `WORKFLOW.md`, with the commands from the `CLAUDE.md`.
 
-**Puis vérifie, avant de créer le suivant.** Relis l'item tel que l'outil le restitue : son type, son parent, ses champs obligatoires, son statut, ses dépendances, et sa présence sur le board — lue depuis le board lui-même, pas depuis l'item. Une commande qui réussit ne prouve pas que le résultat est là : une étape peut échouer sans erreur. Un écart compte comme une création qui échoue.
+**Then verify, before creating the next one.** Read the item back as the tool returns it: its type, its parent, its required fields, its status, its dependencies, and its presence on the board — read from the board itself, not from the item. A command that succeeds does not prove the result is there: a step can fail without an error. A gap counts as a failed creation.
 
-**Si une création échoue, arrête-toi immédiatement.** Rends compte : ce qui a été créé avec les identifiants réels, ce qui reste à créer, et l'erreur exacte. Ne poursuis pas le lot — un parent manquant produit des enfants orphelins. Ne supprime rien pour « repartir propre ».
+**If a creation fails, stop immediately.** Report: what was created with the real identifiers, what remains to be created, and the exact error. Do not continue the batch — a missing parent produces orphaned children. Delete nothing to "start clean".
 
-Termine en restituant l'arborescence créée avec les identifiants réels.
+Finish by playing back the tree created, with the real identifiers.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Rien d'écrit sans validation.** Les lots se valident avant publication, sans exception.
-- **Aucun ticket sans parent**, sauf au sommet de la hiérarchie. Le rattachement fait partie de la création, pas d'une passe ultérieure.
-- **Un ticket n'est créé qu'une fois vérifié.** Relu dans l'outil, pas déduit du succès des commandes.
-- **Le ticket est auto-contenu.** Il porte le contexte, les règles et les critères qui le concernent, et reste implémentable sans ouvrir la spec — c'est un instantané, pas un renvoi.
-- **N'invente ni règle ni critère.** Ce qui n'a pas été discuté se signale dans le lot, jamais dans le ticket.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **Nothing written without approval.** Batches are approved before publication, without exception.
+- **No ticket without a parent**, except at the top of the hierarchy. Attaching is part of creating, not of a later pass.
+- **A ticket is created only once verified.** Read back in the tool, not inferred from the commands' success.
+- **The ticket is self-contained.** It carries the context, the rules and the criteria that concern it, and remains implementable without opening the spec — it is a snapshot, not a pointer.
+- **Invent neither rule nor criterion.** What was not discussed is pointed out in the batch, never in the ticket.

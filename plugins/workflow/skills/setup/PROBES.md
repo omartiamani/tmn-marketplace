@@ -1,55 +1,55 @@
-# Commandes de sondage (lecture seule)
+# Probing commands (read-only)
 
-Ce fichier est un **point de départ**, pas une référence exhaustive ni garantie : les CLI et les API évoluent, et chaque organisation expose des champs et des endpoints qui lui sont propres.
+This file is a **starting point**, not an exhaustive or guaranteed reference: CLIs and APIs evolve, and each organization exposes fields and endpoints of its own.
 
-Règle : **n'inscris dans la section « Workflow tooling » du `CLAUDE.md` qu'une commande que tu as réellement exécutée avec succès.** Si une commande échoue ou n'existe pas dans la version installée, cherche l'équivalent, puis à défaut bascule en interview sur ce point.
+Rule: **record in the "Workflow tooling" section of the `CLAUDE.md` only a command you have actually run successfully.** If a command fails or does not exist in the installed version, look for the equivalent, then failing that switch to an interview on that point.
 
-Deux cas à consigner systématiquement dans les « Commandes de référence » de cette section, pour qu'aucune session ultérieure ne refasse la découverte :
+Two cases to record systematically in that section's "Reference commands", so that no later session redoes the discovery:
 
-- **une commande d'ici qui ne fonctionne pas** — note-la comme inopérante, avec l'erreur obtenue et la variante qui a marché à sa place ;
-- **une commande absente d'ici mais nécessaire** — note-la telle que tu l'as validée (requête WIQL, endpoint REST, appel MCP, champ personnalisé…).
+- **a command from here that does not work** — record it as non-working, with the error obtained and the variant that worked in its place;
+- **a command missing from here but needed** — record it as you validated it (WIQL query, REST endpoint, MCP call, custom field…).
 
-Ne modifie pas ce fichier pour y consigner ces découvertes : elles sont propres au projet et vont dans son `CLAUDE.md`.
+Do not modify this file to record these discoveries: they are specific to the project and go into its `CLAUDE.md`.
 
 ## Azure DevOps Boards
 
-Prérequis : `az` + extension `azure-devops`, authentifié (`az login`, `az devops login`).
+Prerequisites: `az` + `azure-devops` extension, authenticated (`az login`, `az devops login`).
 
 ```bash
-az devops configure --list                       # org/projet par défaut
+az devops configure --list                       # default org/project
 az devops project list -o table
 az boards area project list --project <PROJ> -o table
 az boards iteration project list --project <PROJ> -o table
-az boards work-item relation list-type -o table  # types de liens (Parent/Child…)
-# Types de work items du process
+az boards work-item relation list-type -o table  # link types (Parent/Child…)
+# Work item types of the process
 az devops invoke --area wit --resource workitemtypes \
   --route-parameters project=<PROJ> --api-version 7.1 -o json
-# Statuts d'un type donné
+# Statuses of a given type
 az devops invoke --area wit --resource states \
   --route-parameters project=<PROJ> type=<TYPE> --api-version 7.1 -o json
-# Repli : lire un work item réel et observer ses champs/état
+# Fallback: read a real work item and observe its fields/state
 az boards work-item show --id <ID> -o json
 ```
 
 ## GitHub Issues / Projects
 
-Prérequis : `gh` authentifié (`gh auth status`).
+Prerequisites: `gh` authenticated (`gh auth status`).
 
 ```bash
 gh repo view <owner>/<repo> --json name,defaultBranchRef,hasIssuesEnabled
 gh label list --repo <owner>/<repo>
 gh project list --owner <owner>
-gh project field-list <number> --owner <owner>   # champ Status et ses options
+gh project field-list <number> --owner <owner>   # Status field and its options
 gh issue list --repo <owner>/<repo> --limit 5 --json number,title,labels,state
-# Sous-issues (relation parent/enfant native)
+# Sub-issues (native parent/child relationship)
 gh api repos/<owner>/<repo>/issues/<n>/sub_issues
 ```
 
-Note : GitHub n'a que deux états natifs (`open`/`closed`). Le vrai cycle de vie vient du champ **Status** d'un Project v2 ou de labels — sonde `field-list` et note les options exactes.
+Note: GitHub has only two native states (`open`/`closed`). The real lifecycle comes from the **Status** field of a Project v2 or from labels — probe `field-list` and note the exact options.
 
 ## Jira
 
-Pas de CLI officielle installée. Utilise dans l'ordre : un serveur MCP Jira connecté, sinon l'API REST avec les identifiants fournis par l'utilisateur (ne demande jamais un token en clair dans la conversation — demande une variable d'environnement déjà présente).
+No official CLI installed. Use, in this order: a connected Jira MCP server, otherwise the REST API with the credentials provided by the user (never ask for a token in plain text in the conversation — ask for an environment variable that is already set).
 
 ```bash
 : "${JIRA_URL:?}" "${JIRA_USER:?}" "${JIRA_TOKEN:?}"
@@ -59,11 +59,11 @@ curl -su "$JIRA_USER:$JIRA_TOKEN" "$JIRA_URL/rest/api/3/status"
 curl -su "$JIRA_USER:$JIRA_TOKEN" "$JIRA_URL/rest/api/3/issue/<KEY>/transitions"
 ```
 
-## Fichiers locaux
+## Local files
 
-Rien à sonder. Établis la convention avec l'utilisateur et inscris-la :
+Nothing to probe. Establish the convention with the user and record it:
 
-- un fichier par ticket sous `.claude/tickets/<ID>-<slug>.md`
-- identifiant, type, statut, parent en frontmatter YAML
-- statuts par défaut : `todo`, `in-progress`, `review`, `done`
-- lien parent/enfant : champ `parent:` référençant l'identifiant du parent
+- one file per ticket under `.claude/tickets/<ID>-<slug>.md`
+- identifier, type, status, parent in YAML frontmatter
+- default statuses: `todo`, `in-progress`, `review`, `done`
+- parent/child link: `parent:` field referencing the parent's identifier

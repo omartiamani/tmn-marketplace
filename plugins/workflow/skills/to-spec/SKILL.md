@@ -1,67 +1,67 @@
 ---
 name: to-spec
-description: Rédige le dossier de spécification d'un besoin à partir de la discussion en cours, d'un ticket ou de notes, en n'y écrivant que ce qui a été réellement décidé. À invoquer après une séance de spécification, ou quand l'utilisateur demande de formaliser, rédiger ou mettre à jour une spec.
+description: Writes the specification document for a need from the current discussion, a ticket or notes, writing into it only what was actually decided. Invoke after a specification session, or when the user asks to formalize, write or update a spec.
 ---
 
 # to-spec
 
-Transforme ce qui a été discuté en un document de spécification. **Tu ne spécifies pas ici, tu retranscris** : aucune question d'interview, aucune décision nouvelle. La séance de questionnement, c'est `workflow:specify`.
+Turn what was discussed into a specification document. **You do not specify here, you transcribe**: no interview question, no new decision. The questioning session is `workflow:specify`.
 
-La valeur de ce document tient entièrement à une chose : un lecteur doit pouvoir s'y fier. Une seule règle inventée qui s'y glisse et il devient une source de vérité empoisonnée, indiscernable du reste.
+The value of this document rests entirely on one thing: a reader must be able to rely on it. A single invented rule slipping in and it becomes a poisoned source of truth, indistinguishable from the rest.
 
-## 1. Rassembler la matière
+## 1. Gather the material
 
-- **La conversation en cours** — le cas nominal, la séance qui vient d'avoir lieu.
-- **Un ticket, un fichier ou des notes** passés en argument — récupère le contenu complet, commentaires inclus.
-- **Le code existant** — relis-le pour vérifier la cohérence de ce qui a été dit, jamais pour compléter ce qui n'a pas été dit.
+- **The current conversation** — the nominal case, the session that has just taken place.
+- **A ticket, a file or notes** passed as an argument — retrieve the full content, comments included.
+- **The existing code** — reread it to check the consistency of what was said, never to fill in what was not said.
 
-**Si la matière est trop mince pour produire une spec honnête, ne l'écris pas.** Dis ce qui manque et propose une séance `workflow:specify`. Un document creux coûte plus cher que pas de document.
+**If the material is too thin to produce an honest spec, do not write it.** Say what is missing and suggest a `workflow:specify` session. A hollow document costs more than no document.
 
-## 2. Situer le fichier
+## 2. Locate the file
 
-L'emplacement des specs est dans `WORKFLOW.md`. S'il n'y figure pas, propose `docs/specs/` du repository concerné — ou du repository de documentation quand le sujet est transverse — et propose de l'inscrire dans `WORKFLOW.md` pour les fois suivantes.
+The location of the specs is in `WORKFLOW.md`. If it is not there, suggest `docs/specs/` of the repository concerned — or of the documentation repository when the subject is cross-cutting — and suggest recording it in `WORKFLOW.md` for next time.
 
-Un fichier par sujet : `<emplacement>/<sujet-en-kebab-case>.md`.
+One file per subject: `<location>/<subject-in-kebab-case>.md`.
 
-**Si une spec existe déjà pour ce sujet, demande** avant d'écrire : mise à jour du fichier existant, ou nouvelle version à côté ? Ne tranche pas seul.
+**If a spec already exists for this subject, ask** before writing: update of the existing file, or new version alongside it? Do not decide alone.
 
-## 3. Rédiger
+## 3. Write
 
-Traite les notions ci-dessous **dans cet ordre**, et uniquement celles pour lesquelles la discussion a produit de la matière. Ce n'est pas un questionnaire à remplir : une notion sans matière ne donne pas une section vide, elle ne donne pas de section du tout.
+Cover the notions below **in this order**, and only those for which the discussion produced material. It is not a questionnaire to fill in: a notion without material does not give an empty section, it gives no section at all.
 
-- **Le problème**, du point de vue de celui qui le subit — pas la solution.
-- **L'objectif et la valeur** : ce que ça permet, et à quoi on reconnaîtra que c'est réussi.
-- **Les acteurs** : qui, avec quels droits, dans quel contexte.
-- **Les workflows** : quand un enchaînement d'étapes, un parcours ou un cycle de vie a été décrit, restitue-le pas à pas — les étapes, leurs conditions de passage, les états, qui déclenche quoi, et ce qui se produit quand une étape échoue ou est abandonnée. Un diagramme Mermaid est le bon outil dès que l'enchaînement se ramifie, à condition qu'il n'encode que des étapes réellement discutées.
-- **Les règles métier** : les règles exactes, une par une, les états interdits, les cas limites et les cas d'erreur avec le comportement attendu.
-- **Les données, contrats et intégrations** : modèle de données touché, contrats d'API, systèmes externes, sort des données existantes.
-- **Les contraintes non-fonctionnelles** : droits, sécurité, performance, volumétrie, disponibilité, i18n, conformité.
-- **Le hors-périmètre** : ce que la fonctionnalité ne fera pas, et pourquoi.
-- **Les décisions** : chacune avec sa raison et, quand elles ont été évoquées, les alternatives écartées. Signale celles qui sont structurantes et difficiles à inverser comme candidates ADR.
-- **Les points ouverts** : ce qui n'a pas été tranché, ce que ça bloque, qui doit trancher.
+- **The problem**, from the point of view of whoever suffers from it — not the solution.
+- **The goal and the value**: what it enables, and how we will know it succeeded.
+- **The actors**: who, with what rights, in what context.
+- **The workflows**: when a sequence of steps, a user journey or a lifecycle was described, play it back step by step — the steps, their transition conditions, the states, who triggers what, and what happens when a step fails or is abandoned. A Mermaid diagram is the right tool as soon as the sequence branches, provided it encodes only steps that were actually discussed.
+- **The business rules**: the exact rules, one by one, the forbidden states, the edge cases and the error cases with the expected behavior.
+- **The data, contracts and integrations**: data model touched, API contracts, external systems, what becomes of existing data.
+- **The non-functional constraints**: rights, security, performance, volume, availability, i18n, compliance.
+- **What is out of scope**: what the feature will not do, and why.
+- **The decisions**: each one with its reason and, when they were mentioned, the rejected alternatives. Point out those that are structural and hard to reverse as ADR candidates.
+- **The open points**: what was not decided, what it blocks, who must decide.
 
-**Niveau de détail : les décisions, pas l'implémentation.** Les modules touchés, les contrats d'API, les changements de schéma, les interactions : oui. Les chemins de fichiers et les extraits de code : non, ils périment en quelques jours. Exception : un schéma, un type ou une machine à états qui encode une décision plus précisément que ne le ferait une phrase.
+**Level of detail: decisions, not implementation.** The modules touched, the API contracts, the schema changes, the interactions: yes. File paths and code excerpts: no, they go stale within a few days. Exception: a schema, a type or a state machine that encodes a decision more precisely than a sentence would.
 
-**Ni user stories ni critères d'acceptance.** C'est le rôle de `workflow:to-tickets`, qui les produira à partir de cette spec. Ne duplique pas.
+**Neither user stories nor acceptance criteria.** That is the role of `workflow:to-tickets`, which will produce them from this spec. Do not duplicate.
 
-**Rédige dans la langue déclarée dans `WORKFLOW.md`**, quelle que soit la langue de la conversation.
+**Write in the language declared in `WORKFLOW.md`**, whatever the language of the conversation.
 
-Emploie le vocabulaire du glossaire (`CONTEXT.md`). Si un terme nouveau est apparu pendant la discussion, signale-le et propose `workflow:modeling` — ne l'inscris pas au glossaire depuis ici.
+Use the glossary's vocabulary (`CONTEXT.md`). If a new term appeared during the discussion, point it out and suggest `workflow:modeling` — do not add it to the glossary from here.
 
-## 4. Restituer
+## 4. Play back
 
-Annonce le fichier écrit, et **liste séparément** :
+Announce the file written, and **list separately**:
 
-- ce qui a été marqué comme déduit du code et reste à confirmer ;
-- les points ouverts ;
-- les décisions structurantes repérées comme candidates ADR.
+- what was marked as inferred from the code and remains to be confirmed;
+- the open points;
+- the structural decisions spotted as ADR candidates.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Interdiction totale d'ajout.** Aucune règle métier, aucun cas limite, aucune contrainte qui n'ait été explicitement énoncé. Même si l'omission te paraît être un oubli évident, même si la spec en paraît incomplète : tu le signales dans ta réponse, **jamais dans le fichier**.
-- **Marque ce qui vient du code.** Tout ce que tu tires de ta lecture du code plutôt que de la discussion se termine par `[déduit du code — à confirmer]`. Un lecteur doit distinguer d'un coup d'œil ce qui a été décidé de ce qui a été observé.
-- **La section « Points ouverts » est obligatoire.** C'est la seule qui ne se supprime jamais, même sans matière : écris alors explicitement qu'aucun point n'est ouvert à cette date. Une absence de section laisserait croire à un oubli.
-- **Ne comble jamais un silence.** Une zone non discutée va dans les points ouverts, pas dans une hypothèse rédigée au présent de l'indicatif.
-- **Aucune forme imposée.** Les notions ci-dessus fixent l'ordre et le contenu, pas le nombre de titres ni leur formulation. Ajuste la structure au sujet.
-- **Éclate le fichier quand une section devient ingérable** — quand elle ne se relit plus d'un trait ou mérite sa propre discussion. Le fichier principal garde alors le sommaire et renvoie vers les fichiers sortis. Signale l'éclatement.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **Adding anything is strictly forbidden.** No business rule, no edge case, no constraint that was not explicitly stated. Even if the omission looks like an obvious oversight to you, even if the spec looks incomplete because of it: you point it out in your answer, **never in the file**.
+- **Mark what comes from the code.** Everything you draw from your reading of the code rather than from the discussion ends with `[inferred from code — to be confirmed]`. A reader must tell at a glance what was decided from what was observed.
+- **The "Open points" section is mandatory.** It is the only one that is never deleted, even without material: then write explicitly that no point is open as of that date. A missing section would suggest an oversight.
+- **Never fill a silence.** An undiscussed area goes into the open points, not into an assumption written in the present tense.
+- **No imposed form.** The notions above set the order and the content, not the number of headings or their wording. Adjust the structure to the subject.
+- **Split the file when a section becomes unmanageable** — when it can no longer be read in one go or deserves its own discussion. The main file then keeps the table of contents and links to the split-out files. Point out the split.

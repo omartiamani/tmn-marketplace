@@ -1,74 +1,74 @@
-# Gabarit des ajouts au `CLAUDE.md`
+# Template for the `CLAUDE.md` additions
 
-Le `CLAUDE.md` du dépôt reçoit deux ajouts, et le reste ne change pas :
+The repository's `CLAUDE.md` receives two additions, and the rest does not change:
 
-1. **en tête**, l'import des règles du projet : `@WORKFLOW.md` ;
-2. **à la fin**, la section « Workflow tooling » ci-dessous.
+1. **at the top**, the import of the project rules: `@WORKFLOW.md`;
+2. **at the end**, the "Workflow tooling" section below.
 
-S'il n'existe pas, crée-le avec ces deux seuls éléments.
+If it does not exist, create it with these two elements only.
 
-Mêmes règles que pour `WORKFLOW.md` : langue des artefacts du projet, valeurs non confirmées marquées `À DÉTERMINER`, aucune donnée propre à un poste — ni chemin absolu, ni compte personnel.
+Same rules as for `WORKFLOW.md`: language of the project's artifacts, unconfirmed values marked `TO BE DETERMINED`, no machine-specific data — no absolute path, no personal account.
 
-Si une section est sans objet — un outil sans identifiant, aucune commande inopérante —, supprime-la.
+If a section does not apply — a tool without identifiers, no non-working commands — delete it.
 
 ---
 
 ````markdown
 @WORKFLOW.md
 
-<contenu existant du CLAUDE.md, inchangé>
+<existing content of the CLAUDE.md, unchanged>
 
 ## Workflow tooling
 
-Outillage du workflow décrit dans `WORKFLOW.md`, à l'usage de Claude.
+Tooling for the workflow described in `WORKFLOW.md`, for Claude's use.
 
-### Accès
+### Access
 
-- **Outil** : CLI `az boards` | CLI `gh` | MCP <nom du serveur> | répertoire `.claude/tickets/`
-- **Authentification** : <mécanisme, et particularités d'environnement — variable à ré-exporter, fichier à sourcer>
+- **Tool**: `az boards` CLI | `gh` CLI | MCP <server name> | `.claude/tickets/` directory
+- **Authentication**: <mechanism, and environment specifics — variable to re-export, file to source>
 
-### Identifiants
+### Identifiers
 
-| Élément | Identifiant |
-| ------- | ----------- |
-| ...     | ...         |
+| Item | Identifier |
+| ---- | ---------- |
+| ...  | ...        |
 
-### Règles propres à l'IA
+### AI-specific rules
 
-- **Changements de statut** : automatiques | sur confirmation explicite de l'utilisateur
+- **Status changes**: automatic | on explicit confirmation from the user
 
-### Commandes de référence
+### Reference commands
 
-Commandes réellement exécutées avec succès, à réutiliser telles quelles. Complète cette section à chaque fois qu'une nouvelle commande ou un nouvel appel API est validé en cours de projet.
+Commands actually run successfully, to be reused as they are. Complete this section every time a new command or a new API call is validated during the project.
 
 ```bash
-# Lire un work item
-<commande>
-# Créer un work item
-<commande>
-# Changer le statut
-<commande>
-# Lier un enfant à son parent
-<commande>
+# Read a work item
+<command>
+# Create a work item
+<command>
+# Change the status
+<command>
+# Link a child to its parent
+<command>
 ```
 
-### Commandes inopérantes
+### Non-working commands
 
-Variantes essayées qui ne fonctionnent pas ici — à ne pas retenter sauf en dernier recours.
+Variants tried that do not work here — not to be retried except as a last resort.
 
-| Commande | Erreur | Variante retenue |
-| -------- | ------ | ---------------- |
-| ...      | ...    | ...              |
+| Command | Error | Variant used instead |
+| ------- | ----- | -------------------- |
+| ...     | ...   | ...                  |
 ````
 
 ---
 
-## Autres dépôts d'un projet multi-dépôts
+## Other repositories of a multi-repository project
 
-Leur `CLAUDE.md` reçoit une seule ligne, en tête, qui importe celui du dépôt de pilotage :
+Their `CLAUDE.md` receives a single line, at the top, which imports the steering repository's one:
 
 ```markdown
-@../<dépôt-de-pilotage>/CLAUDE.md
+@../<steering-repository>/CLAUDE.md
 ```
 
-Pas de section « Workflow tooling » ni de `WORKFLOW.md` dans ces dépôts : l'import les apporte.
+No "Workflow tooling" section and no `WORKFLOW.md` in these repositories: the import brings them in.

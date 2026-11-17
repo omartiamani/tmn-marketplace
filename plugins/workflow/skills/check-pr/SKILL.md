@@ -1,110 +1,110 @@
 ---
 name: check-pr
-description: Garde-fou d'une pull request avant son passage en revue — sa description dit-elle vrai sur le code, code et description répondent-ils aux tickets associés, le code est-il bon — qui ne remonte que des problèmes avérés et propose leur correction, sans rien appliquer sans accord. À invoquer avant de marquer une pull request prête pour la revue, sur la commande /workflow:check-pr, ou quand l'utilisateur demande de vérifier une pull request.
+description: Safeguard for a pull request before it is marked ready for review — does its description tell the truth about the code, do the code and the description meet the associated tickets, is the code good — that raises only proven problems and proposes their fix, without applying anything without approval. Invoke before marking a pull request ready for review, on the /workflow:check-pr command, or when the user asks to check a pull request.
 ---
 
 # check-pr
 
-Un garde-fou avant qu'une pull request soit marquée prête pour la revue. Son objectif : s'assurer d'une part que la pull request répond aux specs définies dans ses tickets, d'autre part que le code reflète ce que dit la pull request et qu'il est propre. Trois questions, et seulement trois :
+A safeguard before a pull request is marked ready for review. Its goal: make sure on the one hand that the pull request meets the specs defined in its tickets, and on the other hand that the code reflects what the pull request says and that it is clean. Three questions, and only three:
 
-1. **La description dit-elle vrai ?** Chaque affirmation qu'elle contient correspond au code de la pull request.
-2. **Le travail répond-il aux tickets ?** Le code et la description font ce qu'attendent les tickets associés.
-3. **Le code est-il bon ?** Il fonctionne, il respecte les règles écrites du projet, et ses tests protègent ce qu'il faut.
+1. **Does the description tell the truth?** Every claim it contains matches the code of the pull request.
+2. **Does the work meet the tickets?** The code and the description do what the associated tickets expect.
+3. **Is the code good?** It works, it follows the project's written rules, and its tests protect what they should.
 
-**Un garde-fou, pas une revue de plus.** Il ne remonte que des problèmes avérés — ce qui est faux, manquant ou cassé, et se démontre. Ni suggestion, ni préférence, ni détail. Une pull request sans problème est très courte.
+**A safeguard, not one more review.** It raises only proven problems — what is wrong, missing or broken, and can be demonstrated. No suggestions, no preferences, no nitpicks. A pull request with no problem gets a very short report.
 
-La description est ce que lit le relecteur, et ce qu'on retrouve des mois plus tard en cherchant pourquoi le code est ainsi. Une affirmation fausse y est pire qu'une absence : on la croit.
+The description is what the reviewer reads, and what people find months later when searching for why the code is the way it is. A false claim there is worse than an omission: people believe it.
 
-**Seule la description fait foi.** Les messages de commit ne sont ni lus ni contrôlés.
+**Only the description is authoritative.** Commit messages are neither read nor checked.
 
-**Tu rapportes et tu proposes ; tu n'appliques rien sans accord.**
+**You report and you propose; you apply nothing without approval.**
 
-## 1. Se situer
+## 1. Get your bearings
 
-Prends dans `WORKFLOW.md` le format attendu du corps de pull request et de ses références aux tickets ; dans la section « Workflow tooling » du `CLAUDE.md`, les commandes pour lire et modifier une pull request. Lis le `CLAUDE.md` et le README du dépôt concerné : ce sont eux qui disent quelles règles le code doit respecter et comment lancer les contrôles. Sans `WORKFLOW.md`, signale-le et propose `workflow:setup` : le contrôle des références aux tickets devient impossible, le reste se fait.
+Take from `WORKFLOW.md` the expected format of the pull request body and of its references to tickets; from the "Workflow tooling" section of the `CLAUDE.md`, the commands to read and modify a pull request. Read the `CLAUDE.md` and the README of the repository concerned: they are what say which rules the code must follow and how to run the checks. Without `WORKFLOW.md`, point it out and suggest `workflow:setup`: checking the ticket references becomes impossible, the rest gets done.
 
-Identifie la pull request : celle passée en argument, sinon celle de la branche courante. **Quand la même branche existe dans plusieurs dépôts**, la fonctionnalité a souvent une pull request par dépôt : contrôle chacune. Une affirmation peut porter sur l'autre dépôt — « needs the matching API changes » — : vérifie-la là-bas.
+Identify the pull request: the one passed as an argument, otherwise the one for the current branch. **When the same branch exists in several repositories**, the feature often has one pull request per repository: check each one. A claim may concern the other repository, such as "needs the matching API changes": verify it there.
 
-Récupère, pour chaque pull request :
+Retrieve, for each pull request:
 
-- son titre et sa **description** complets ;
-- son **diff complet** par rapport à la branche d'intégration — l'état final, tel qu'il sera fusionné ;
-- les **tickets associés**, lus en entier, commentaires compris : ceux que la description ferme ou référence, et ceux que désigne le nom de la branche selon la convention de `WORKFLOW.md`. Remonte à leur parent et liste tous ses enfants : la pull request se juge contre l'ensemble des tickets du parent qu'elle sert, pas seulement contre ceux qu'elle cite.
+- its full title and **description**;
+- its **full diff** against the integration branch — the final state, as it will be merged;
+- the **associated tickets**, read in full, comments included: those the description closes or references, and those designated by the branch name according to the convention in `WORKFLOW.md`. Go up to their parent and list all its children: the pull request is judged against all the tickets of the parent it serves, not only against those it cites.
 
-## 2. Relancer les contrôles automatiques
+## 2. Rerun the automated checks
 
-Lance le build, le lint et la suite de tests complète du dépôt, avec les commandes du README telles que le `CLAUDE.md` dit de les lancer. Si la pull request a des contrôles automatiques sur l'outil (CI), lis aussi leur état.
+Run the build, the lint and the full test suite of the repository, with the commands from the README as the `CLAUDE.md` says to run them. If the pull request has automated checks on the tool (CI), read their state too.
 
-Un échec n'interrompt pas le contrôle : poursuis, et place-le en tête du rapport.
+A failure does not interrupt the check: carry on, and put it at the top of the report.
 
-## 3. Confier la lecture à un regard neuf
+## 3. Hand the reading to a fresh eye
 
-Les contrôles se font **dans deux subagents neufs**, lancés en parallèle — l'un pour la description et les tickets (A et B), l'autre pour le code (C) —, jamais dans le contexte qui a écrit le code ou la description. Celui qui a écrit relit son intention, pas le code.
+The checks are done **in two fresh subagents**, launched in parallel — one for the description and the tickets (A and B), the other for the code (C) — never in the context that wrote the code or the description. Whoever wrote it rereads their intent, not the code.
 
-Chaque subagent reçoit uniquement : l'identifiant de la pull request et la commande pour en lire le diff, la description, le contenu complet des tickets associés, les chemins des règles du projet à lire, la consigne de ses contrôles et le seuil de preuve ci-dessous. Ni la conversation, ni ton avis sur le code.
+Each subagent receives only: the pull request identifier and the command to read its diff, the description, the full content of the associated tickets, the paths of the project rules to read, the instructions for its checks and the proof threshold below. Neither the conversation, nor your opinion of the code.
 
-Pour la recherche de bugs, lance en parallèle, **pour chaque pull request**, un subagent dont la seule tâche est d'invoquer le skill de revue de code de Claude Code — `code-review`, avec l'URL de la pull request en argument, le chemin du dépôt local et les consignes d'accès du `CLAUDE.md` — puis de te renvoyer ses constats en texte, sans les trier. Invoqué depuis un subagent, ce skill s'exécute dans un contexte séparé et ne rend que ses constats ; invoqué depuis ton contexte, il s'y déroule en entier.
+For bug hunting, launch in parallel, **for each pull request**, a subagent whose only task is to invoke Claude Code's code review skill — `code-review`, with the pull request URL as argument, the path of the local repository and the access instructions from the `CLAUDE.md` — then send its findings back to you as text, without sorting them. Invoked from a subagent, this skill runs in a separate context and returns only its findings; invoked from your context, it runs there in full.
 
-Si tu ne peux pas lancer de subagent, fais les contrôles toi-même et dis-le dans le rapport : la lecture n'est alors pas indépendante.
+If you cannot launch a subagent, do the checks yourself and say so in the report: the reading is then not independent.
 
-### Le seuil de preuve
+### The proof threshold
 
-Un problème ne remonte que s'il se démontre : la ligne de code, le critère du ticket ou la phrase de la description qui le prouve, et ce qui en résulte de faux. Ce qui se soupçonne sans se montrer ne remonte pas. Ce qui relève du goût, du style, d'une amélioration possible ou d'une règle qu'aucun document du projet n'écrit ne remonte pas non plus.
+A problem is raised only if it can be demonstrated: the line of code, the ticket criterion or the sentence of the description that proves it, and what goes wrong as a result. What is suspected without being shown is not raised. Neither is anything that comes down to taste, style, a possible improvement or a rule that no project document writes down.
 
-Avant de rapporter, repasse chaque constat des subagents et de la revue de code au crible de ce seuil : écarte ceux qui ne le franchissent pas, fusionne les doublons.
+Before reporting, run each finding from the subagents and from the code review through this threshold: discard those that do not clear it, merge duplicates.
 
-### Contrôle A — la description
+### Check A — the description
 
-Découpe la description en affirmations — chaque comportement, règle, valeur, libellé, version de dépendance, référence à un ADR, chaque « n'est plus », et chaque note au relecteur qui affirme un fait sur le code — et confronte chacune au diff. Remonte celles que le code **contredit** et celles dont il ne porte **aucune trace**. Une affirmation sur un état extérieur au code — une base de données, une vérification faite à la main — ne se juge pas.
+Break the description down into claims — every behavior, rule, value, label, dependency version, reference to an ADR, every "no longer", and every reviewer note that asserts a fact about the code — and compare each one against the diff. Raise those the code **contradicts** and those of which it bears **no trace**. A claim about a state outside the code — a database, a verification done by hand — is not judged.
 
-Remonte aussi les **changements tus** : un changement de comportement, de contrat d'API, de schéma de données ou de dépendance, ou une suppression de test, présent dans le diff et absent de la description.
+Also raise **unmentioned changes**: a change of behavior, API contract, data schema or dependency, or a test removal, present in the diff and absent from the description.
 
-### Contrôle B — les tickets
+### Check B — the tickets
 
-- **Critères d'acceptance** — confronte au code chaque critère de chaque ticket fermé, et chaque règle métier ou cas limite qu'il écrit. Remonte ceux qui sont **absents**, **partiels** ou **contredits**.
-- **Description et tickets** — remonte une affirmation de la description qui contredit un ticket, et un ticket fermé que la description ne couvre pas. Quand le code et la description s'écartent ensemble d'un ticket, ne tranche pas : donne les deux issues — corriger le code, ou mettre le ticket à jour.
-- **Références** — elles suivent `WORKFLOW.md` : mot-clé de fermeture sur chaque ticket que la pull request achève, et sur eux seuls ; simple mention pour le parent. Un ticket servi par plusieurs pull requests ne se ferme que dans celle qui sera fusionnée en dernier.
-- **Complétude** — une pull request ne passe en revue que lorsqu'elle porte tous les enfants du ticket qu'elle sert : remonte ceux qui manquent.
+- **Acceptance criteria** — compare against the code each criterion of each closed ticket, and each business rule or edge case it writes down. Raise those that are **absent**, **partial** or **contradicted**.
+- **Description and tickets** — raise a claim in the description that contradicts a ticket, and a closed ticket that the description does not cover. When the code and the description diverge together from a ticket, do not decide: give both outcomes — fix the code, or update the ticket.
+- **References** — they follow `WORKFLOW.md`: closing keyword on each ticket the pull request completes, and on those only; a simple mention for the parent. A ticket served by several pull requests is closed only in the one that will be merged last.
+- **Completeness** — a pull request is marked ready for review only when it carries all the children of the ticket it serves: raise those that are missing.
 
-Les pistes techniques d'un ticket ne sont pas des exigences : s'en écarter n'est pas un problème.
+A ticket's technical hints are not requirements: departing from them is not a problem.
 
-### Contrôle C — le code
+### Check C — the code
 
-- **Règles du projet** — une règle écrite dans le `CLAUDE.md`, le README ou les règles du dépôt, enfreinte. Cite-la, avec son fichier.
-- **Tests** — un critère d'acceptance qui porte une règle métier ou un cas limite, sans test qui échouerait s'il régressait.
-- **Restes** — trace de débogage, secret, valeur en dur que le projet interdit.
-- **Documentation** — un README, une spec, un glossaire ou un diagramme que le changement rend faux, ou un passage qu'il ajoute en recopiant une documentation existante au lieu d'y renvoyer. Cite les deux passages.
-- **Bugs** — seulement si la revue de code n'a pas pu tourner : un scénario concret qui produit un résultat faux, un plantage ou une faille.
+- **Project rules** — a rule written in the `CLAUDE.md`, the README or the repository rules, broken. Cite it, with its file.
+- **Tests** — an acceptance criterion that carries a business rule or an edge case, without a test that would fail if it regressed.
+- **Leftovers** — debug trace, secret, hard-coded value that the project forbids.
+- **Documentation** — a README, a spec, a glossary or a diagram that the change makes wrong, or a passage it adds by copying existing documentation instead of referring to it. Cite both passages.
+- **Bugs** — only if the code review could not run: a concrete scenario that produces a wrong result, a crash or a vulnerability.
 
-## 4. Rapporter
+## 4. Report
 
-Va droit au but : ni préambule, ni liste de ce qui est conforme ou de ce qui a été vérifié.
+Get straight to the point: no preamble, no list of what complies or of what was checked.
 
-**Sans problème**, le rapport tient en une ligne : prête pour la revue, contrôles automatiques verts.
+**With no problem**, the report fits in one line: ready for review, automated checks green.
 
-**Sinon**, le verdict d'abord — à corriger, et le nombre de problèmes —, puis les problèmes, sous **Contrôles automatiques**, **Description**, **Tickets** et **Code** ; une rubrique sans problème n'apparaît pas. Chaque problème tient en une ou deux lignes : où — fichier et ligne, ticket et critère, ou phrase de la description —, ce qui est faux, et la correction proposée.
+**Otherwise**, the verdict first (to fix, and the number of problems), then the problems, under **Automated checks**, **Description**, **Tickets** and **Code**; a heading with no problem does not appear. Each problem fits in one or two lines: where it is (file and line, ticket and criterion, or sentence of the description), what is wrong, and the proposed fix.
 
-Pour la description ou un ticket devenu faux, la correction proposée est le passage à remplacer et son remplacement, dans la langue déclarée dans `WORKFLOW.md`. Le texte complet ne s'écrit qu'au moment d'appliquer.
+For the description or a ticket that has become wrong, the proposed fix is the passage to replace and its replacement, in the language declared in `WORKFLOW.md`. The full text is written only at the moment of applying.
 
-## 5. Corriger, après accord
+## 5. Fix, after approval
 
-L'utilisateur choisit ce qui s'applique.
+The user chooses what gets applied.
 
-- **La description** se remplace avec la commande du `CLAUDE.md`, par le texte validé.
-- **Un ticket devenu faux** se met à jour de la même façon. Jamais ses critères d'acceptance pour faire passer le code : un critère intenable se discute, il ne se réécrit pas.
-- **Le code** se corrige selon `workflow:implement` : un bug corrigé commence par un test rouge qui le reproduit. Le commit suit la convention du projet, et se demande.
-- Après une correction du code, **rejoue les contrôles touchés** : un correctif peut rendre fausse une phrase de la description.
+- **The description** is replaced with the command from the `CLAUDE.md`, by the approved text.
+- **A ticket that has become wrong** is updated the same way. Never its acceptance criteria to make the code pass: an untenable criterion is discussed, it is not rewritten.
+- **The code** is fixed following `workflow:implement`: a fixed bug starts with a red test that reproduces it. The commit follows the project's convention, and is made only after asking.
+- After a code fix, **rerun the affected checks**: a fix can make a sentence of the description wrong.
 
-Ne marque pas la pull request prête pour la revue toi-même, sauf demande explicite. Ne fusionne jamais.
+Do not mark the pull request ready for review yourself, unless explicitly asked. Never merge.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Des problèmes avérés, rien d'autre.** Ce qui ne se démontre pas, ou ne relève que du goût, ne remonte pas.
-- **Seule la description fait foi.** Les messages de commit ne sont pas contrôlés.
-- **Le diff final, pas l'historique.** On juge ce qui sera fusionné.
-- **Un regard neuf.** La lecture se fait hors du contexte qui a écrit le code ; quand c'est impossible, le rapport le dit.
-- **Aucune exigence inventée.** Le code se juge contre la description, les tickets et les règles écrites du projet, pas contre tes préférences.
-- **Les tickets disent l'attendu.** Entre un ticket et un code qui s'en écarte, tu ne choisis pas : l'utilisateur tranche.
-- **Rien sans accord.** Ni la description, ni le code, ni un ticket — texte ou statut.
-- **Un rapport honnête.** Une affirmation non vérifiée n'est pas vérifiée, et un contrôle sauté se dit.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **Proven problems, nothing else.** What cannot be demonstrated, or is merely a matter of taste, is not raised.
+- **Only the description is authoritative.** Commit messages are not checked.
+- **The final diff, not the history.** What will be merged is what gets judged.
+- **A fresh eye.** The reading is done outside the context that wrote the code; when that is impossible, the report says so.
+- **No invented requirements.** The code is judged against the description, the tickets and the project's written rules, not against your preferences.
+- **The tickets state what is expected.** Between a ticket and code that diverges from it, you do not choose: the user decides.
+- **Nothing without approval.** Not the description, not the code, not a ticket — text or status.
+- **An honest report.** An unverified claim is not verified, and a skipped check is stated.

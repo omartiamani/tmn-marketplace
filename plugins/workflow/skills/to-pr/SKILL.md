@@ -1,77 +1,77 @@
 ---
 name: to-pr
-description: Ouvre puis tient à jour la pull request d'une branche de travail — en brouillon dès le premier ticket terminé, complétée à chaque ticket suivant, passée en revue quand tous y sont — avec contrôles préalables, titre et corps composés selon la convention du projet, références aux tickets avec les bons mots-clés de fermeture. À invoquer sur la commande /workflow:to-pr ou sur demande explicite d'ouvrir ou de mettre à jour une pull request.
+description: Opens then keeps up to date the pull request of a working branch — as a draft from the first finished ticket, completed with each following ticket, marked ready for review when all of them are in — with preliminary checks, title and body composed according to the project's convention, and ticket references with the right closing keywords. Invoke on the /workflow:to-pr command or on an explicit request to open or update a pull request.
 disable-model-invocation: true
 ---
 
 # to-pr
 
-Ouvre puis tient à jour la pull request d'une branche de travail, jusqu'à son passage en revue.
+Open then keep up to date the pull request of a working branch, until it is marked ready for review.
 
-Sur beaucoup de projets, la pull request n'est pas une formalité de fin de course : son titre devient le message de commit après squash, et son corps décide de ce qui se ferme automatiquement au merge. Une référence mal formée ne se voit pas — elle ferme un ticket qui devait rester ouvert, ou laisse ouvert celui qui devait se fermer. C'est ce que ce skill sert à ne pas rater.
+On many projects, the pull request is not an end-of-the-line formality: its title becomes the commit message after a squash, and its body decides what gets closed automatically on merge. A malformed reference does not show — it closes a ticket that was meant to stay open, or leaves open the one that was meant to close. That is what this skill is there to get right.
 
-**Tu ouvres et tu mets à jour ; tu ne fusionnes jamais.**
+**You open and you update; you never merge.**
 
-## Le cycle d'une pull request
+## The cycle of a pull request
 
-Une branche sert un ticket, souvent un parent dont les enfants se terminent un à un. Sa pull request suit ce cycle :
+A branch serves a ticket, often a parent whose children are finished one by one. Its pull request follows this cycle:
 
-1. **Ouverte en brouillon dès que le premier enfant est terminé.** Le travail se voit tôt.
-2. **Mise à jour à chaque enfant terminé.** Sa référence s'ajoute à ce moment-là, pas avant : sur beaucoup d'outils, lier un ticket à une pull request change son statut, et un ticket encore en cours ne doit pas paraître fini.
-3. **Passée en revue quand tous les enfants y sont**, après `workflow:check-pr`.
+1. **Opened as a draft as soon as the first child is finished.** The work is visible early.
+2. **Updated with each finished child.** Its reference is added at that moment, not before: on many tools, linking a ticket to a pull request changes its status, and a ticket still in progress must not look finished.
+3. **Marked ready for review when all the children are in it**, after `workflow:check-pr`.
 
-Un ticket sans enfants parcourt le même cycle en une fois : ouverte quand il est terminé, passée en revue après `workflow:check-pr`.
+A ticket without children goes through the same cycle in one go: opened when it is finished, marked ready for review after `workflow:check-pr`.
 
-Un ticket est **terminé** quand ses critères d'acceptance sont validés et son code commité.
+A ticket is **finished** when its acceptance criteria are validated and its code committed.
 
-## 1. Se situer
+## 1. Get your bearings
 
-Prends dans `WORKFLOW.md` le format du titre, le contenu attendu du corps, les mots-clés de fermeture, la stratégie de mise à jour de branche et le mode de merge — normalement déjà dans ton contexte, importé par le `CLAUDE.md`. Sans lui, ne compose rien — propose `workflow:setup`.
+Take from `WORKFLOW.md` the title format, the expected content of the body, the closing keywords, the branch update strategy and the merge mode — normally already in your context, imported by the `CLAUDE.md`. Without it, compose nothing — suggest `workflow:setup`.
 
-Lis aussi le `CLAUDE.md` du dépôt concerné, et récupère le ou les tickets que la branche sert : identifiants, types, parents, enfants. Le nom de la branche les porte souvent.
+Also read the `CLAUDE.md` of the repository concerned, and retrieve the ticket or tickets the branch serves: identifiers, types, parents, children. The branch name often carries them.
 
-Regarde si **la même branche existe dans d'autres dépôts** : la fonctionnalité a alors une pull request par dépôt, et un même ticket peut être servi par plusieurs d'entre elles. Pour chaque ticket, note quels dépôts portent une partie de son code.
+Check whether **the same branch exists in other repositories**: the feature then has one pull request per repository, and the same ticket can be served by several of them. For each ticket, note which repositories hold part of its code.
 
-Établis **où en est le cycle** : la pull request de la branche existe-t-elle déjà, quels enfants sont terminés, lesquels sont déjà référencés dans son corps. Ce qui est terminé ne se lit pas toujours dans le tracker : quand la conversation ne l'établit pas, demande.
+Establish **where the cycle stands**: does the branch's pull request already exist, which children are finished, which ones are already referenced in its body. What is finished cannot always be read from the tracker: when the conversation does not establish it, ask.
 
-## 2. Contrôler avant d'ouvrir ou de mettre à jour
+## 2. Check before opening or updating
 
-Trois vérifications, dans cet ordre. Si l'une échoue, **arrête-toi et rends compte** — n'ouvre pas une pull request qu'il faudra corriger ensuite.
+Three verifications, in this order. If one fails, **stop and report** — do not open a pull request that will have to be fixed afterwards.
 
-1. **Rien ne traîne** : l'arbre de travail est propre et la branche locale est poussée. Une modification non commitée est du travail que le relecteur ne verra pas.
-2. **La branche est à jour** par rapport à la branche d'intégration. Si elle a avancé, applique la stratégie déclarée dans `WORKFLOW.md` — si pas précisé, rebase. Ne réécris jamais l'historique d'une branche déjà partagée sans une demande de validation préalable.
-3. **Les tests et le build passent.** Relance-les : découvrir l'échec dans la CI coûte un aller-retour de plus, et un relecteur notifié pour rien.
+1. **Nothing is lying around**: the working tree is clean and the local branch is pushed. An uncommitted change is work the reviewer will not see.
+2. **The branch is up to date** with the integration branch. If the latter has moved ahead, apply the strategy declared in `WORKFLOW.md` — if not specified, rebase. Never rewrite the history of an already shared branch without asking for approval first.
+3. **The tests and the build pass.** Rerun them: discovering the failure in CI costs one more round trip, and a reviewer notified for nothing.
 
-## 3. Composer
+## 3. Compose
 
-**Le titre** suit exactement le format déclaré dans `WORKFLOW.md` — souvent un message de commit conventionnel, avec un scope qui référence le ticket. Il décrit ce que _ce dépôt_ fait, pas l'objectif général du ticket, dont plusieurs dépôts peuvent partager le nom de branche.
+**The title** follows exactly the format declared in `WORKFLOW.md` — often a conventional commit message, with a scope that references the ticket. It describes what _this repository_ does, not the general goal of the ticket, whose branch name several repositories may share.
 
-**Le corps** contient deux choses :
+**The body** contains two things:
 
-- **Les références exigées par la convention**, avec le bon comportement pour chacune. C'est le point le plus piégeux : sur la plupart des projets, certaines références **ferment** leur ticket au merge et d'autres doivent délibérément ne pas le faire — un ticket parent, ou un ticket transverse que cette pull request ne suffit pas à achever. Recopie la convention à la lettre ; en cas de doute sur une référence, laisse-la sans mot-clé de fermeture et signale-le. Un enfant pas encore terminé n'a pas de référence.
+- **The references required by the convention**, with the right behavior for each one. This is the trickiest point: on most projects, some references **close** their ticket on merge and others must deliberately not do so — a parent ticket, or a cross-cutting ticket that this pull request is not enough to complete. Copy the convention to the letter; when in doubt about a reference, leave it without a closing keyword and point it out. A child not yet finished has no reference.
 
-  **Un ticket servi par plusieurs pull requests ne se ferme que dans une seule** : aucune ne l'achève seule. Le mot-clé de fermeture va dans celle qui sera fusionnée en dernier — en général le dépôt qui consomme les autres, l'application plutôt que l'API qu'elle appelle ; si l'ordre n'est pas évident, demande. Les autres le référencent sans mot-clé de fermeture et nomment la pull request qui le ferme. Sinon, la première fusionnée ferme le ticket alors qu'une partie de son code n'est pas livrée.
+  **A ticket served by several pull requests is closed in only one of them**: none completes it alone. The closing keyword goes in the one that will be merged last — usually the repository that consumes the others, the application rather than the API it calls; if the order is not obvious, ask. The others reference it without a closing keyword and name the pull request that closes it. Otherwise, the first one merged closes the ticket while part of its code is not delivered.
 
-- **Un résumé court du travail réel**, tiré des commits de la branche : ce qui change, et ce qui mérite l'œil du relecteur. Pas un journal commit par commit.
+- **A short summary of the actual work**, drawn from the branch's commits: what changes, and what deserves the reviewer's attention. Not a commit-by-commit log.
 
-**À chaque mise à jour, recompose le corps entier** : les références des enfants nouvellement terminés s'ajoutent, et le résumé décrit l'état actuel de la branche, pas la suite des mises à jour. Une phrase que le dernier travail a rendue fausse disparaît.
+**On each update, recompose the entire body**: the references of the newly finished children are added, and the summary describes the current state of the branch, not the sequence of updates. A sentence that the latest work has made wrong disappears.
 
-Rédige dans la langue déclarée dans `WORKFLOW.md`.
+Write in the language declared in `WORKFLOW.md`.
 
-## 4. Ouvrir ou mettre à jour
+## 4. Open or update
 
-Ouvre la pull request en brouillon, ou remplace son corps, sans attendre d'accord. Puis donne son URL et montre le titre et le corps — pour une mise à jour, ce qui a changé.
+Open the pull request as a draft, or replace its body, without waiting for approval. Then give its URL and show the title and the body — for an update, what changed.
 
-**Quand tous les enfants y sont**, lance `workflow:check-pr` et traite son rapport. Une fois le rapport sans problème, propose de marquer la pull request prête pour la revue, et ne le fais qu'après accord.
+**When all the children are in it**, run `workflow:check-pr` and handle its report. Once the report has no problem, offer to mark the pull request ready for review, and do so only after approval.
 
-**Ne touche pas au tracker.** Les références font leur travail par les automatisations de l'outil ; les tickets qui se ferment à la main ne relèvent pas de ce skill. Ne change aucun statut.
+**Do not touch the tracker.** The references do their work through the tool's automations; tickets that are closed by hand are not this skill's business. Change no status.
 
-**Ne fusionne pas**, sauf si tu as l'accord explicite.
+**Do not merge**, unless you have explicit approval.
 
-## Règles
+## Rules
 
-- **Le `WORKFLOW.md`, le `CLAUDE.md` et le `README.md` du projet font foi** sur tout le reste : ils l'emportent sur les comportements par défaut de ce skill, et une règle locale se suit sans la discuter. Mais quand la contradiction est **forte** — un principe du skill et une règle du projet qui ne peuvent pas tenir ensemble —, arrête-toi, expose les deux, et demande ce qu'il faut mettre à jour : la documentation du projet, ou le skill lui-même quand la règle a vocation à valoir partout.
-- **Aucune fermeture par défaut.** Un mot-clé de fermeture ne s'ajoute que si la convention le prévoit pour ce type de ticket. Dans le doute, on n'en met pas : rouvrir un ticket fermé à tort coûte plus que fermer à la main.
-- **Aucune réécriture d'historique** sur une branche partagée : pas de force push, pas d'amend d'un commit déjà poussé.
-- **Une branche, une pull request** par dépôt. Si la branche mélange plusieurs sujets, dis-le plutôt que de composer un titre qui les recouvre tous.
-- **Pas de passage en revue sans contrôle.** Avant qu'une pull request soit marquée prête pour la revue, lance `workflow:check-pr` et traite son rapport.
+- **The project's `WORKFLOW.md`, `CLAUDE.md` and `README.md` are authoritative** on everything else: they override this skill's default behaviors, and a local rule is followed without debate. But when the contradiction is **strong** — a principle of the skill and a project rule that cannot both hold — stop, lay out both, and ask what should be updated: the project's documentation, or the skill itself when the rule is meant to apply everywhere.
+- **No closing by default.** A closing keyword is added only if the convention provides for it for this type of ticket. When in doubt, leave it out: reopening a ticket closed by mistake costs more than closing by hand.
+- **No history rewriting** on a shared branch: no force push, no amend of an already pushed commit.
+- **One branch, one pull request** per repository. If the branch mixes several subjects, say so rather than composing a title that covers them all.
+- **No marking ready for review without a check.** Before a pull request is marked ready for review, run `workflow:check-pr` and handle its report.
