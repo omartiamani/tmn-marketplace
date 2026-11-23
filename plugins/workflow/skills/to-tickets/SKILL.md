@@ -64,6 +64,8 @@ One level at a time, from top to bottom: the Epics and Features first, then the 
 
 For each batch, present a numbered list with the title, the parent, the blockers and what the item delivers. Ask explicitly: is the granularity right, are the dependencies correct, should anything be merged or split? Iterate until approved.
 
+**The specified item is part of the batch.** When the subject is itself an existing work item — captured on the fly, before its spec — its description is updated too, to its specified state, and proposed with the batch. Like any ticket, it is self-contained.
+
 ## 6. Publish
 
 Only after approval, and in hierarchy order: the parents first, so that the children can reference real identifiers.
@@ -73,6 +75,8 @@ For each item: create, **attach to the parent**, fill in the required fields, ap
 **Then verify, before creating the next one.** Read the item back as the tool returns it: its type, its parent, its required fields, its status, its dependencies, and its presence on the board — read from the board itself, not from the item. A command that succeeds does not prove the result is there: a step can fail without an error. A gap counts as a failed creation.
 
 **If a creation fails, stop immediately.** Report: what was created with the real identifiers, what remains to be created, and the exact error. Do not continue the batch — a missing parent produces orphaned children. Delete nothing to "start clean".
+
+Once the children are created, update the description of the specified item as approved, and read it back.
 
 Finish by playing back the tree created, with the real identifiers.
 
