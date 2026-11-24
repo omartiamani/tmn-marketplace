@@ -42,6 +42,8 @@ One behavior at a time, strictly:
 
 **Refactor.** Once green, improve the structure — of the code as well as the tests — while keeping the suite green. Then move on to the next behavior.
 
+**Comments say only the non-obvious why**, briefly: a choice the code cannot show, such as `replace` rather than `push`, or a workaround and its reason. No narration of the flow, no restating of what the code and its names already say. A long comment usually means a name or the code should say it instead.
+
 Never skip the red step, including for a bug fix: the test that reproduces the bug must fail first, otherwise nothing proves it catches it.
 
 Test **observable behavior**, not implementation details: a test that breaks on every refactor without any behavior changing is a test to rewrite.
