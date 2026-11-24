@@ -42,7 +42,9 @@ One behavior at a time, strictly:
 
 **Refactor.** Once green, improve the structure — of the code as well as the tests — while keeping the suite green. Then move on to the next behavior.
 
-**Comments say only the non-obvious why**, briefly: a choice the code cannot show, such as `replace` rather than `push`, or a workaround and its reason. No narration of the flow, no restating of what the code and its names already say. A long comment usually means a name or the code should say it instead.
+**Comments inside the code say only the non-obvious why**, briefly: a choice the code cannot show, such as `replace` rather than `push`, or a workaround and its reason. No narration of the flow, no restating of what the code and its names already say. A long comment usually means a name or the code should say it instead.
+
+**Doc comments** — on reusable functions, helpers and types, shown by the IDE on hover — are worth writing: a short sentence on what the item is or does for its caller. They go into detail only to explain what is not obvious, such as a precondition, an edge case or a side effect. One that only repeats the name or the signature is left out.
 
 Never skip the red step, including for a bug fix: the test that reproduces the bug must fail first, otherwise nothing proves it catches it.
 
