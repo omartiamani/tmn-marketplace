@@ -66,7 +66,7 @@ Open the pull request as a draft, or replace its body, without waiting for appro
 
 **Do not touch the tracker.** The references do their work through the tool's automations; tickets that are closed by hand are not this skill's business. Change no status.
 
-**Do not merge**, unless you have explicit approval.
+**Do not merge**: merging belongs to `workflow:merge`, on the user's order.
 
 ## Rules
 

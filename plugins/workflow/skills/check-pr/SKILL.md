@@ -95,7 +95,7 @@ The user chooses what gets applied.
 - **The code** is fixed following `workflow:implement`: a fixed bug starts with a red test that reproduces it. The commit follows the project's convention, and is made only after asking.
 - After a code fix, **rerun the affected checks**: a fix can make a sentence of the description wrong.
 
-Do not mark the pull request ready for review yourself, unless explicitly asked. Never merge.
+Do not mark the pull request ready for review yourself, unless explicitly asked. Never merge: merging belongs to `workflow:merge`.
 
 ## Rules
 
